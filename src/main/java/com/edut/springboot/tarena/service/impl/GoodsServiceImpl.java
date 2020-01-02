@@ -11,6 +11,7 @@ import com.edut.springboot.tarena.pojo.Goods;
 import com.edut.springboot.tarena.service.GoodsService;
 import com.google.gson.Gson;
 
+import ch.qos.logback.classic.Logger;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -21,7 +22,10 @@ public class GoodsServiceImpl implements GoodsService {
 	private Gson gson ; 
 	
 	@Autowired
-	private GoodsDao goodDao ; 
+	private GoodsDao goodDao ;
+	
+	@Autowired
+	private Logger log ;
 	
 	@Override
 	public String doFindGoods() {

@@ -1,4 +1,4 @@
-package com.edut.springboot.bean;
+package com.edut.springboot.vedio.bean;
 
 import java.util.Date;
 import java.util.List;

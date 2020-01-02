@@ -1,4 +1,4 @@
-package com.edut.springboot;
+package com.edut.springboot.vedio;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -7,15 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
-import com.edut.springboot.bean.Person;
-import com.edut.springboot.service.HelloService;
+import com.edut.springboot.vedio.bean.Person;
+import com.edut.springboot.vedio.service.HelloService;
 
 /**
  * SpringBoot 单元测试
  * 
  * 可以在测试期间很方便的类似编码一样进行自动注入等容器的功能
  */
-@SpringBootTest
+//@SpringBootTest
 class LearnSpringbootQuickApplicationTests {
 
 	@Autowired

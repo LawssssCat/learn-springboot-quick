@@ -1,4 +1,4 @@
-package com.edut.springboot.service;
+package com.edut.springboot.vedio.service;
 
 public class HelloService {
 	

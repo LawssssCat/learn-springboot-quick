@@ -1,4 +1,4 @@
-package com.edut.springboot;
+package com.edut.springboot.vedio;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

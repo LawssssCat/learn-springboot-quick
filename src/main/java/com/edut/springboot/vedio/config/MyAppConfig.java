@@ -1,9 +1,9 @@
-package com.edut.springboot.config;
+package com.edut.springboot.vedio.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.edut.springboot.service.HelloService;
+import com.edut.springboot.vedio.service.HelloService;
 
 /**
  * @Configuration 指明当前类似一个配置类，就是来替代之前的spring配置文件

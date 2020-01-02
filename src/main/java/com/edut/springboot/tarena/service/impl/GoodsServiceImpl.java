@@ -29,7 +29,7 @@ public class GoodsServiceImpl implements GoodsService {
 		watch.start();
 		List<Goods> goods = goodDao.findGoods() ;
 		watch.stop();
-		log.info("" + watch.getTotalTimeMillis());
+		log.info("@@@@  ####  ----  " + watch.getTotalTimeMillis());
 		
 		String json = gson.toJson(goods); 
 		return json;

@@ -18,7 +18,6 @@ public class GoodsController {
 	@RequestMapping("/doFindGoods")
 	public String doFindGoods() {
 		String json = goodsService.doFindGoods() ;
-		System.out.println(json);
 		return json ; 
 	}
 }

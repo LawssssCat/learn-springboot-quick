@@ -12,4 +12,6 @@ public interface GoodsService {
 
 	Integer deleteGoods(Long goodsId);
 
+	void addGoods(Goods goods);
+
 }

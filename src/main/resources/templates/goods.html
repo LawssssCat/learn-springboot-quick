@@ -6,8 +6,20 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h3>The Goods Page</h3>
+	<h3>The Goods111 Page</h3>
 	<font color="red" th:text="${successMsg}" ></font>
+	
+	<form action="#" th:attr="action=@{addGoods}" method="post">
+	  <fieldset>
+	  <legend>goods add</legend>
+	    name:<input type="text" name="name" />
+	    remark:<input type="text" name="remark" />
+	    <input type="submit" value="Subscribe me!" />
+	  </fieldset>
+	</form>
+
+	<fieldset>
+	<legend>goods list</legend>	
 	<table>
 		<thead>
 			<tr>
@@ -30,5 +42,6 @@
 			</tr>
 		</tbody>
 	</table>
+	</fieldset>
 </body>
 </html>

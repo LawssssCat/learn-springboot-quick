@@ -1,5 +1,6 @@
 package com.edut.springboot.tarena.service.impl;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,14 @@ public class GoodsServiceImpl implements GoodsService {
 	public Integer deleteGoods(Long goodsId) {
 		int rows = goodDao.deleteGoodsById(goodsId);
 		return rows ;
+	}
+
+	@Override
+	public void addGoods(Goods goods) {
+		goods.setId(System.nanoTime());
+		goods.setCreatedTime(new Date(new java.util.Date().getTime()));
+		
+		goodDao.insertObject(goods) ; 
 	}
 
 }

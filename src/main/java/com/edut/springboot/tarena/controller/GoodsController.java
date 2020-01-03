@@ -37,9 +37,16 @@ public class GoodsController {
 	@RequestMapping("/deleteGoods")
 	public String deleteGood(@RequestParam(name = "id") Long goodsId,Model model ) {
 		
-		goodsService.deleteGoods(goodsId) ;
-		model.addAttribute("successMsg", "删除 "+goodsId) ; 
+		Integer rows = goodsService.deleteGoods(goodsId);
+		model.addAttribute("successMsg", "删除 "+rows+" 行数据") ; 
 		
 		return "forward:getGoods" ; 
+	}
+	
+	@RequestMapping("/addGoods")
+	public String addGoods(Goods goods , Model model ) {
+		goodsService.addGoods(goods) ;
+		model.addAttribute("successMsg", "成功添加 1 行数据") ; 
+		return "forward:getGoods" ;
 	}
 }

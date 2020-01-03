@@ -25,7 +25,8 @@ public class GoodsServiceImpl implements GoodsService {
 	private GoodsDao goodDao ; 
 	
 	@Override
-	public String doFindGoods() {
+	public String doFindGoods()   {
+		try{Thread.sleep(1000);}catch (Exception e) {}
 		List<Goods> goods = getGoods() ;
 		String json = gson.toJson(goods); 
 		return json;

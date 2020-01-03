@@ -20,19 +20,23 @@ public class GoodsController {
 	@Autowired
 	private GoodsService goodsService ; 
 	
-	@ResponseBody
-	@RequestMapping("/doFindGoods")
-	public String doFindGoods() {
-		String json = goodsService.doFindGoods() ;
-		return json ; 
+	@RequestMapping("/doGoodsUI")
+	public String doGoosUI(Model model) {
+		return "/pages/goods-ajax" ; 
 	}
 	
-	@RequestMapping("/getGoods") 
-	public String getGoods(Model model ) {
-		List<Goods> goods = goodsService.getGoods() ;
-		model.addAttribute("goods", goods) ; 
-		return "goods" ; 
+	@ResponseBody
+	@RequestMapping("/doFindGoods")
+	public String doFindGoods(Model model) {
+		return goodsService.doFindGoods() ; 
 	}
+	
+//	@RequestMapping("/getGoods") 
+//	public String getGoods(Model model ) {
+//		List<Goods> goods = goodsService.getGoods() ;
+//		model.addAttribute("goods", goods) ; 
+//		return "goods" ; 
+//	}
 	
 	@RequestMapping("/deleteGoods")
 	public String deleteGood(@RequestParam(name = "id") Long goodsId,Model model ) {
@@ -40,13 +44,13 @@ public class GoodsController {
 		Integer rows = goodsService.deleteGoods(goodsId);
 		model.addAttribute("successMsg", "删除 "+rows+" 行数据") ; 
 		
-		return "forward:getGoods" ; 
+		return "forward:doGoodsUI" ; 
 	}
 	
 	@RequestMapping("/addGoods")
 	public String addGoods(Goods goods , Model model ) {
 		goodsService.addGoods(goods) ;
 		model.addAttribute("successMsg", "成功添加 1 行数据") ; 
-		return "forward:getGoods" ;
+		return "forward:doGoodsUI" ;
 	}
 }

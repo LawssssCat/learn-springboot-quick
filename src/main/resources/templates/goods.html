@@ -1,0 +1,47 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h3>The Goods111 Page</h3>
+	<font color="red" th:text="${successMsg}" ></font>
+	
+	<form action="#" th:attr="action=@{addGoods}" method="post">
+	  <fieldset>
+	  <legend>goods add</legend>
+	    name:<input type="text" name="name" />
+	    remark:<input type="text" name="remark" />
+	    <input type="submit" value="Subscribe me!" />
+	  </fieldset>
+	</form>
+
+	<fieldset>
+	<legend>goods list</legend>	
+	<table>
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>name</th>
+				<th>remark</th>
+				<th>createdTime</th>
+				<th>&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="g:${goods}">
+				<td th:text="${g.id}">id</td>
+				<td th:text="${g.name}">name</td>
+				<td th:text="${g.remark}">remark</td>
+				<td th:text="${#calendars.format(g.createdTime,'dd MMMM yyyy')}">createdTime</td>
+				<td>
+					<a th:href="@{deleteGoods(id=${g.id})}" >删除</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</fieldset>
+</body>
+</html>

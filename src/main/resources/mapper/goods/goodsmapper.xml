@@ -3,4 +3,15 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.edut.springboot.tarena.dao.GoodsDao">
+
+	<insert id="insertObject" >
+		insert into tb_goods 
+		(id , name , remark , createdTime ) 
+		values  
+		<foreach collection="array" item="g" 
+		open="("  separator="," close=")" >
+			#{g.id} , #{g.name} , #{g.remark} , #{g.createdTime}
+		</foreach> 
+	</insert>
+
 </mapper>

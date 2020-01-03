@@ -1,0 +1,113 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h3>The Goods111 Page</h3>
+	<font color="red" th:text="${successMsg}" ></font>
+	
+	<form action="#" th:attr="action=@{addGoods}" method="post">
+	  <fieldset>
+	  <legend>goods add</legend>
+	    name:<input type="text" name="name" />
+	    remark:<input type="text" name="remark" />
+	    <input type="submit" value="Subscribe me!" />
+	  </fieldset>
+	</form>
+
+	<fieldset>
+	<legend>goods list</legend>	
+	<table>
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>name</th>
+				<th>remark</th>
+				<th>createdTime</th>
+				<th>&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody id="tbodyId" >
+			<tr><td colspan="5">Data is loading ...</td></tr>
+			<!-- <tr th:each="g:${goods}">
+				<td th:text="${g.id}">id</td>
+				<td th:text="${g.name}">name</td>
+				<td th:text="${g.remark}">remark</td>
+				<td th:text="${#calendars.format(g.createdTime,'dd MMMM yyyy')}">createdTime</td>
+				<td>
+					<a th:href="@{deleteGoods(id=${g.id})}" >删除</a>
+				</td>
+			</tr> -->
+		</tbody>
+	</table>
+	</fieldset>
+	
+	<script type="text/javascript">
+		//基于此函数发送ajax请求
+		function doHandleResponseJson(result) {
+			//console.log(result) ; 
+			var jsonResult = JSON.parse(result);
+			//console.log(jsonResult);
+
+			var trs = "" ;
+			for(var i=0 ; i<jsonResult.length ; i++){
+				var j =  jsonResult[i];
+				trs += 	"<tr>"+
+							"<td>"+j.id+"</td>"+
+							"<td>"+j.name+"</td>"+
+							"<td>"+j.remark+"</td>"+
+							"<td>"+j.createdTime+"</td>"+
+							"<td>"+
+								"<a href=''>delete</a>"+
+							"</td>"+
+						"</tr>";
+			}
+
+			
+			document.getElementById("tbodyId").innerHTML = trs;
+
+		}
+		
+
+		function callback(event) {
+			//console.log("event" , event);
+			//获取事件对象的目的对象(XMLHttpRequest)
+			var xhr = event.target ; 
+			//target指向的是事件注册对象(这里我们是在XMLHttpRequest对象上祖册的监听事件)
+			//处理响应结束并且响应结果OK(正常)
+			//readyState==4表示与服务端的通讯结束
+			//status==200表示服务端响应正常
+			if(xhr.readyState==4 && xhr.status==200){
+				//console.log("responseText" , xhr.responseText);
+				doHandleResponseJson(xhr.responseText) ;
+			}
+
+		}
+
+		function doAjaxDoFindGoods(url , params) {
+			//console.log("url");
+			
+			//1.创建ajax请求对象(XHR)
+			var xhr = new XMLHttpRequest() ; 
+			//2.注册时间监听(监听客户端与服务端的通讯状态)
+			xhr.onreadystatechange = callback;//别写小括号，写了小括号表示自己调用，不写表示系统调用
+			//3.建立与服务端的连接
+			xhr.open("GET" , url,true) ; 
+			//true 表示异步，false 表示同步
+
+			//4.发送请求
+			xhr.send(null) ; 
+			//GET请求，方法内部不传任何参数
+			
+		}
+		//发送 ajax请求获取商品，然后将数据根性到页面上
+		var url = "doFindGoods" ;
+		doAjaxDoFindGoods(url) ; 
+	</script>
+	
+	
+</body>
+</html>

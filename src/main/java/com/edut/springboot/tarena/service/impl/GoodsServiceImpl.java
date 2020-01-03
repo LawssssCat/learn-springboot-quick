@@ -1,5 +1,6 @@
 package com.edut.springboot.tarena.service.impl;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +29,36 @@ public class GoodsServiceImpl implements GoodsService {
 	private Logger log ;
 	
 	@Override
-	public String doFindGoods() {
+	public String doFindGoods()   {
+		try{Thread.sleep(1000);}catch (Exception e) {}
+		List<Goods> goods = getGoods() ;
+		String json = gson.toJson(goods); 
+		return json;
+	}
+
+	@Override
+	public List<Goods> getGoods() {
 		StopWatch watch = new StopWatch();
 		watch.start();
 		List<Goods> goods = goodDao.findGoods() ;
 		watch.stop();
 		log.info("@@@@  ####  ----  " + watch.getTotalTimeMillis());
 		
-		String json = gson.toJson(goods); 
-		return json;
+		return goods;
+	}
+
+	@Override
+	public Integer deleteGoods(Long goodsId) {
+		int rows = goodDao.deleteGoodsById(goodsId);
+		return rows ;
+	}
+
+	@Override
+	public void addGoods(Goods goods) {
+		goods.setId(System.nanoTime());
+		goods.setCreatedTime(new Date(new java.util.Date().getTime()));
+		
+		goodDao.insertObject(goods) ; 
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.edut.springboot.tarena.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -20,5 +21,13 @@ public class GoodsDaoTest {
 		for (Goods good : goods) {
 			System.out.println(good);
 		}
+	}
+	
+	@Test
+	public void testInsertGoods() {
+		Goods goods = new Goods(111l, "11aa", "bb" , new Date( new  java.util.Date().getTime())) ; 
+		goodsDao.insertObject(goods) ; 
+		
+		System.out.println("success");
 	}
 }

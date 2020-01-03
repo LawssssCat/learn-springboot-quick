@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 //@RestController
 public class HelloController {
 	
-	
-	@RequestMapping({"/","/index"})
-	public String index() {
-		return "index" ; 
-	}
+
+	//Config 里面注册了！
+//	@RequestMapping({"/","/index"})
+//	public String index() {
+//		return "index" ; 
+//	}
 
 	@ResponseBody
 	@RequestMapping("/hello")

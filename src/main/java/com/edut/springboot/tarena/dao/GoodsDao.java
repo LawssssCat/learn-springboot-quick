@@ -2,6 +2,7 @@ package com.edut.springboot.tarena.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -12,5 +13,8 @@ public interface GoodsDao {
 
 	@Select("select * from tb_goods")
 	List<Goods> findGoods();
+
+	@Delete("delete from tb_goods where id = #{id}")
+	Integer deleteGoodsById(Long id);
 
 }

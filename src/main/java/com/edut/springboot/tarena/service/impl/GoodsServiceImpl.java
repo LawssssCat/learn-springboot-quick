@@ -25,14 +25,26 @@ public class GoodsServiceImpl implements GoodsService {
 	
 	@Override
 	public String doFindGoods() {
+		List<Goods> goods = getGoods() ;
+		String json = gson.toJson(goods); 
+		return json;
+	}
+
+	@Override
+	public List<Goods> getGoods() {
 		StopWatch watch = new StopWatch();
 		watch.start();
 		List<Goods> goods = goodDao.findGoods() ;
 		watch.stop();
 		log.info("@@@@  ####  ----  " + watch.getTotalTimeMillis());
 		
-		String json = gson.toJson(goods); 
-		return json;
+		return goods;
+	}
+
+	@Override
+	public Integer deleteGoods(Long goodsId) {
+		int rows = goodDao.deleteGoodsById(goodsId);
+		return rows ;
 	}
 
 }

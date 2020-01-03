@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Data
 public class Goods {
-	
+	 
 	private Long id ; 
 	private String name ; 
 	private String remark ; 

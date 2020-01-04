@@ -1,10 +1,17 @@
 package com.edut.springboot.vedio.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.edut.springboot.vedio.component.MyLocalResolver;
+
+import lombok.extern.slf4j.Slf4j;
+
 //使用WebMvcConfigurerAdapter可以来扩展SpringMVC的功能
+@Slf4j
 @Configuration
 public class MyMvcConfig extends WebMvcConfigurerAdapter {
 
@@ -15,5 +22,26 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 		registry.addViewController("/low").setViewName("/success");
 	}
 	
+	/**
+	 * 嗅探所有 / or /index.html 请求 
+	 */
+	//所有的WebMvcConfigurerAdapter组件都会一起起作用
+//	@Bean //将组件注册到组件中
+//	public WebMvcConfigurerAdapter webMvcConfigurerAdapter() {
+//		WebMvcConfigurerAdapter adapter = new WebMvcConfigurerAdapter() {
+//			@Override
+//			public void addViewControllers(ViewControllerRegistry registry) {
+//				//super.addViewControllers(registry);
+//				registry.addViewController("/").setViewName("login");
+//				registry.addViewController("/index.html").setViewName("login");
+//			}
+//		};
+//		return adapter ;
+//	}
 	
+	@Bean
+	public LocaleResolver localeResolver() {
+		log.info("@@@@@@@@ ----- MyLocaleReolver IoC context");
+		return new MyLocalResolver() ; 
+	}
 }

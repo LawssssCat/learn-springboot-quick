@@ -16,7 +16,7 @@ import com.edut.springboot.vedio.service.HelloService;
  * 可以在测试期间很方便的类似编码一样进行自动注入等容器的功能
  */
 //@SpringBootTest
-class LearnSpringbootQuickApplicationTests {
+class VedioLearnSpringbootQuickApplicationTests {
 
 	@Autowired
 	Person person ;

@@ -22,7 +22,7 @@ public class GoodsController {
 	
 	@RequestMapping("/doGoodsUI")
 	public String doGoosUI(Model model) {
-		return "/pages/goods-ajax" ; 
+		return "/pages/goods-ajax-jquery" ; 
 	}
 	
 	@ResponseBody

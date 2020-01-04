@@ -3,10 +3,7 @@
  */
 //基于此函数发送ajax请求
 function doHandleResponseJson(result) {
-	//console.log(result) ; 
 	var jsonResult = JSON.parse(result);
-	//console.log(jsonResult);
-
 	var trs = "" ;
 	for(var i=0 ; i<jsonResult.length ; i++){
 		var j =  jsonResult[i];
@@ -20,10 +17,7 @@ function doHandleResponseJson(result) {
 					"</td>"+
 				"</tr>";
 	}
-
-	
 	document.getElementById("tbodyId").innerHTML = trs;
-
 }
 
 
@@ -54,15 +48,13 @@ function doSaveObject() {
 }
 
 function deleteObject(id , name) {
-	//alert("id",id);
 	var url = "deleteGoods" ; 
 	var params = "id="+id;
-
 	
 	if(confirm("确定删除 "+ name + " ?")){
 		doAjaxGet(url, params, function() {
-			findObjects();
 			alert("删除"+id+" ok!");
+			findObjects();
 		});
 	}
 }

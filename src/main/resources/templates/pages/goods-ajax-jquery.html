@@ -13,7 +13,7 @@
 	<h3>The Goods111 Page</h3>
 	<!-- <font color="red" th:text="${successMsg}" ></font> -->
 	
-	<form >
+	<form id="addForm" >
 	  <fieldset>
 	  	<legend>goods add</legend>
 	    name:<input type="text" name="name" />
@@ -50,6 +50,85 @@
 		</tbody>
 	</table>
 	</fieldset>
+	
+	
+	
+	<!-- scirpt 在上面的html元素加载完成之后执行 -->
+	<script type="text/javascript">
+		/*
+		查询
+		*/
+		//基于 jQuery 中的ajax函数获取服务端商品信息，并更新到页面的tbody位置
+		doGetGoods() ; 
+		function doGetGoods() {
+			//1. 定义url
+			var url  = "doFindGoods" ; 
+			//2. 发送异步请求获取数据
+			$.ajax({
+				url:url , 
+				success : function(result) {
+					showGoods(result) ;
+				} , 
+				dataType : "json"
+			}) ;
+		}
+		//result为服务端返回结果
+		function showGoods(result) {
+			var s = "" ; 
+			for(var i=0 ; i<result.length ; i++) {
+				var g = result[i] ; 
+				s+=	"<tr>"+
+						"<td>"+ g.id +"</td>"+
+						"<td>"+ g.name +"</td>"+
+						"<td>"+ g.remark +"</td>"+
+						"<td>"+ g.createdTime +"</td>"+
+						"<td>"+ "<a onclick='deleteGoods("+ g.id +")' >delete</a>" +"</td>"+
+					"</tr>"
+			}
+			$("#tbodyId").html(s) ; 
+		}
+		/*
+		删除
+		*/
+		function deleteGoods(id) {
+			var url = "deleteGoods" ; 
+			var params = "id="+id;
+			$.ajax({
+				url:url,
+				data : params , 
+				success : function() {
+					doGetGoods() ; 
+				}
+			});
+		}
+		/*
+		添加
+		*/
+		function doSaveObject() {
+			var url = "addGoods" ; 
+			var name = $("[name='name']").val(); 
+			var remark = $("[name='remark']").val() ;
+			var params = "name="+name+"&remark="+remark;
+			
+			$.ajax({
+				url:url , 
+				data:params , 
+				success : function() {
+					doGetGoods() ; 
+				}
+			});
+		}
+		
+		
+	</script>
+	
+	
+	
+	
+	
+	
+	<!-- 下面 用于回查 ============================================================= -->
+	
 	
 	<script type="text/javascript">
 		//ajax为jQuery中的一个ajax函数

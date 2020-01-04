@@ -6,10 +6,10 @@ import org.springframework.context.annotation.ImportResource;
 
 //@ImportResource(locations = "classpath:beans.xml")
 @SpringBootApplication
-public class LearnSpringbootQuickApplication {
+public class VedioLearnSpringbootQuickApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LearnSpringbootQuickApplication.class, args);
+		SpringApplication.run(VedioLearnSpringbootQuickApplication.class, args);
 	}
 
 }

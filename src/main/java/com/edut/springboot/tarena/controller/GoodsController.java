@@ -38,19 +38,19 @@ public class GoodsController {
 //		return "goods" ; 
 //	}
 	
+	@ResponseBody
 	@RequestMapping("/deleteGoods")
 	public String deleteGood(@RequestParam(name = "id") Long goodsId,Model model ) {
-		
 		Integer rows = goodsService.deleteGoods(goodsId);
 		model.addAttribute("successMsg", "删除 "+rows+" 行数据") ; 
-		
-		return "forward:doGoodsUI" ; 
+		return "delete ok!"; 
 	}
 	
+	@ResponseBody
 	@RequestMapping("/addGoods")
 	public String addGoods(Goods goods , Model model ) {
 		goodsService.addGoods(goods) ;
 		model.addAttribute("successMsg", "成功添加 1 行数据") ; 
-		return "forward:doGoodsUI" ;
+		return "save ok!" ;
 	}
 }

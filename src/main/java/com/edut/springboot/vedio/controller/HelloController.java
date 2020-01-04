@@ -21,6 +21,11 @@ public class HelloController {
 	public String index() {
 		return "login" ; 
 	}
+	
+	@RequestMapping({"/dashboard"})
+	public String dashboard() {
+		return "dashboard" ; 
+	}
 
 	@ResponseBody
 	@RequestMapping("/hello")

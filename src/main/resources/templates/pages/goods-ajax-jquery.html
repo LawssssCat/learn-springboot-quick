@@ -31,7 +31,7 @@
 				<th>name</th>
 				<th>remark</th>
 				<th>createdTime</th>
-				<th>&nbsp;</th>
+				<th>option</th>
 			</tr>
 		</thead>
 		<tbody id="tbodyId" >
@@ -82,7 +82,7 @@
 						"<td>"+ g.name +"</td>"+
 						"<td>"+ g.remark +"</td>"+
 						"<td>"+ g.createdTime +"</td>"+
-						"<td>"+ "<a onclick='deleteGoods("+ g.id +")' >delete</a>" +"</td>"+
+						"<td>"+ "<button onclick='deleteGoods("+ g.id +")' >delete</button>" +"</td>"+
 					"</tr>"
 			}
 			$("#tbodyId").html(s) ; 
@@ -106,10 +106,13 @@
 		*/
 		function doSaveObject() {
 			var url = "addGoods" ; 
+			/*
 			var name = $("[name='name']").val(); 
 			var remark = $("[name='remark']").val() ;
 			var params = "name="+name+"&remark="+remark;
+			*/
 			
+			var params = $("form").serialize();
 			$.ajax({
 				url:url , 
 				data:params , 

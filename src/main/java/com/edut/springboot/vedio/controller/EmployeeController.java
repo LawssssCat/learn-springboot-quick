@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 
@@ -22,7 +25,11 @@ import com.edut.springboot.vedio.entities.Employee;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class EmployeeController {
 	
@@ -55,7 +62,7 @@ public class EmployeeController {
 	public String toAddPage(Model model) {
 		Collection<Department> departments = departmentDao.getDepartments();
 		model.addAttribute("departments" , departments) ; 
-		return "emp/add" ; 
+		return "/emp/add" ; 
 	}
 	
 	/**
@@ -82,9 +89,18 @@ public class EmployeeController {
 		return "redirect:/emps" ;
 	}
 	
-	
-
-
+	@GetMapping("/emp/{id}")
+	public String toEditPage(@PathVariable("id") Integer id  ,Model model ) {
+		
+		Employee emp = employeeDao.get(id);
+		
+		log.debug(emp.toString());
+		
+		model.addAttribute("emp", emp) ; 
+		
+		//修改重用add页面
+		return toAddPage(model) ; 
+	}
 	
 }
 

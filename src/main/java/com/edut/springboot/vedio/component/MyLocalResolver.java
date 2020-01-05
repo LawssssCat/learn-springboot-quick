@@ -13,9 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MyLocalResolver implements LocaleResolver {
 
-	public MyLocalResolver() {
-	}
-
 	@Override
 	public Locale resolveLocale(HttpServletRequest request) {
 		String s = request.getParameter("l");

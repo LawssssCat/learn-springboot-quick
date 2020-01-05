@@ -14,17 +14,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UserController {
 	
+	/**
+	 * 记录登录 session
+	 */
 	@PostMapping("/login")
-	public String login(
-			@RequestParam(name = "username") String username , 
-			@RequestParam(name = "password") String password , 
-			Map<String, Object> map, 
-			HttpSession session 
-			)
+	public String login(@RequestParam(name = "username") String username , 
+						@RequestParam(name = "password") String password , 
+						Map<String, Object> map, 
+						HttpSession session 
+						) 
 	{
 		if(!StringUtils.isEmpty(username) && "123".equals(password)) {
 			session.setAttribute("loginUsername", username);
-			return "redirect:/dashboard.html";
+			return "redirect:/main.html";
 		}else {
 			map.put("msg", "密码错误或账号不存在！") ;
 			return "login";

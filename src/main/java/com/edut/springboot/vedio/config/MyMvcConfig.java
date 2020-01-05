@@ -22,30 +22,28 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 	public void addViewControllers(ViewControllerRegistry registry) {
 		//super.addViewControllers(registry);
 		//浏览器发送/low请求，来到success页面
-		registry.addViewController("/low").setViewName("/success");
-		registry.addViewController("/").setViewName("login");
-		registry.addViewController("/index.html").setViewName("login");
-		registry.addViewController("/dashboard.html").setViewName("/dashboard.html");
+		//registry.addViewController("/low").setViewName("/success");
+		registry.addViewController("/").setViewName("/login");
+		registry.addViewController("/login").setViewName("/login");
+		registry.addViewController("/main").setViewName("/main.html");
 	}
 	
 	
 	//注册拦截器
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new LoginHandlerInterceptor())
 		//“/”路径下的任何目录
-		String[] patterns = {"/**" };
-		//静态资源: *.css *.js
-		String[] exPatterns = {	"/login" , 
+		.addPathPatterns("/**")
+		//排除
+		.excludePathPatterns(	//登录需要
+								"/login" , 
 								"/" , 
 								"/user/login" ,
-								"/login.html" ,   
+								//静态资源: *.css *.js
 								"/**/*.js" , 
 								"/**/*.css" , 
-								"/docs/**"  
-								};
-		registry.addInterceptor(new LoginHandlerInterceptor())
-		.addPathPatterns(patterns)
-		.excludePathPatterns(exPatterns) ; 
+								"/docs/**"  ) ; 
 		
 		log.info("@@@@@@@@ ----- add Interceptors");
 	}

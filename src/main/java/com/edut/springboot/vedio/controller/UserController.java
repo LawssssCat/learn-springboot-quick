@@ -26,7 +26,7 @@ public class UserController {
 	{
 		if(!StringUtils.isEmpty(username) && "123".equals(password)) {
 			session.setAttribute("loginUsername", username);
-			return "redirect:/main.html";
+			return "redirect:/main";
 		}else {
 			map.put("msg", "密码错误或账号不存在！") ;
 			return "login";

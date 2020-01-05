@@ -17,10 +17,10 @@ public class HelloController {
 	
 
 	//Config 里面注册了！
-	@RequestMapping({"/","/index"})
-	public String index() {
-		return "login" ; 
-	}
+//	@RequestMapping({"/","/index"})
+//	public String index() {
+//		return "login" ; 
+//	}
 	
 	@RequestMapping({"/dashboard"})
 	public String dashboard() {

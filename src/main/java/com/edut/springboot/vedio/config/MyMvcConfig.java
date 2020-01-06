@@ -1,5 +1,7 @@
 package com.edut.springboot.vedio.config;
 
+import org.springframework.boot.web.server.ConfigurableWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -77,6 +79,19 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 	public ErrorAttributes errorAttributes() {
 		log.info("@@@@@@@@ ----- insert My ErrorAttributes");
 		return new MyErrorAttributes() ; 
+	}
+	
+	@Bean
+	public WebServerFactoryCustomizer<ConfigurableWebServerFactory> WebServerFactoryCustomizer() {
+		log.info("@@@@@@@@ ----- insert My WebServerFactoryCustomizer");
+		return new WebServerFactoryCustomizer<ConfigurableWebServerFactory>() {
+
+			@Override
+			public void customize(ConfigurableWebServerFactory factory) {
+				factory.setPort(8083);
+			}
+			
+		};
 	}
 	
 }

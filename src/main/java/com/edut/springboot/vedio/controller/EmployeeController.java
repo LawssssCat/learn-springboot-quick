@@ -12,10 +12,12 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.context.request.WebRequest;
 
 import com.edut.springboot.vedio.dao.DepartmentDao;
@@ -50,7 +52,7 @@ public class EmployeeController {
 	private DepartmentDao departmentDao ; 
 
 	@GetMapping("/emps")
-	public String list(Model model ) {
+	public String toListPage(Model model ) {
 		
 		Collection<Employee> emps = employeeDao.getAll();
 		model.addAttribute("emps", emps) ; 
@@ -101,6 +103,20 @@ public class EmployeeController {
 		//修改重用add页面
 		return toAddPage(model) ; 
 	}
+	
+	@PutMapping("/emp")
+	public String updateEmp(Employee employee ,  Model model) {
+		employeeDao.save(employee);
+		return toListPage(model ) ;
+	}
+	
+	@DeleteMapping("/emp/{id}")
+	public String deleteEmp(Model model , @PathVariable("id") Integer id ) {
+		employeeDao.delete(id);
+		return toListPage(model ) ; 
+	}
+	
+	
 	
 }
 

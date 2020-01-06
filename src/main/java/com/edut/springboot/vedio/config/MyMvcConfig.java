@@ -69,29 +69,20 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 //		return adapter ;
 //	}
 	
+	/** 处理国际化请求 */
 	@Bean
 	public LocaleResolver localeResolver() {
 		log.info("@@@@@@@@ ----- insert My LocaleReolver");
 		return new MyLocalResolver() ; 
 	}
 	
+	/** 处理 错误页面 - attribute */
 	@Bean
 	public ErrorAttributes errorAttributes() {
 		log.info("@@@@@@@@ ----- insert My ErrorAttributes");
 		return new MyErrorAttributes() ; 
 	}
 	
-	@Bean
-	public WebServerFactoryCustomizer<ConfigurableWebServerFactory> WebServerFactoryCustomizer() {
-		log.info("@@@@@@@@ ----- insert My WebServerFactoryCustomizer");
-		return new WebServerFactoryCustomizer<ConfigurableWebServerFactory>() {
-
-			@Override
-			public void customize(ConfigurableWebServerFactory factory) {
-				factory.setPort(8083);
-			}
-			
-		};
-	}
+	
 	
 }

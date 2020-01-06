@@ -77,12 +77,6 @@ public class EmployeeController {
 	@PostMapping("/emp")
 	public String addEmp(Employee employee) throws JsonProcessingException {
 		
-		System.out.println(employee.getBirth());
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(employee);
-		System.out.println(json);
-		
 		employeeDao.save(employee);
 		
 		//来到员工列表页面
@@ -96,7 +90,7 @@ public class EmployeeController {
 		
 		Employee emp = employeeDao.get(id);
 		
-		log.debug(emp.toString());
+		log.debug("edit: "+emp.toString());
 		
 		model.addAttribute("emp", emp) ; 
 		
@@ -113,6 +107,8 @@ public class EmployeeController {
 	@DeleteMapping("/emp/{id}")
 	public String deleteEmp(Model model , @PathVariable("id") Integer id ) {
 		employeeDao.delete(id);
+		
+		log.debug("delete: id="+id);
 		return toListPage(model ) ; 
 	}
 	

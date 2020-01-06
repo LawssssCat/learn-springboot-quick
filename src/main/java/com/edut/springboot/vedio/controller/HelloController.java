@@ -35,7 +35,7 @@ public class HelloController {
 			throw new NoSuchUserException() ;  
 		}
 		
-		return "Hello "+username+"!" ; 
+		return "Hello "+username+"!<br>--" ; 
 	}
 	
 	// RESTAPI的方式

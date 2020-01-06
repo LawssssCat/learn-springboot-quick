@@ -5,9 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringBootApplicationContext {
+public class TarenaSpringBootApplicationContext {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootApplicationContext.class, args) ; 
+		SpringApplication.run(TarenaSpringBootApplicationContext.class, args) ; 
 	}
 }

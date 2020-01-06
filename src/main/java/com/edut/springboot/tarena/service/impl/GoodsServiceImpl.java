@@ -25,12 +25,9 @@ public class GoodsServiceImpl implements GoodsService {
 	@Autowired
 	private GoodsDao goodDao ;
 	
-	@Autowired
-	private Logger log ;
-	
 	@Override
 	public String doFindGoods()   {
-		try{Thread.sleep(1000);}catch (Exception e) {}
+		try{Thread.sleep(777);}catch (Exception e) {}
 		List<Goods> goods = getGoods() ;
 		String json = gson.toJson(goods); 
 		return json;

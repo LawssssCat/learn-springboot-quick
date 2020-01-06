@@ -30,23 +30,23 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 	
 	
 	//注册拦截器
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LoginHandlerInterceptor())
-		//“/”路径下的任何目录
-		.addPathPatterns("/**")
-		//排除
-		.excludePathPatterns(	//登录需要
-								"/login" , 
-								"/" , 
-								"/user/login" ,
-								//静态资源: *.css *.js
-								"/**/*.js" , 
-								"/**/*.css" , 
-								"/docs/**"  ) ; 
-		
-		log.info("@@@@@@@@ ----- add Interceptors");
-	}
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(new LoginHandlerInterceptor())
+//		//“/”路径下的任何目录
+//		.addPathPatterns("/**")
+//		//排除
+//		.excludePathPatterns(	//登录需要
+//								"/login" , 
+//								"/" , 
+//								"/user/login" ,
+//								//静态资源: *.css *.js
+//								"/**/*.js" , 
+//								"/**/*.css" , 
+//								"/docs/**"  ) ; 
+//		
+//		log.info("@@@@@@@@ ----- add Interceptors");
+//	}
 
 
 

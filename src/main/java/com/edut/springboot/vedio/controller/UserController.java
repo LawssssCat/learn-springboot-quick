@@ -2,6 +2,8 @@ package com.edut.springboot.vedio.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,11 +14,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UserController {
 	
+	/**
+	 * 记录登录 session
+	 */
 	@PostMapping("/login")
 	public String login(@RequestParam(name = "username") String username , 
-			@RequestParam(name = "password") String password , Map<String, Object> map ) {
+						@RequestParam(name = "password") String password , 
+						Map<String, Object> map, 
+						HttpSession session 
+						) 
+	{
 		if(!StringUtils.isEmpty(username) && "123".equals(password)) {
-			return "dashboard";
+			session.setAttribute("loginUsername", username);
+			return "redirect:/main";
 		}else {
 			map.put("msg", "密码错误或账号不存在！") ;
 			return "login";

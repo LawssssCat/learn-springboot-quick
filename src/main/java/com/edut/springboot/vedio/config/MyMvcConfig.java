@@ -3,9 +3,12 @@ package com.edut.springboot.vedio.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.edut.springboot.vedio.component.LoginHandlerInterceptor;
 import com.edut.springboot.vedio.component.MyLocalResolver;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +22,34 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 	public void addViewControllers(ViewControllerRegistry registry) {
 		//super.addViewControllers(registry);
 		//浏览器发送/low请求，来到success页面
-		registry.addViewController("/low").setViewName("/success");
+		//registry.addViewController("/low").setViewName("/success");
+		registry.addViewController("/").setViewName("/login");
+		registry.addViewController("/login").setViewName("/login");
+		registry.addViewController("/main").setViewName("/main.html");
 	}
 	
+	
+	//注册拦截器
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new LoginHandlerInterceptor())
+		//“/”路径下的任何目录
+		.addPathPatterns("/**")
+		//排除
+		.excludePathPatterns(	//登录需要
+								"/login" , 
+								"/" , 
+								"/user/login" ,
+								//静态资源: *.css *.js
+								"/**/*.js" , 
+								"/**/*.css" , 
+								"/docs/**"  ) ; 
+		
+		log.info("@@@@@@@@ ----- add Interceptors");
+	}
+
+
+
 	/**
 	 * 嗅探所有 / or /index.html 请求 
 	 */
@@ -32,8 +60,6 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 //			@Override
 //			public void addViewControllers(ViewControllerRegistry registry) {
 //				//super.addViewControllers(registry);
-//				registry.addViewController("/").setViewName("login");
-//				registry.addViewController("/index.html").setViewName("login");
 //			}
 //		};
 //		return adapter ;
@@ -41,7 +67,7 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 	
 	@Bean
 	public LocaleResolver localeResolver() {
-		log.info("@@@@@@@@ ----- MyLocaleReolver IoC context");
+		log.info("@@@@@@@@ ----- insert My LocaleReolver");
 		return new MyLocalResolver() ; 
 	}
 }

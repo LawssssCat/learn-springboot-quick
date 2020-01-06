@@ -55,7 +55,13 @@
           	 <div th:replace="common/bars :: #sidebar"></div>
 
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-              <h1>404</h1>
+              <h1>status:[[${status}]]</h1>
+              <h2>timestamp:[[${timestamp}]]</h2>
+              <h5>error:[[${error}]]</h5>
+              <h4>exception:[[${exception}]]</h4>
+              <h6>message:[[${message}]]</h6>
+              <h3>errors:[[${errors}]]</h3>
+              <h2>path:[[${path}]]</h2>
             </main>
         </div>
     </div>

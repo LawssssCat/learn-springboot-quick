@@ -1,5 +1,6 @@
 package com.edut.springboot.vedio.config;
 
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.edut.springboot.vedio.component.LoginHandlerInterceptor;
+import com.edut.springboot.vedio.component.MyErrorAttributes;
 import com.edut.springboot.vedio.component.MyLocalResolver;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,23 +32,23 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 	
 	
 	//注册拦截器
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//		registry.addInterceptor(new LoginHandlerInterceptor())
-//		//“/”路径下的任何目录
-//		.addPathPatterns("/**")
-//		//排除
-//		.excludePathPatterns(	//登录需要
-//								"/login" , 
-//								"/" , 
-//								"/user/login" ,
-//								//静态资源: *.css *.js
-//								"/**/*.js" , 
-//								"/**/*.css" , 
-//								"/docs/**"  ) ; 
-//		
-//		log.info("@@@@@@@@ ----- add Interceptors");
-//	}
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new LoginHandlerInterceptor())
+		//“/”路径下的任何目录
+		.addPathPatterns("/**")
+		//排除
+		.excludePathPatterns(	//登录需要
+								"/login" , 
+								"/" , 
+								"/user/login" ,
+								//静态资源: *.css *.js
+								"/**/*.js" , 
+								"/**/*.css" , 
+								"/docs/**"  ) ; 
+		
+		log.info("@@@@@@@@ ----- add Interceptors");
+	}
 
 
 
@@ -70,4 +72,11 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 		log.info("@@@@@@@@ ----- insert My LocaleReolver");
 		return new MyLocalResolver() ; 
 	}
+	
+	@Bean
+	public ErrorAttributes errorAttributes() {
+		log.info("@@@@@@@@ ----- insert My ErrorAttributes");
+		return new MyErrorAttributes() ; 
+	}
+	
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edut.springboot.tarena.dao.SysLogDao">
+	<!--
+	 我写的垃圾代码
+	<select id="getRowCount" resultType="java.lang.Integer">
+		select count(id) from sys_logs where username = #{username}
+	</select>
+	-->
+	
+	<!-- 老师写的“神”代码 -->
+	<select id="getRowCount" resultType="java.lang.Integer">
+		select count(id) from sys_logs 
+		<if test="username != null and username != ''" >
+			where username like concat('%' , #{username} , '%') 
+		</if> 
+	</select>
+	
+	<!--
+ 	<select id="findPageObjects" resultType="com.edut.springboot.tarena.pojo.SysLog">
+		select * from sys_logs 
+		<if test="username != null">
+			where username = #{username}
+		</if> 
+		limit #{startIndex} , #{pageSize}  
+	</select> 
+	-->
+	<!-- 老师写的“神”代码 -->
+	<select id="findPageObjects" resultType="com.edut.springboot.tarena.pojo.SysLog">
+		select * from sys_logs 
+		<if test="username != null and username != ''" >
+			where username like concat('%' , ${username} , '%') 
+		</if> 
+		limit #{startIndex} , #{pageSize}  
+	</select>
+</mapper>

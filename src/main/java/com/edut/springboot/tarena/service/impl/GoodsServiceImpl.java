@@ -25,6 +25,7 @@ public class GoodsServiceImpl implements GoodsService {
 	@Autowired
 	private GoodsDao goodDao ;
 	
+
 	@Override
 	public String doFindGoods()   {
 		try{Thread.sleep(777);}catch (Exception e) {}

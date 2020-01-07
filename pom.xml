@@ -30,7 +30,7 @@
 					<groupId>org.junit.vintage</groupId>
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
-			</exclusions>
+			</exclusions> 
 		</dependency>
 		<!-- 引入jquery-webjars -->
 		<dependency>
@@ -50,7 +50,18 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		<!--	<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions> -->
 		</dependency>
+		<!-- 引入其他的Servlet容器 -->
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jetty</artifactId>
+		</dependency> -->
 		
 		<!-- 导入配置文件处理器，配置文件进行绑定就会有提示 -->
 		<dependency>

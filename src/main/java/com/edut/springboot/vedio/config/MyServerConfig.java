@@ -27,6 +27,7 @@ public class MyServerConfig {
 		ServletRegistrationBean<MyServlet> registration = new ServletRegistrationBean<>();
 		registration.setUrlMappings(Arrays.asList("/myservlet"));
 		registration.setServlet(new MyServlet());
+		registration.setLoadOnStartup(1);
 		
 		log.info("@@@@@@@@ ----- insert My Servlet");
 		return registration; 
@@ -38,11 +39,11 @@ public class MyServerConfig {
 		//filter
 		registration.setFilter(new MyFilter());
 		//拦截地址
-		registration.setUrlPatterns(Arrays.asList());
+		registration.setUrlPatterns(Arrays.asList("/hello", "/myServlet"));
 		log.info("@@@@@@@@ ----- insert My filter");
 		return registration ; 
 	}
-	
+	/** 监听器 */
 	@Bean
 	public ServletListenerRegistrationBean<MyEventListener> myListener() {
 		ServletListenerRegistrationBean<MyEventListener> registration = 

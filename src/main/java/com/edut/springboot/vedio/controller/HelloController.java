@@ -6,8 +6,12 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
+
+import com.edut.springboot.vedio.exception.NoSuchUserException;
 
 //这个类的所有方法返回的数据直接写给浏览器。(如果是对象，还能转成json数据)
 
@@ -15,16 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
 //@RestController
 public class HelloController {
 	
+
+	//Config 里面注册了！
+//	@RequestMapping({"/","/index"})
+//	public String index() {
+//		return "login" ; 
+//	}
 	
-	@RequestMapping({"/","/index"})
-	public String index() {
-		return "index" ; 
-	}
 
 	@ResponseBody
 	@RequestMapping("/hello")
-	public String hello() {
-		return "Hello Spring!" ; 
+	public String hello(@RequestParam("username") String username) {
+		
+		if(!"1191693505@qq.com".equals(username)) {
+			throw new NoSuchUserException() ;  
+		}
+		
+		return "Hello "+username+"!<br>--" ; 
 	}
 	
 	// RESTAPI的方式

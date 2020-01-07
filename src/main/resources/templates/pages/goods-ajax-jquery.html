@@ -1,0 +1,174 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>The Goods Page : jQuery - Ajax</title>
+
+<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<!-- <script type="text/javascript" src="/js/goods.js" th:src="@{/js/goods.js}"></script> -->
+
+</head>
+<body>
+	<h3>The Goods111 Page</h3>
+	<!-- <font color="red" th:text="${successMsg}" ></font> -->
+	
+	<form id="addForm" >
+	  <fieldset>
+	  	<legend>goods add</legend>
+	    name:<input type="text" name="name" />
+	    remark:<input type="text" name="remark" />
+	    <input type="button" value="Subscribe me!" onclick="doSaveObject()" />
+	  </fieldset>
+	</form>
+
+	<fieldset>
+	<legend>goods list</legend>	
+	<table>
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>name</th>
+				<th>remark</th>
+				<th>createdTime</th>
+				<th>option</th>
+			</tr>
+		</thead>
+		<tbody id="tbodyId" >
+			<tr><td colspan="5">Data is loading ...</td></tr>
+			<!-- 
+			<tr th:each="g:${goods}">
+				<td th:text="${g.id}">id</td>
+				<td th:text="${g.name}">name</td>
+				<td th:text="${g.remark}">remark</td>
+				<td th:text="${#calendars.format(g.createdTime,'dd MMMM yyyy')}">createdTime</td>
+				<td>
+					<a th:href="@{deleteGoods(id=${g.id})}" >删除</a>
+				</td>
+			</tr> 
+			-->
+		</tbody>
+	</table>
+	</fieldset>
+	
+	
+	
+	<!-- scirpt 在上面的html元素加载完成之后执行 -->
+	<script type="text/javascript">
+		/*
+		查询
+		*/
+		//基于 jQuery 中的ajax函数获取服务端商品信息，并更新到页面的tbody位置
+		doGetGoods() ; 
+		function doGetGoods() {
+			//1. 定义url
+			var url  = "doFindGoods" ; 
+			//2. 发送异步请求获取数据
+			$.ajax({
+				url:url , 
+				success : function(result) {
+					showGoods(result) ;
+				} , 
+				dataType : "json"
+			}) ;
+		}
+		//result为服务端返回结果
+		function showGoods(result) {
+			var s = "" ; 
+			for(var i=0 ; i<result.length ; i++) {
+				var g = result[i] ; 
+				s+=	"<tr>"+
+						"<td>"+ g.id +"</td>"+
+						"<td>"+ g.name +"</td>"+
+						"<td>"+ g.remark +"</td>"+
+						"<td>"+ g.createdTime +"</td>"+
+						"<td>"+ "<button onclick='deleteGoods("+ g.id +")' >delete</button>" +"</td>"+
+					"</tr>"
+			}
+			$("#tbodyId").html(s) ; 
+		}
+		/*
+		删除
+		*/
+		function deleteGoods(id) {
+			var url = "deleteGoods" ; 
+			var params = "id="+id;
+			$.ajax({
+				url:url,
+				data : params , 
+				success : function() {
+					doGetGoods() ; 
+				}
+			});
+		}
+		/*
+		添加
+		*/
+		function doSaveObject() {
+			var url = "addGoods" ; 
+			/*
+			var name = $("[name='name']").val(); 
+			var remark = $("[name='remark']").val() ;
+			var params = "name="+name+"&remark="+remark;
+			*/
+			
+			var params = $("form").serialize();
+			$.ajax({
+				url:url , 
+				data:params , 
+				success : function() {
+					doGetGoods() ; 
+				}
+			});
+		}
+		
+		
+	</script>
+	
+	
+	
+	
+	
+	
+	<!-- 下面 用于回查 ============================================================= -->
+	
+	
+	<script type="text/javascript">
+		//ajax为jQuery中的一个ajax函数
+		//success 回调函数，4&&200
+		var url = "doFindGoods" ; 
+		var params = "page=1&name=a"  
+		
+		$.ajax({
+			url:url, 
+			//type:"GET" , 
+			async:false, //true 异步
+			data:params, 
+			dataType:"json", //text 字符串、json 对象
+			success:function(result) {
+				console.log("ajax" ,result);
+			}
+			//,error:function() {} 
+		});
+		
+		//直接用 get 请求
+		$.get(url,params , function(result) {
+			console.log("get" , result);
+		} ,"json" ) ; 
+		
+		//getJson
+		$.getJSON(url, params ,function(result) {
+			console.log("getJson" , result);
+		});
+		
+		//post
+		$.post(url , params , function(result){
+			console.log("post" , result);
+		} , "json" ) ;
+		
+		console.log("msg" , "==============");
+	</script>
+	
+	
+</body>
+</html>

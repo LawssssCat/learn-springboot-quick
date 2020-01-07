@@ -10,7 +10,7 @@ import com.edut.springboot.vedio.service.HelloService;
  * 
  * 在配置文件中使用<bean></bean>添加标签组件
  */
-@Configuration
+//@Configuration
 public class MyAppConfig {
 
 	//将方法的返回值添加到容器中，容器中这个组件默认的id就是方法名

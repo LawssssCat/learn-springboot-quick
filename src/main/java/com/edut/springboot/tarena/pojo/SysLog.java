@@ -9,6 +9,16 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
+/**
+ * POJO:(普通的java对象)
+ * 1)PO(持久化对象):与表中字段有一一映射关系
+ * 2)VO(值对象 - Value object) 用于封装业务数据
+ * 		(可能在层与层之间传递)
+ * 		(一般和表中字段没有一一映射关系)
+ * 3)DAO
+ * 4)BO 业务层...
+ * ...
+ */
 @Data
 public class SysLog implements Serializable {
 

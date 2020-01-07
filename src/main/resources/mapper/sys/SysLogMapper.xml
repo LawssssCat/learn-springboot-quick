@@ -18,16 +18,7 @@
 		</if> 
 	</select>
 	
-	<!--
- 	<select id="findPageObjects" resultType="com.edut.springboot.tarena.pojo.SysLog">
-		select * from sys_logs 
-		<if test="username != null">
-			where username = #{username}
-		</if> 
-		limit #{startIndex} , #{pageSize}  
-	</select> 
-	-->
-	<!-- 老师写的“神”代码 -->
+	<!-- 我写的垃圾代码
 	<select id="findPageObjects" resultType="com.edut.springboot.tarena.pojo.SysLog">
 		select * from sys_logs 
 		<if test="username != null and username != ''" >
@@ -35,4 +26,22 @@
 		</if> 
 		limit #{startIndex} , #{pageSize}  
 	</select>
+	-->
+	<!-- 老师写的“神”代码 -->
+	<sql id="queryWhereId">
+		from sys_logs 
+		<where>
+			<if test="username!=null and username != ''">
+				username like concat('%' , #{username} , '%')
+			</if>
+		</where>
+	</sql>
+	<!-- 基于用户名，动态拼接sql实现数据库查询 -->
+	<select id="findPageObjects" resultType="com.edut.springboot.tarena.pojo.SysLog">
+	select * 
+		<include refid="queryWhereId" />
+		order by createdTime desc 
+		limit #{startIndex} , #{pageSize}
+	</select>
+	
 </mapper>

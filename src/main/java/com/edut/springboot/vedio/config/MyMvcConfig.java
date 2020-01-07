@@ -1,5 +1,8 @@
 package com.edut.springboot.vedio.config;
 
+import org.springframework.boot.web.server.ConfigurableWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
@@ -9,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.edut.springboot.vedio.component.LoginHandlerInterceptor;
+import com.edut.springboot.vedio.component.MyErrorAttributes;
 import com.edut.springboot.vedio.component.MyLocalResolver;
 
 import lombok.extern.slf4j.Slf4j;
@@ -65,9 +69,20 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 //		return adapter ;
 //	}
 	
+	/** 处理国际化请求 */
 	@Bean
 	public LocaleResolver localeResolver() {
 		log.info("@@@@@@@@ ----- insert My LocaleReolver");
 		return new MyLocalResolver() ; 
 	}
+	
+	/** 处理 错误页面 - attribute */
+	@Bean
+	public ErrorAttributes errorAttributes() {
+		log.info("@@@@@@@@ ----- insert My ErrorAttributes");
+		return new MyErrorAttributes() ; 
+	}
+	
+	
+	
 }

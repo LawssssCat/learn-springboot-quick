@@ -94,7 +94,7 @@
                         		<td th:text="${#dates.format(emp.birth, 'yyyy - MM - dd')}" ></td>
                         		<td>
                         			<a th:href="@{/emp/}+${emp.id}" type="button" class="btn btn-primary">编辑</a>
-                        			<button class="btn btn-danger">删除</button>
+	                        		<button type="submit" th:onclick="deleteEmp([[${emp.id}]])" class="btn btn-danger">删除</button>
                         		</td>
                         	</tr>
                         	
@@ -105,14 +105,30 @@
             </main>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script>
-        window.jQuery || document.write('<script src="/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')
-    </script>
+    <!-- 引入jquery -->
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}" ></script>
+    
     <script th:src="@{/webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js}" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    <!-- 侧边框 图标 -->
     <script th:src="@{/dashboard.js}"></script>
+    <!-- 删除 Emp -->
+    <script type="text/javascript">
+    	function deleteEmp(id) {
+    		var url = "emp/"+ id;
+    		$.ajax({
+    			url: url, 
+     			success : function() {
+ 		    		alert("删除成功！刷新...");
+ 		    		$(window).attr('location','emps') ; 
+     			} , 
+     			// 后面全面ajax ， 需要修改！
+     			type:"delete"
+    		});
+    	}
+    </script>
+    
 </body>
 
 </html>

@@ -14,6 +14,11 @@ import com.edut.springboot.tarena.pojo.SysLog;
 @Mapper
 public interface SysLogDao {
 	/**
+	 * 基于ids的值，删除
+	 */
+	int deleteObjects(@Param("ids") Long ...ids) ; 
+	
+	/**
 	 * 基于条件查询总记录数
 	 * @param username 查询条件(例如查询哪个用户的日志信息)
 	 * @return 总记录数(基于这个结果可以计算总页数)

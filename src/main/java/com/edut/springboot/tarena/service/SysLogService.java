@@ -1,5 +1,6 @@
 package com.edut.springboot.tarena.service;
 
+
 import com.edut.springboot.tarena.common.vo.PageObject;
 import com.edut.springboot.tarena.pojo.SysLog;
 
@@ -11,4 +12,7 @@ public interface SysLogService {
 	 * @return 当前页记录+分页信息
 	 */
 	PageObject<SysLog> findPageObject(String name , Integer pageCurrent) ;
+	
+	
+	public int deleteObject(Long ... ids)   ;
 }

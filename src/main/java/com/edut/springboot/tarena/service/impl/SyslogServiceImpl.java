@@ -44,7 +44,28 @@ public class SyslogServiceImpl implements  SysLogService {
 		List<SysLog> objs = 
 				sysLogDao.findPageObjects(name, startIndex , pageSize);
 		//4.封装查询结果并返回
-		return new PageObject<SysLog>(objs.size(), objs, pageSize, pageCurrent) ;   
+		return new PageObject<SysLog>(rowCount, objs, pageSize, pageCurrent) ;   
+	}
+
+	@Override
+	public int deleteObject(Long... ids)  {
+		
+		if(ids==null|| ids.length ==0 ) {
+			throw new IllegalArgumentException("请选中一个") ; 
+		}
+		int rows = 0 ; 
+		try {
+			rows = sysLogDao.deleteObjects(ids); 
+		}catch (Throwable e) {
+			e.printStackTrace();
+			//发出报警信息(例如给运维人员发短信)
+			throw new ServiceException("系统故障，正在维护中....") ; 
+		}
+		
+		if(rows == 0) {
+			throw new ServiceException("数据可能不存在") ; 
+		}
+		return rows;
 	}
 	
 }

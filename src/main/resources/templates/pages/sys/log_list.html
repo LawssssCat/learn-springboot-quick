@@ -12,7 +12,7 @@
 							<button type="button" class="btn btn-default btn-search">
                                 <i class="fa fa-search"></i>
 							</button>
-							<button type="button" class="btn btn-default btn-delete">删除</button>
+							<button onclick="doDeleteObjects()" type="button" class="btn btn-default btn-delete">删除</button>
 						</div>
 					</div>
 				</div>
@@ -48,8 +48,87 @@
 </div>
 <script type="text/javascript">
    $(function() {
-	   $("#tbodyId").load("doPageUI");
+	   //日志列表页面加载完成以后，异步加载分页页面
+	   //加载日志列表数据
+	   $("#pageId").load("doPageUI"  );
+		doGetObjects() ; 
+
+		$("#searchNameId").click(doQueryObject);
+		$("#checkAll").click(function() {
+			$("input:checkbox").attr("checked" , true);
+		});
+		
+		$("input:checkbox").click(function() {
+			alert("change!");
+		});
    });
+   
+   function doDeleteObjects() {
+	   alert("delete") ;
+   }
+   
+   function doQueryObject() {
+	   //1.初始化当前页码值
+	   $("#pageId").data("pageCurrent" , 1); 
+	   //2.基于查询条件进行查询
+	   doGetObjects() ;
+   }
+   
+   //页面加载完成，异步加载数据，并呈现在tbodyId对应的位置
+   function doGetObjects(){
+	   //1.定义请求参数
+	   var pageCurrent = $("#pageId").data("pageCurrent"); 
+	   if(!pageCurrent)pageCurrent = 1 ;
+	   var name = $("#searchNameId").val() ; 
+	   var params = {
+			   //key为服务端控制层方法只的参数
+			   "name" : name , 
+			   "pageCurrent" : pageCurrent 
+			   } ; 
+	   
+	   //2.定义请求url
+	   var url = "/log/doFindObjects" ; 
+	   //3.发送ajax请求
+	   $.get(url , params , doHandleQueryResponseResult, "json");
+   }
+   
+   //处理日志查询时的响应结果
+   function doHandleQueryResponseResult(result) {
+	   //基于服务端响应的结果状态，对响应数据进行处理
+	   if(result.state == 1){
+	   	//1.将当前页记录显示在tbodyid对应的位置
+	   	doSetTableBodyRows(result.data.records) ; 
+	   	//2.对点钱页面的分页信息在pageId位置进行初始化的设置
+	   	doSetPageination(result.data) ;
+	   	
+	   }else{//异常信息
+	   	//处理服务端响应结果中的异常
+	   	alert("异常状态:"+result.status+", error:"+result.message);
+	   }
+   }
+   
+   
+   //将日志记录呈现在tbodyId位置
+   function doSetTableBodyRows(records){
+		let text = "" ; 
+	   	//迭代records记录，并构建html元素对象
+	   	records.forEach(function(item) { //item 表示records中的亿行对象
+	   		text +=	"<tr>"+
+	   					"<td>"+ 
+	   						"<input type='checkbox' value="+ item.id +" >"+
+   						"</td>" +
+	   					"<td>"+ item.username  +"</td>" +
+	   					"<td>"+ item.operation  +"</td>" +
+	   					"<td>"+ item.method  +"</td>" +
+	   					"<td>"+ item.params  +"</td>" +
+	   					"<td>"+ item.ip  +"</td>" +
+	   					"<td>"+ item.time  +"</td>" +
+	   				"</tr>";
+	   	}) ;  
+	   	//将Html元素追加到tbody中
+	   	$("#tbodyId").html(text) ; 
+   }
+   
 </script>
 
 

@@ -55,12 +55,11 @@
 
 		$("#searchNameId").click(doQueryObject);
 		$("#checkAll").click(function() {
-			$("input:checkbox").attr("checked" , true);
+			var flag = $(this).prop("checked");
+			$("#tbodyId input[type=checkbox]").prop("checked" , flag);
 		});
 		
-		$("input:checkbox").click(function() {
-			alert("change!");
-		});
+		
    });
    
    function doDeleteObjects() {

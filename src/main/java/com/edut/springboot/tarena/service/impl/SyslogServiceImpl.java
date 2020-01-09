@@ -6,14 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DaoSupport;
 import org.springframework.stereotype.Service;
 
+import com.edut.springboot.tarena.common.config.PaginationProperties;
 import com.edut.springboot.tarena.common.exception.ServiceException;
+import com.edut.springboot.tarena.common.utils.Assert;
 import com.edut.springboot.tarena.common.vo.PageObject;
 import com.edut.springboot.tarena.dao.SysLogDao;
 import com.edut.springboot.tarena.pojo.SysLog;
 import com.edut.springboot.tarena.service.SysLogService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class SyslogServiceImpl implements  SysLogService {
+	
+	@Autowired
+	private PaginationProperties paginationProperties ; 
 	
 	@Autowired
 	private SysLogDao sysLogDao ;
@@ -31,16 +39,17 @@ public class SyslogServiceImpl implements  SysLogService {
 	@Override
 	public PageObject<SysLog> findPageObject(String name, Integer pageCurrent) {
 		//1.参数校验
-		if(pageCurrent == null || pageCurrent<1 ) 
-			throw new IllegalArgumentException("页码值不正确, pageCurrent="+pageCurrent);
+		Assert.isArgumentValid(pageCurrent == null || pageCurrent<1 , "页码值不正确, pageCurrent="+pageCurrent);
 		
 		//2.基于用户名检查总记录数并校验
 		int rowCount = sysLogDao.getRowCount(name);
-		if(rowCount == 0) 
-			throw new ServiceException() ;  
+		Assert.isServiceValid(rowCount == 0, "没有数据");
+		
 		//3.查询当前页日志记录
-		Integer pageSize = 3;//页面大小
+		Integer pageSize = paginationProperties.getPageSize();//页面大小
+		//计算开始查询index
 		Integer startIndex =(pageCurrent-1)*pageSize;
+		
 		List<SysLog> objs = 
 				sysLogDao.findPageObjects(name, startIndex , pageSize);
 		//4.封装查询结果并返回
@@ -49,10 +58,8 @@ public class SyslogServiceImpl implements  SysLogService {
 
 	@Override
 	public int deleteObject(Long... ids)  {
-		
-		if(ids==null|| ids.length ==0 ) {
-			throw new IllegalArgumentException("请选中一个") ; 
-		}
+	
+		Assert.isArgumentValid(ids==null|| ids.length ==0, "请选中一个");
 		int rows = 0 ; 
 		try {
 			rows = sysLogDao.deleteObjects(ids); 
@@ -62,9 +69,7 @@ public class SyslogServiceImpl implements  SysLogService {
 			throw new ServiceException("系统故障，正在维护中....") ; 
 		}
 		
-		if(rows == 0) {
-			throw new ServiceException("数据可能不存在") ; 
-		}
+		Assert.isServiceValid(rows == 0, "数据可能不存在");
 		return rows;
 	}
 	

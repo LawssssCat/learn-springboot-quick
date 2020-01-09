@@ -19,3 +19,9 @@ spring:
 mybatis:  mapper-locations: classpath:/mapper/*/*.xml
 
 #log
+
+
+#page
+page: 
+  config:
+    pageSize: 7

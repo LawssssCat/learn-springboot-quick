@@ -37,8 +37,7 @@
    //2.基于class属性值，修改当前页码值
    //3.基于新的页码值，进行新的查询
     function doJumpToPage() {
-	   
-
+	   $("#checkAll").prop("checked" , false );
         var pageCurrent = $("#pageId").data("pageCurrent");
         var pageCount = $("#pageId").data("pageCount");
 

@@ -48,8 +48,151 @@
 </div>
 <script type="text/javascript">
    $(function() {
-	   $("#tbodyId").load("doPageUI");
+	   //日志列表页面加载完成以后，异步加载分页页面
+	   //加载日志列表数据
+	   $("#pageId").load("doPageUI");
+		doGetObjects() ; 
+
+		$(".input-group-btn")
+		.on("click" ,".btn-search" ,  doQueryObject) 
+		.on("click" , ".btn-delete" , doDeleteObjects);
+		
+		//change事件，一般应用于状态变化
+		$("#checkAll").change(doChangeTbodyCheckBoxState);
+		//tobdy中checkbox对象事件注册
+		$("#tbodyId").on("change" , "input[type='checkbox']" , doChangeTHeadCheckBoxState) ;
+		
    });
+   
+   //修改thead中checkbox对象状态
+   function doChangeTHeadCheckBoxState() {
+	   //alert(1);
+	   //获取tbody中所有checkbox对象状态进行“逻辑与”以后的结果
+	   var flag = true ; 
+	   $("#tbodyId input[type='checkbox']")
+	   .each(function() {
+		   flag = flag && $(this).prop("checked");
+	   }); 
+	   //基于tbody中checkbox对象状态进行修改thead中checkbox对象状态
+		$("#checkAll").prop("checked" , flag);
+   }
+   
+   function doChangeTbodyCheckBoxState() {
+		var flag = $(this).prop("checked");
+		$("#tbodyId input[type=checkbox]")
+		.prop("checked" , flag);
+   }
+   
+   function doGetCheckedIds() {
+	   //获取 tbody 中所有选中的checkedbox对象，并将其value值存储到数组
+	   //new Array() ;
+	   //{} 对象
+	   //[] 数组
+	   var array = [] ; 
+	   //数组.each()
+	   $("#tbodyId input[type='checkbox']")
+	   //当发现符合条件的input对象 #tbodyId input[type='checkbox']
+	   	//每个类型为checkbox的input元素
+	   .each(function() {
+		   if($(this).prop("checked")){
+			   array.push($(this).val());
+		   } ; 
+	   })
+	   debugger;
+	   //返回数组
+	   return array ; 
+   }
+   
+   //执行删除按钮事件
+   function doDeleteObjects() {
+	   //1.获取选中记录id(可能是多个)并校验
+	   var idArray = doGetCheckedIds();
+	   
+	   //!idArray&&idArray.length==0
+	   if(!idArray || idArray.length==0 ) {
+		   alert("请选择");
+		   return ;
+	   }
+	   if(confirm("您确认删除吗？")){
+		var params = "ids=" + idArray.toString() //1,2,3,...
+		$.ajax({ 
+			url:"log/doDeleteObjects" ,
+			data:params,
+			type:"delete" , 
+			success:function(result) {
+				if(result.state==1) {
+					alert(result.message);
+					doGetObjects();
+				}else if(result.state==0){
+					alert(result.message);
+				}
+			}
+		})
+	   }else{};
+   }
+   
+   function doQueryObject() {
+	   //1.初始化当前页码值
+	   $("#pageId").data("pageCurrent" , 1); 
+	   //2.基于查询条件进行查询
+	   doGetObjects() ;
+   }
+   
+   //页面加载完成，异步加载数据，并呈现在tbodyId对应的位置
+   function doGetObjects(){
+	   //1.定义请求参数
+	   var pageCurrent = $("#pageId").data("pageCurrent"); 
+	   if(!pageCurrent)pageCurrent = 1 ;
+	   var name = $("#searchNameId").val() ; 
+	   var params = {
+			   //key为服务端控制层方法只的参数
+			   "name" : name , 
+			   "pageCurrent" : pageCurrent 
+			   } ; 
+	   
+	   //2.定义请求url
+	   var url = "/log/doFindObjects" ; 
+	   //3.发送ajax请求
+	   $.get(url , params , doHandleQueryResponseResult, "json");
+   }
+   
+   //处理日志查询时的响应结果
+   function doHandleQueryResponseResult(result) {
+	   //基于服务端响应的结果状态，对响应数据进行处理
+	   if(result.state == 1){
+	   	//1.将当前页记录显示在tbodyid对应的位置
+	   	doSetTableBodyRows(result.data.records) ; 
+	   	//2.对点钱页面的分页信息在pageId位置进行初始化的设置
+	   	doSetPageination(result.data) ;
+	   	
+	   }else{//异常信息
+	   	//处理服务端响应结果中的异常
+	   	alert("异常状态:"+result.status+", error:"+result.message);
+	   }
+   }
+   
+   
+   //将日志记录呈现在tbodyId位置
+   function doSetTableBodyRows(records){
+		let text = "" ; 
+	   	//迭代records记录，并构建html元素对象
+	   	records.forEach(function(item) { //item 表示records中的亿行对象
+	   		text +=	"<tr>"+
+	   					"<td>"+ 
+	   						"<input type='checkbox' value="+ item.id +" >"+
+   						"</td>" +
+	   					"<td>"+ item.username  +"</td>" +
+	   					"<td>"+ item.operation  +"</td>" +
+	   					"<td>"+ item.method  +"</td>" +
+	   					"<td>"+ item.params  +"</td>" +
+	   					"<td>"+ item.ip  +"</td>" +
+	   					"<td>"+ item.time  +"</td>" +
+	   				"</tr>";
+	   	}) ;  
+	   	//将Html元素追加到tbody中
+	   	$("#tbodyId").html(text) ; 
+   }
+   
 </script>
 
 

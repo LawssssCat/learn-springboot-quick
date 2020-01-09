@@ -50,8 +50,9 @@
    $(function() {
 	   //日志列表页面加载完成以后，异步加载分页页面
 	   //加载日志列表数据
-	   $("#pageId").load("doPageUI");
-		doGetObjects() ; 
+	   $("#pageId").load("doPageUI" , function() {
+		   doGetObjects() ; 
+	   });
 
 		$(".input-group-btn")
 		.on("click" ,".btn-search" ,  doQueryObject) 
@@ -98,7 +99,6 @@
 			   array.push($(this).val());
 		   } ; 
 	   })
-	   debugger;
 	   //返回数组
 	   return array ; 
    }
@@ -132,6 +132,14 @@
    }
 
    function doRefreshAfterDeleteOk(){
+	   //清除 checkAll
+	   $("#checkAll").prop("checked" , false );
+	   debugger;
+	   
+	   var pageCurrent = $("#pageId").data("pageCurrent");
+	   if(pageCurrent != null && pageCurrent>1) 
+		   $("#pageId").data("pageCurrent" , pageCurrent-1);
+	   
 	   doGetObjects();
    }
    function doQueryObject() {

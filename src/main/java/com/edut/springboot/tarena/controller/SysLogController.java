@@ -27,7 +27,7 @@ public class SysLogController {
 		return new JsonResult(sysLogService.findPageObject(name, pageCurrent));
 	}
 	
-	@RequestMapping("/doDeleteObjects")
+	@DeleteMapping("/doDeleteObjects")
 	@ResponseBody
 	public JsonResult doDeleteObject( Long ... ids ) {
 		Integer rows = sysLogService.deleteObject(ids) ; 

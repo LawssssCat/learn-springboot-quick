@@ -38,7 +38,7 @@
 <script type="text/javascript" src="bower_components/treegrid/tree.table.js"></script>
 <script type="text/javascript">
 /**
- * 初始化表格的列
+ * 初始化表格的列(TreeGrid表对)
  */
 var columns = [
 {
@@ -183,7 +183,8 @@ function doGetObjects(){
 				"menuTable",//tableId
 				"menu/doFindObjects",//url
 				 columns);//表中列的配置
-	//treeTable.setExpandColumn(2);
+	//设置从哪一列展开
+	treeTable.setExpandColumn(2);
 	//做表格初始化
-	treeTable.init();			 
+	treeTable.init(); //此时会向服务端发送异步请求获取数据 
 }

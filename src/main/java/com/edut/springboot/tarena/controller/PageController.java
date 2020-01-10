@@ -33,7 +33,7 @@ public class PageController {
 	public String doModelUI(
 			@PathVariable(value = "model") String model , 
 			@PathVariable(value = "modelUI") String modelUI) {
-		return "/"+model+"/"+ modelUI ;
+		return "/sys/"+ modelUI ;
 	}
 	
 }

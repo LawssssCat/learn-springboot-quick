@@ -3,11 +3,21 @@ package com.edut.springboot.tarena.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import com.edut.springboot.tarena.common.vo.Node;
+import com.edut.springboot.tarena.pojo.SysMenu;
 
 @Mapper
 public interface SysMenuDao {
+	
+	int saveObject(SysMenu entity) ;
+	
+	@Select("select id, name ,  parentId from sys_menus")
+	List<Node> findZtreeMenuNodes() ;
 	
 	/**
 	 * 基于菜单id统计其子元素的个数

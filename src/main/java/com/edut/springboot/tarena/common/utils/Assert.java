@@ -1,6 +1,7 @@
 package com.edut.springboot.tarena.common.utils;
 
 import com.edut.springboot.tarena.common.exception.ServiceException;
+import com.edut.springboot.tarena.pojo.SysMenu;
 
 public abstract class Assert {
 	/** 参数有效性校验 
@@ -18,4 +19,9 @@ public abstract class Assert {
 		}
 	}
 	//.....
+	public static void isEmpty(String data, String message) {
+		if(data==null || "".equals(data)) {
+			throw new IllegalArgumentException(message);
+		}
+	}
 }

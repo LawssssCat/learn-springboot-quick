@@ -188,3 +188,20 @@ function doGetObjects(){
 	//做表格初始化
 	treeTable.init(); //此时会向服务端发送异步请求获取数据 
 }
+
+/* function doLoadEditUI() {
+	var title  ; 
+	if($(this).hasClass(".btn-add")) {
+		title = "添加菜单" ; 
+	}
+	
+	var url = "/menu/menu_edit" ; 
+	$("#menuTable").load(url , function() {
+		$(".box-title").html(title);
+	}) ;
+}
+
+$(function() {
+	$(".input-group-btn")
+	.on("click" , ".btn-add" , doLoadEditUI);
+}) */

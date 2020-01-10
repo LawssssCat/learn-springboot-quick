@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.edut.springboot.tarena.service.impl.SysMenuServiceImpl;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -11,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SysMenuServiceTest {
 	
 	@Autowired
-	private SysMenuService sysMenuService ; 
+	private SysMenuServiceImpl sysMenuService ; 
 
 	private void doDelete(Integer id ) {
 		int rows =  -1 ;

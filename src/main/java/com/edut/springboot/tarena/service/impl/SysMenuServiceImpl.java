@@ -1,5 +1,6 @@
 package com.edut.springboot.tarena.service.impl;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +66,22 @@ public class SysMenuServiceImpl implements SysMenuService {
 		}
 		
 		return rows ;
+	}
+
+
+	public int updateObject(SysMenu entity) {
+		Assert.isArgumentValid(entity==null , "数据不能为空!!!");
+		Assert.isEmpty(entity.getName(), "用户名不能为空!!!");
+		int rows = -1  ; 
+		try {
+			entity.setModifiedUser("root");
+			entity.setModifiedTime(new Date(new java.util.Date().getTime()));
+			rows = sysMenuDao.updateObject(entity) ; 
+		}catch (Exception e) {
+			e.getStackTrace() ; 
+			throw new ServiceException("服务器异常....") ; 
+		}
+		return rows;
 	}
 
 

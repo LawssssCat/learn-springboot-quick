@@ -14,6 +14,7 @@ import com.edut.springboot.tarena.pojo.SysMenu;
 @Mapper
 public interface SysMenuDao {
 	
+	int updateObject(SysMenu entity);
 	int saveObject(SysMenu entity) ;
 	
 	@Select("select id, name ,  parentId from sys_menus")
@@ -47,4 +48,5 @@ public interface SysMenuDao {
 	 * 2. 并且可读性差
 	 */
 	List<Map<String, Object>> findObjects() ;
+
 }

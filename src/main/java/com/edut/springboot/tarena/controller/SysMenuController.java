@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.edut.springboot.tarena.common.vo.JsonResult;
 import com.edut.springboot.tarena.pojo.SysMenu;
+import com.edut.springboot.tarena.service.SysMenuService;
 import com.edut.springboot.tarena.service.impl.SysMenuServiceImpl;
 
 @RequestMapping("/menu")
@@ -13,7 +14,7 @@ import com.edut.springboot.tarena.service.impl.SysMenuServiceImpl;
 public class SysMenuController {
 
 	@Autowired
-	private SysMenuServiceImpl sysMenuService ;
+	private SysMenuService sysMenuService ;
 	
 	@RequestMapping("/doFindObjects")
 	public JsonResult doFindObjects() {
@@ -34,6 +35,11 @@ public class SysMenuController {
 	public JsonResult doSaveObject(SysMenu entity) {
 		int rows = sysMenuService.saveObject(entity) ; 
 		return new JsonResult("save ok ! roows="+rows) ; 
+	}
+	@RequestMapping("/doUpdateObject")
+	public JsonResult doUpdateObject(SysMenu entity) {
+		int rows = sysMenuService.updateObject(entity) ; 
+		return new JsonResult("update ok ! roows="+rows) ; 
 	}
 	
 }

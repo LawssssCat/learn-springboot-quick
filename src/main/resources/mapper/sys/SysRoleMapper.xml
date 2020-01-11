@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edut.springboot.tarena.dao.SysRoleDao">
+
+	<!-- 复用代码 -->
+	<sql id="selectLikeName">
+		from sys_roles 
+		<where>
+			<if test="name!=null and name!='' ">
+				name like concat('%', #{name} ,'%')
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 计算 name 个数 -->
+	<select id="getRowCount" resultType="java.lang.Integer">
+		select count(id) <include refid="selectLikeName" />
+	</select>
+	
+	<!-- 查询条件 查询 -->
+	<select id="findObjects" resultType="com.edut.springboot.tarena.pojo.SysRole">
+		select * 
+		<include refid="selectLikeName" />
+		order by createdTime desc 
+		<!-- 必须数据  -->
+		limit #{startIndex} , #{pageSize} 
+	</select>
+	
+</mapper>

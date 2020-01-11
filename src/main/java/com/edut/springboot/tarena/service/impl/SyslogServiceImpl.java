@@ -48,7 +48,7 @@ public class SyslogServiceImpl implements  SysLogService {
 		//3.查询当前页日志记录
 		Integer pageSize = paginationProperties.getPageSize();//页面大小
 		//计算开始查询index
-		Integer startIndex =(pageCurrent-1)*pageSize;
+		Integer startIndex = paginationProperties.getStartIndex(pageCurrent);
 		
 		List<SysLog> objs = 
 				sysLogDao.findPageObjects(name, startIndex , pageSize);

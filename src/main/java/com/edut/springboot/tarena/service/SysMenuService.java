@@ -17,7 +17,7 @@ public interface SysMenuService {
 	
 	JsonResult findObjects()  ; 
 	
-	int deleteObject(Integer id ) ;
+	int deleteObject( Integer id ) ;
 	
 	int saveObject(SysMenu entity) ;  
 	

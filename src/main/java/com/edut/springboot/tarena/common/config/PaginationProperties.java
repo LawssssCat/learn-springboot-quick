@@ -12,4 +12,7 @@ import lombok.Setter;
 @ConfigurationProperties(prefix = "page.config") //告诉springboot读配置文件中指定前缀里面的内容
 public class PaginationProperties {
 	private Integer pageSize = 10 ; 
+	public Integer getStartIndex(Integer pageCurrent) {
+		return (pageCurrent-1)*pageSize ; 
+	}
 }

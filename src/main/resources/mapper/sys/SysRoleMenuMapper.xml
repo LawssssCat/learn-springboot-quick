@@ -3,10 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.edut.springboot.tarena.dao.SysRoleMenuDao">
-	<delete id="deleteObjectsByMenuId">
-		delete from sys_role_menus 
-		where menu_id = #{id}
-	</delete>
 	
 	<!-- 写入角色和菜单的关系数据 foreach  -->
 	<insert id="insertObjects">

@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.edut.springboot.tarena.dao.SysRoleDao">
-
+	
 	<!-- 复用代码 -->
 	<sql id="selectLikeName">
 		from sys_roles 
@@ -14,6 +14,26 @@
 		</where>
 	</sql>
 	
+	
+	<!-- 插入角色自身信息 -->
+	<!-- 
+	## 难点，拿到写入到表中的id(主键)值 
+	1)useGeneratedKeys 表示使用insert操作对应的自增主键值
+	2)keyProperty 表示将自增主键值赋值给参数对象的id属性
+	
+	=========
+	了解 : <selectKey></selectKey>
+	-->
+	<insert id="insertObject" 
+	useGeneratedKeys="true" 
+	keyProperty="id" 
+	keyColumn="id" >
+		insert into sys_roles 
+		(name ,note , createdTime ,modifiedTime , createdUser ,modifiedUser ) 
+		value
+		(#{name} ,#{note} , #{createdTime} ,#{modifiedTime} , #{createdUser} ,#{modifiedUser} )
+	</insert>
+
 	<!-- 计算 name 个数 -->
 	<select id="getRowCount" resultType="java.lang.Integer">
 		select count(id) <include refid="selectLikeName" />

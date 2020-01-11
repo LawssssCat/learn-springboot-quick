@@ -7,9 +7,14 @@ import org.apache.ibatis.annotations.Param;
 public interface SysRoleMenuDao {
 
 	/**
+	 * 写入角色
+	 */
+	insertObject
+	
+	/**
 	 * 基于菜单id删除角色和菜单关系数据
 	 * @param menuId
-	 * @return
+	 * @returnW
 	 */
 	int deleteObjectsByMenuId(@Param("id") Integer menuId);
 }

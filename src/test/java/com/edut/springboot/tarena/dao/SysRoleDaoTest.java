@@ -1,5 +1,6 @@
 package com.edut.springboot.tarena.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -31,5 +32,21 @@ public class SysRoleDaoTest {
 	public void test_findObjects() {
 		 List<SysRole> roles = sysRoleDao.findObjects("", 0, 2); 
 		 roles.forEach(r -> log.info(r.toString()));
+	}
+	
+	@Test
+	public void test_insertObject() {
+		Date time = new Date() ; 
+		String user = "ccc";
+		SysRole sysRole = new SysRole()
+		.setName("mdzz")
+		.setNote("Node")
+		.setCreatedTime(time)
+		.setModifiedTime(time)
+		.setCreatedUser(user )
+		.setModifiedUser(user);
+		
+		int i = sysRoleDao.insertObject(sysRole) ;
+		log.info("" + i);
 	}
 }

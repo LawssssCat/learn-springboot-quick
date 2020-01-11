@@ -7,4 +7,10 @@
 		delete from sys_role_menus 
 		where menu_id = #{id}
 	</delete>
+	
+	<!-- 写入角色和菜单的关系数据 foreach  -->
+	<insert id="insertObjects">
+		<!-- (1,2),(1,2) ...  -->
+	</insert>
+	
 </mapper>

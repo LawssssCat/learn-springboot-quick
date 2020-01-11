@@ -16,7 +16,7 @@ import ch.qos.logback.classic.Logger;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service("goodsService") 
+@Service() 
 public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired

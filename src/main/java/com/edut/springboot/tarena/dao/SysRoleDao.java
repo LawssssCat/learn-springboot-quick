@@ -9,6 +9,9 @@ import com.edut.springboot.tarena.pojo.SysRole;
 
 @Mapper
 public interface SysRoleDao {
+	
+	
+	int insertObject(SysRole sysRole) ;
 
 	/**
 	 * 基于条件查询总记录数

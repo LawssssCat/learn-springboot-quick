@@ -14,6 +14,8 @@ public class SysRoleController {
 	@Autowired
 	private SysRoleService sysRoleService ; 
 	
+	sadfsa
+	
 	@RequestMapping("/doFindPageObjects")
 	public JsonResult dofindPageObject(String name , Integer pageCurrent) {
 		return new JsonResult(sysRoleService.findPageObjects(name, pageCurrent));

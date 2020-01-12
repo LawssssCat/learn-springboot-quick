@@ -16,18 +16,26 @@
    
    
    //初始化页面的分页信息
-   function doSetPageination(pageObject) {
+   function doSetPagination(pageObject) {
+	   var rows = 0 ; 
+	   var count = 0 ;
+	   var page = 1 ; 
+	   if(pageObject != null ){
+	   	rows = pageObject.rowCount;
+	   	count = pageObject.pageCount;
+	   	page = pageObject.pageCurrent ; 
+	   }
 	   //1.初始化总记录数
-	   $(".rowCount").text("总记录数("+pageObject.rowCount+")");
+	   $(".rowCount").text("总记录数("+rows+")");
 	   //2.初始化总页数
-	   $(".pageCount").text("总页数("+pageObject.pageCount+")");
+	   $(".pageCount").text("总页数("+count+")");
 	   //3.初始化当前页码值
-	   $(".pageCurrent").text("当前页("+pageObject.pageCurrent+")");
+	   $(".pageCurrent").text("当前页("+page+")");
         //4.页面上存储当前页码值以及总页数(其他地方用到了，可以从这个地方取)
         //data(key,[value]),为jquery中的一个数据绑定函数，当有value时表示绑定
         //具体用法可参考:jquery.com
-        $("#pageId").data("pageCurrent" , pageObject.pageCurrent) ; 
-        $("#pageId").data( "pageCount" , pageObject.pageCount);
+        $("#pageId").data("pageCurrent" , page) ; 
+        $("#pageId").data( "pageCount" , count);
    }
    
    //基于点击事件，执行新一页数据的查询
@@ -37,8 +45,7 @@
    //2.基于class属性值，修改当前页码值
    //3.基于新的页码值，进行新的查询
     function doJumpToPage() {
-	   
-
+	   $("#checkAll").prop("checked" , false );
         var pageCurrent = $("#pageId").data("pageCurrent");
         var pageCount = $("#pageId").data("pageCount");
 

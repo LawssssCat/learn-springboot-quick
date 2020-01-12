@@ -277,7 +277,7 @@ desired effect
             <li><a id="load-menu-id">菜单管理</a></li>
             <li><a id="load-role-id">角色管理</a></li>
             <li><a id="load-user-id">用户管理</a></li>
-            <li><a id="load-log-id" onclick="" > 日志管理</a></li>
+            <li><a id="load-log-id"> 日志管理</a></li>
             <li><a id="load-pwd-id"> 修改密码</a></li>
           </ul>
         </li>
@@ -424,6 +424,8 @@ desired effect
    //页面加载完成事件
    $(function(){
 	  doLoadUI("load-log-id" , "log/log_list");
+	  doLoadUI("load-menu-id" , "menu/menu_list");
+	  doLoadUI("load-role-id" , "role/role_list");
    })
    
    function doLoadUI(id ,url) {

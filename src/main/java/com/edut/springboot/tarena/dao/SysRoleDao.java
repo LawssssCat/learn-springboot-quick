@@ -2,6 +2,7 @@ package com.edut.springboot.tarena.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,4 +36,7 @@ public interface SysRoleDao {
 			@Param("name") String name , 
 			@Param("startIndex") Integer startIndex , 
 			@Param("pageSize") Integer pageSize) ;
+
+	@Delete("delete from sys_roles where id = #{id}")
+	int deleteObject(@Param("id") Integer id);
 }

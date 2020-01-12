@@ -9,6 +9,8 @@ import com.edut.springboot.tarena.common.config.PaginationProperties;
 import com.edut.springboot.tarena.common.utils.Assert;
 import com.edut.springboot.tarena.common.vo.PageObject;
 import com.edut.springboot.tarena.dao.SysRoleDao;
+import com.edut.springboot.tarena.dao.SysRoleMenuDao;
+import com.edut.springboot.tarena.dao.SysUserRoleDao;
 import com.edut.springboot.tarena.pojo.SysRole;
 import com.edut.springboot.tarena.service.SysRoleService;
 
@@ -19,7 +21,11 @@ public class SysRoleServiceImpl implements SysRoleService {
 	private PaginationProperties pagiantionProperties; 
 	
 	@Autowired
-	private SysRoleDao sysRoleDao ; 
+	private SysRoleDao sysRoleDao ;
+	@Autowired
+	private SysRoleMenuDao sysRoleMenuDao;
+	@Autowired
+	private SysUserRoleDao sysUserRoleDao ; 
 
 	@Override
 	public PageObject<SysRole> findPageObjects(String name , Integer pageCurrent){
@@ -34,6 +40,52 @@ public class SysRoleServiceImpl implements SysRoleService {
 		List<SysRole> records = sysRoleDao.findObjects( name , startIndex , pageSize );
 		//4. 封装查询结果
 		return new PageObject<SysRole>(rowCount, records, pageSize, pageCurrent); 
+	}
+
+	@Override
+	public int deleteObject(Integer id) {
+		/**
+		 * 0. 参数校验
+		 */
+		Assert.isArgumentValid(id==null || id<1, "请先选择！");
+		/**
+		 * 1. 删除关系数据
+		 */
+		//删除 Role - Menu
+		sysRoleMenuDao.deleteObjectsByRoleId(id) ; 
+		//删除 Role - User
+		sysUserRoleDao.deleteObjectsByRoleId(id) ;
+		/**
+		 * 2. 删除角色自身数据
+		 */
+		//删除 Role
+		int rows = sysRoleDao.deleteObject(id) ;
+		/**
+		 * 结果校验
+		 */
+		Assert.isServiceValid(rows==0,"记录已经不存在！");
+		return rows ;
+	}
+
+	@Override
+	public int saveObject(SysRole entity, Integer[] menuIds) {
+		/**
+		 * 参数校验
+		 */
+		Assert.isArgumentValid(entity==null, "请填写数据");
+		Assert.isEmpty(entity.getName(), "名称不能为空！");
+		Assert.isArgumentValid(menuIds==null || menuIds.length==0, "必须为角色赋予权限~~");
+		/**
+		 * 保存
+		 */
+		int rows = sysRoleDao.insertObject(entity) ;
+		int id = entity.getId();
+		sysRoleMenuDao.insertObjects(id , menuIds) ; 
+		/**
+		 * 结果校验
+		 */
+		Assert.isServiceValid(rows==0, "服务异常...");
+		return rows;
 	}
 
 }

@@ -72,16 +72,14 @@ public class SysMenuServiceImpl implements SysMenuService {
 	public int updateObject(SysMenu entity) {
 		Assert.isArgumentValid(entity==null , "数据不能为空!!!");
 		Assert.isEmpty(entity.getName(), "用户名不能为空!!!");
-		int rows = -1  ; 
 		try {
 			entity.setModifiedUser("root");
 			entity.setModifiedTime(new Date(new java.util.Date().getTime()));
-			rows = sysMenuDao.updateObject(entity) ; 
+			return sysMenuDao.updateObject(entity) ;
 		}catch (Exception e) {
 			e.getStackTrace() ; 
 			throw new ServiceException("服务器异常....") ; 
 		}
-		return rows;
 	}
 
 

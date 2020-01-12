@@ -37,16 +37,17 @@ public class SysRoleDaoTest {
 	@Test
 	public void test_insertObject() {
 		Date time = new Date() ; 
-		String user = "ccc";
+		String user = "username";
 		SysRole sysRole = new SysRole()
-		.setName("mdzz")
-		.setNote("Node")
+		.setName("name")
+		.setNote("Note")
 		.setCreatedTime(time)
 		.setModifiedTime(time)
 		.setCreatedUser(user )
 		.setModifiedUser(user);
 		
 		int i = sysRoleDao.insertObject(sysRole) ;
-		log.info("" + i);
+		log.info("rows=" + i);
+		log.info("id="+ sysRole.getId());
 	}
 }

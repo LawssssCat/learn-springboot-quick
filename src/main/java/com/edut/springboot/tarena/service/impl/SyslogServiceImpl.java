@@ -63,6 +63,7 @@ public class SyslogServiceImpl implements  SysLogService {
 		int rows = 0 ; 
 		try {
 			rows = sysLogDao.deleteObjects(ids); 
+			log.debug("删除数据,rows="+rows);
 		}catch (Throwable e) {
 			e.printStackTrace();
 			//发出报警信息(例如给运维人员发短信)

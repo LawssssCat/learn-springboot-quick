@@ -27,11 +27,14 @@
 	<insert id="insertObject" 
 	useGeneratedKeys="true" 
 	keyProperty="id" 
-	keyColumn="id" >
+	 >
+	 <!-- 
+	 keyColumn="id"
+	  -->
 		insert into sys_roles 
 		(name ,note , createdTime ,modifiedTime , createdUser ,modifiedUser ) 
 		value
-		(#{name} ,#{note} , #{createdTime} ,#{modifiedTime} , #{createdUser} ,#{modifiedUser} )
+		(#{name} ,#{note} , now() ,now() , #{createdUser} ,#{modifiedUser} )
 	</insert>
 
 	<!-- 计算 name 个数 -->

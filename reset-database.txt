@@ -1,0 +1,5 @@
+
+mysql -uroot -proot --default-character-set=gbk
+
+source jtsys.sql
+

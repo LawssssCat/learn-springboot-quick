@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edut.springboot.tarena.dao.SysMenuDao">
+	<insert id="updateObject" parameterType="com.edut.springboot.tarena.pojo.SysMenu">
+		update sys_menus set 
+		name=#{name},url=#{url},type=#{type},
+		sort=#{sort},note=#{note},parentId=#{parentId},permission=#{permission},
+		modifiedUser=#{modifiedUser},modifiedTime=#{modifiedTime}
+		where id=#{id}
+	</insert>
+	<insert id="saveObject" parameterType="com.edut.springboot.tarena.pojo.SysMenu">
+		insert into sys_menus 
+		(id,name,url,type,
+		sort,note,parentId,permission,
+		createdUser,modifiedUser,createdTime,modifiedTime) 
+		value
+		(#{id},#{name},#{url},#{type},
+		#{sort},#{note},#{parentId},#{permission},
+		#{createdUser},#{modifiedUser},#{createdTime},#{modifiedTime})
+	</insert>
+
+
+	<select id="findObjects" resultType="java.util.HashMap">
+		select c.*  , (select p.name 
+					from sys_menus p 
+					where p.id = c.parentId ) parentName 
+		from sys_menus c
+	</select>
+	
+	<select id="getChildCount" resultType="java.lang.Integer">
+		select count(id) from sys_menus
+		where parentId  = #{id} 
+	</select>
+	
+	<delete id="deleteObjcet">
+		delete from  sys_menus
+		where 1=2  
+		<if test="id!=null">
+			or id = #{id}
+		</if>
+
+	</delete>
+	
+	
+	
+</mapper>

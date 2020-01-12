@@ -86,8 +86,11 @@
 	   })
    }
    function doDeleteObject(){
+	   var $tr = $(this).parents("tr") ; 
+	   var name = $tr.children("td").eq(1).html(); 
+	   if(!confirm("确定删除\""+name+"\"？"))return ;
 	   //1.params
-	   var id=$(this).parents("tr").data("id");
+	   var id=$tr.data("id");
 	   var params={"id":id};
 	   //2.url
 	   var url="role/doDeleteObject"

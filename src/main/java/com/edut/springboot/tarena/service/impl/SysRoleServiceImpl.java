@@ -80,7 +80,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		 */
 		int rows = sysRoleDao.insertObject(entity) ;
 		int id = entity.getId();
-		sysRoleMenuDao.insertObjects(id , menuIds) ; 
+		sysRoleMenuDao.insertObjects(id , menuIds) ;
 		/**
 		 * 结果校验
 		 */

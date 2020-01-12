@@ -3,14 +3,16 @@ package com.edut.springboot.tarena.common.web;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.edut.springboot.tarena.common.vo.JsonResult;
 
-@ControllerAdvice
+//@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(RuntimeException.class)
-	@ResponseBody
+	//@ResponseBody
 	public JsonResult runtimeExceptionHandle(Exception e) {
 		return new JsonResult(e);
 	}

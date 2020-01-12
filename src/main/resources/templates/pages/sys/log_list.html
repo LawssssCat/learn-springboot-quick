@@ -72,7 +72,7 @@
 	   var flag = true ; 
 	   $("#tbodyId input[type='checkbox']")
 	   .each(function() {
-		   flag = flag && $(this).prop("checked");
+	 	   flag = flag && $(this).prop("checked");
 	   }); 
 	   //基于tbody中checkbox对象状态进行修改thead中checkbox对象状态
 		$("#checkAll").prop("checked" , flag);
@@ -113,8 +113,10 @@
 		   alert("请选择");
 		   return ;
 	   }
-	   if(confirm("您确认删除吗？")){
-		var params = "ids=" + idArray.toString() //1,2,3,...
+	   if(!confirm("您确认删除吗？"))return ;
+	   
+	   //不要做字符串拼接！
+		var params = {"ids" : idArray.toString()} //1,2,3,...
 		$.ajax({ 
 			url:"log/doDeleteObjects" ,
 			data:params,
@@ -122,27 +124,21 @@
 			success:function(result) {
 				if(result.state==1) {
 					alert(result.message);
-					doGetObjects();
+					doRefreshAfterDeleteOk() ; 
 				}else if(result.state==0){
 					alert(result.message);
 				}
 			}
-		})
-	   }else{};
+		});
    }
 
    function doRefreshAfterDeleteOk(){
-	   //清除 checkAll
-	   $("#checkAll").prop("checked" , false );
-	   debugger;
-	   
 	   var pageCurrent = $("#pageId").data("pageCurrent");
 	   if(pageCurrent != null && pageCurrent>1) 
 		   $("#pageId").data("pageCurrent" , pageCurrent-1);
 	   
 	   doGetObjects();
    }
-
    function doQueryObject() {
 	   //1.初始化当前页码值
 	   $("#pageId").data("pageCurrent" , 1); 
@@ -152,6 +148,10 @@
    
    //页面加载完成，异步加载数据，并呈现在tbodyId对应的位置
    function doGetObjects(){
+	   
+	 //清除 checkAll
+	   $("#checkAll").prop("checked" , false );
+	   
 	   //1.定义请求参数
 	   var pageCurrent = $("#pageId").data("pageCurrent"); 
 	   if(!pageCurrent)pageCurrent = 1 ;
@@ -175,11 +175,12 @@
 	   	//1.将当前页记录显示在tbodyid对应的位置
 	   	doSetTableBodyRows(result.data.records) ; 
 	   	//2.对点钱页面的分页信息在pageId位置进行初始化的设置
-	   	doSetPageination(result.data) ;
-	   	
+	   	doSetPagination(result.data) ;
 	   }else{//异常信息
 	   	//处理服务端响应结果中的异常
-	   	alert("异常状态:"+result.status+", error:"+result.message);
+	   	//alert("异常状态:"+result.status+", error:"+result.message);
+	   	doSetTableBodyRows(null) ; 
+	   	doSetPageination(null) ;
 	   }
    }
    
@@ -187,20 +188,24 @@
    //将日志记录呈现在tbodyId位置
    function doSetTableBodyRows(records){
 		let text = "" ; 
-	   	//迭代records记录，并构建html元素对象
-	   	records.forEach(function(item) { //item 表示records中的亿行对象
-	   		text +=	"<tr>"+
-	   					"<td>"+ 
-	   						"<input type='checkbox' value="+ item.id +" >"+
-   						"</td>" +
-	   					"<td>"+ item.username  +"</td>" +
-	   					"<td>"+ item.operation  +"</td>" +
-	   					"<td>"+ item.method  +"</td>" +
-	   					"<td>"+ item.params  +"</td>" +
-	   					"<td>"+ item.ip  +"</td>" +
-	   					"<td>"+ item.time  +"</td>" +
-	   				"</tr>";
-	   	}) ;  
+		if(!records || records.length==0 ){
+			text+= "没有查询到记录..." ;
+		}else{
+		   	//迭代records记录，并构建html元素对象
+		   	records.forEach(function(item) { //item 表示records中的亿行对象
+		   		text +=	"<tr>"+
+		   					"<td>"+ 
+		   						"<input type='checkbox' value="+ item.id +" >"+
+	   						"</td>" +
+		   					"<td>"+ item.username  +"</td>" +
+		   					"<td>"+ item.operation  +"</td>" +
+		   					"<td>"+ item.method  +"</td>" +
+		   					"<td>"+ item.params  +"</td>" +
+		   					"<td>"+ item.ip  +"</td>" +
+		   					"<td>"+ item.time  +"</td>" +
+		   				"</tr>";
+		   	}) ;  
+		}
 	   	//将Html元素追加到tbody中
 	   	$("#tbodyId").html(text) ; 
    }

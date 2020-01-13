@@ -27,9 +27,9 @@ public abstract class Assert {
 			throw new IllegalArgumentException(message);
 		}
 	}
-	public static void isListEmpty(List<SysRole> records, String message) {
+	public static <T> void isListEmpty(List<T> records, String message) {
 		if(records==null || records.size()==0) {
-			throw new ServiceException(message) ; 
+			throw new IllegalArgumentException(message) ; 
 		}
 	}
 }

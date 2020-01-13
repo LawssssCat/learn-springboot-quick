@@ -1,9 +1,12 @@
 package com.edut.springboot.tarena.service;
 
 import com.edut.springboot.tarena.common.vo.PageObject;
+import com.edut.springboot.tarena.common.vo.SysRoleMenuVo;
 import com.edut.springboot.tarena.pojo.SysRole;
 
 public interface SysRoleService {
+	
+	SysRoleMenuVo findObjectById(Integer id) ;
 
 	/**
 	 * 保存角色信息以及角色菜单关系数据
@@ -20,5 +23,7 @@ public interface SysRoleService {
 
 	int deleteObject(Integer id);
 
-	int saveObject(SysRole entity, Integer[] menuIds); 
+	int saveObject(SysRole entity, Integer[] menuIds);
+
+	int updateObject(SysRoleMenuVo entity); 
 }

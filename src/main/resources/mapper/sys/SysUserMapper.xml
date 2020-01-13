@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edut.springboot.tarena.dao.SysUserDao">
+	<sql id="selectLikeName" >
+		<where>
+			<if test="username!=null and username != '' ">
+				username like concat('%' , #{username} , '%')
+			</if>
+		</where>
+	</sql>
+	
+	<select id="getRowCount" resultType="int" >
+		select count(id) from sys_users 
+		<include refid="selectLikeName"></include>
+	</select>
+	
+	
+	<select id="findPageObjects" resultMap="sysUserDeptVo" >
+		select 
+		id , 
+		username ,
+		deptId ,   <!-- 部门id，后面映射成 sysDept -->
+		email , 
+		mobile ,  <!-- 手机 -->
+		valid , <!-- 状态 -->
+		createdTime , 
+		modifiedTime
+		from sys_users 
+		<include refid="selectLikeName"></include>
+		order by createdTime desc
+		limit #{startIndex} , #{pageSize}
+	</select>
+	
+	<resultMap type="com.edut.springboot.tarena.common.vo.SysUserDeptVo" id="sysUserDeptVo">
+		<id property="id" column="id"/>	
+		<association property="sysDept" column="deptId" 
+			select="com.edut.springboot.tarena.dao.SysDeptDao.findById">
+		</association>
+	</resultMap>
+	
+</mapper>

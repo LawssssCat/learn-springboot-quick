@@ -6,4 +6,5 @@ import com.edut.springboot.tarena.common.vo.SysUserDeptVo;
 
 public interface SysUserService {
 	PageObject<SysUserDeptVo> findPageObjects(Integer pageCurrent, String username);
+	int validById(Integer id , Integer valid) ; 
 }

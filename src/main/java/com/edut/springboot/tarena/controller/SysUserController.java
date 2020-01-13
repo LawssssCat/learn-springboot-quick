@@ -19,4 +19,10 @@ public class SysUserController {
 	public JsonResult doFindPageObjects(Integer pageCurrent ,String username) {
 		return new JsonResult(sysUserService.findPageObjects(pageCurrent , username));
 	}
+
+	@RequestMapping("/doValidById")
+	public JsonResult doValidById(Integer id , Integer valid) {
+		return new JsonResult("update ok ! rows="+sysUserService.validById(id, valid)) ;
+	}
+
 }

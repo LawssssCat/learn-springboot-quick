@@ -41,6 +41,23 @@ public class SysUserServiceImpl implements SysUserService {
 		Assert.isListEmpty(records, "数据可能不存在了！");
 		
 		return new PageObject<SysUserDeptVo>(rowCount, records, pageSize, pageCurrent);
+	}
+
+	@Override
+	public int validById(Integer id, Integer valid) {
+		//1. 参数校验 
+			// id ==null <1 id值不正确
+		Assert.isArgumentValid(id==null||id<1, "id值不正确！");
+			//valid 1 0 状态值不正确
+		Assert.isArgumentValid(valid!=1&&valid!=0, "状态异常！");
+		//TODO modifiedUser
+		String modifiedUser = null ;
+		//2. 执行更新并校验
+		int rows = sysUserDao.validById(id, valid, modifiedUser ) ;
+			//rows==0 记录可能不存在了！
+		Assert.isServiceValid(rows==0, "记录可能不存在了！");
+		//3. 返回结果
+		return rows ;
 	} 
 	
 }

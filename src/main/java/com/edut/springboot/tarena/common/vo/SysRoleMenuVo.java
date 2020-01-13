@@ -28,8 +28,4 @@ public class SysRoleMenuVo implements Serializable {
 	private String note;
 	/**角色对应的菜单id*/
 	private List<Integer> menuIds;
-	public int updateObject() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }

@@ -43,7 +43,7 @@ public class SysRoleController {
 
 	@RequestMapping("/doUpdateObject")
 	public JsonResult doUpdateObject(SysRoleMenuVo entity) {
-		return  new JsonResult(sysRoleService.updateObject(entity));
+		return  new JsonResult("update ok! rows="+sysRoleService.updateObject(entity));
 	}
 	
 }

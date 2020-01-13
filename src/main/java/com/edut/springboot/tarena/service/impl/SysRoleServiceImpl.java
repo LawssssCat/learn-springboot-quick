@@ -99,18 +99,30 @@ public class SysRoleServiceImpl implements SysRoleService {
 
 	@Override
 	public int updateObject(SysRoleMenuVo entity) {
+		/**
+		 * 参数校验
+		 */
 		Assert.isArgumentValid(entity==null, "请填入数据 Q~Q");
 		Integer id =entity.getId() ; 
 		Assert.isArgumentValid(id==null || id<1 , "传参异常 ， id="+id);
 		String name = entity.getName() ;
 		Assert.isEmpty(name, "名字不能为空 Q~Q ");
-		Assert.isListEmpty(entity.getMenuIds(), "请指定一个权限 ！");
+		List<Integer> menuIds = entity.getMenuIds(); 
+		Assert.isListEmpty(menuIds, "请指定一个权限 ！");
 		
-		dagadsgasgasdgsa
+		/**
+		 * 方法执行
+		 */
 		int rows = sysRoleDao.updateObject(id , name , entity.getNote() ) ;
-		
+		/**
+		 * 结果校验
+		 */
 		Assert.isServiceValid(rows==0, "数据可能不存在了！ Q~Q");
-		
+		/**
+		 * 方法执行 - 2
+		 */
+		sysRoleMenuDao.deleteObjectsByRoleId(id) ; 
+		sysRoleMenuDao.insertObjects(id,  menuIds.toArray(new Integer[menuIds.size()]));
 		return rows ;
 	}
 

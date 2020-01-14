@@ -107,6 +107,21 @@ public class SysUserServiceImpl implements SysUserService {
 		map.put("user",user );
 		map.put("roleIds" , roleIds) ;
 		return map;
+	}
+
+	@Override
+	public int updateObject(SysUser sysUser, Integer[] roleIds) {
+		Assert.isArgumentValid(sysUser==null, "请输入");
+		Assert.isEmpty(sysUser.getUsername(), "用户名不能为空");
+		Assert.isArgumentValid(roleIds==null||roleIds.length==0, "必须制定权限");
+		
+		int rows = sysUserDao.updateObejct(sysUser);
+		Assert.isServiceValid(rows==0, "数据可能不存在了！");
+		
+		sysUserRoleDao.deleteObjectsByUserId(sysUser.getId());
+		sysUserRoleDao.insertObjects(sysUser.getId(), roleIds);
+		
+		return rows;
 	} 
 	
 }

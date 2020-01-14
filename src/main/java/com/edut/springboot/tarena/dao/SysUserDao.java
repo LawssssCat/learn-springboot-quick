@@ -36,4 +36,15 @@ public interface SysUserDao {
 	int insertObject(SysUser sysUser);
 
 	SysUserDeptVo findObjectById(@Param("id") Integer id);
+
+	@Update(" update  sys_users set "
+			+ " username=#{username}, "
+			+ " email=#{email}, "
+			+ " mobile=#{mobile}, "
+			+ " deptId=#{deptId}, "
+			+ " modifiedTime=now(), "
+			+ " modifiedUser=#{modifiedUser} "
+			+ " where "
+			+ " id=#{id} ")
+	int updateObejct(SysUser sysUser);
 }

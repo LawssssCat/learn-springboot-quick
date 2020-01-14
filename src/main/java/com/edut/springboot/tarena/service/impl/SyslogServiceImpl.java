@@ -13,6 +13,8 @@ import com.edut.springboot.tarena.common.vo.PageObject;
 import com.edut.springboot.tarena.dao.SysLogDao;
 import com.edut.springboot.tarena.pojo.SysLog;
 import com.edut.springboot.tarena.service.SysLogService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,18 +44,19 @@ public class SyslogServiceImpl implements  SysLogService {
 		Assert.isArgumentValid(pageCurrent == null || pageCurrent<1 , "页码值不正确, pageCurrent="+pageCurrent);
 		
 		//2.基于用户名检查总记录数并校验
-		int rowCount = sysLogDao.getRowCount(name);
-		Assert.isServiceValid(rowCount == 0, "没有数据");
+		//int rowCount = sysLogDao.getRowCount(name);
+		//Assert.isServiceValid(rowCount == 0, "没有数据");
 		
 		//3.查询当前页日志记录
 		Integer pageSize = paginationProperties.getPageSize();//页面大小
 		//计算开始查询index
-		Integer startIndex = paginationProperties.getStartIndex(pageCurrent);
+		//Integer startIndex = paginationProperties.getStartIndex(pageCurrent);
 		
-		List<SysLog> objs = 
-				sysLogDao.findPageObjects(name, startIndex , pageSize);
+		Page<Object> page = PageHelper.startPage(pageCurrent, pageSize);
+		List<SysLog> records = sysLogDao.findPageObjects(name);
+		
 		//4.封装查询结果并返回
-		return new PageObject<SysLog>(rowCount, objs, pageSize, pageCurrent) ;   
+		return new PageObject<SysLog>((int)page.getTotal(), records, pageSize, pageCurrent);
 	}
 
 	@Override

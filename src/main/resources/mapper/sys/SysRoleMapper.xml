@@ -47,8 +47,7 @@
 		select * 
 		<include refid="selectLikeName" />
 		order by createdTime desc 
-		<!-- 必须数据  -->
-		limit #{startIndex} , #{pageSize} 
+
 	</select>
 	
 	<!-- resultMap 嵌套查询 -->

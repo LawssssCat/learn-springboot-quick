@@ -41,7 +41,6 @@
 	select * 
 		<include refid="queryWhereId" />
 		order by createdTime desc 
-		limit #{startIndex} , #{pageSize}
 	</select>
 	
 	<delete id="deleteObjects_BAK"  >

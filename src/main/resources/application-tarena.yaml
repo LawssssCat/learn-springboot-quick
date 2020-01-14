@@ -29,4 +29,4 @@ logging:
 #page
 page: 
   config:
-    pageSize: 7
+    pageSize: 3

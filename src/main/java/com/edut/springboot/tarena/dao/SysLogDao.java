@@ -35,9 +35,13 @@ public interface SysLogDao {
 	 * @param pageSize 当前页的页面大小
 	 * @return 当前页的日志记录信息
 	 * 数据库中每条日志信息封装到一个SysLog对象中
+	 * 
+	 * pageHelper底层：sqlSession.selctList(statement , args)
+	 * 拦截器:intercepter --> select * from sys_logs order createTime 
+	 * 修改
+	 * 1) 添加sql:select count(0) from sys_logs
+	 * 2) 修改sql:select * from sys_logs order by createTime limit ? , ? 
+	 * 
 	 */
-	List<SysLog> findPageObjects(
-			@Param("username") String username , 
-			@Param("startIndex") Integer startIndex , 
-			@Param("pageSize") Integer pageSize ) ; 
+	List<SysLog> findPageObjects(@Param("username") String username ) ; 
 }

@@ -15,7 +15,12 @@ import com.edut.springboot.tarena.dao.SysRoleMenuDao;
 import com.edut.springboot.tarena.dao.SysUserRoleDao;
 import com.edut.springboot.tarena.pojo.SysRole;
 import com.edut.springboot.tarena.service.SysRoleService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
 	
@@ -34,14 +39,14 @@ public class SysRoleServiceImpl implements SysRoleService {
 		//1. 参数校验 null <1
 		Assert.isArgumentValid(pageCurrent==null || pageCurrent<1, "页码值错误！");
 		//2. 查询[总]记录数并校验  ==0
-		int rowCount = sysRoleDao.getRowCount(name); // 分页 - 一定要 - 总页数
-		Assert.isServiceValid(rowCount == 0, "没有数据~~~");
 		//3. 查询当前页角色信息记录
 		Integer pageSize = pagiantionProperties.getPageSize() ;
-		Integer startIndex = pagiantionProperties.getStartIndex( pageCurrent );
-		List<SysRole> records = sysRoleDao.findObjects( name , startIndex , pageSize );
+		Page<Object> page = PageHelper.startPage(pageCurrent , pageSize); 
+		//Integer startIndex = pagiantionProperties.getStartIndex( pageCurrent );
+		List<SysRole> records = sysRoleDao.findObjects( name);
+		log.debug("## --- "+records.size()); //这是分页后的结果
 		//4. 封装查询结果
-		return new PageObject<SysRole>(rowCount, records, pageSize, pageCurrent); 
+		return new PageObject<SysRole>((int)page.getTotal(), records, pageSize, pageCurrent); 
 	}
 
 	@Override

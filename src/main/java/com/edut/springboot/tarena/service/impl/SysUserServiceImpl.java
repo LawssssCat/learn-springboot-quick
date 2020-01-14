@@ -1,6 +1,10 @@
 package com.edut.springboot.tarena.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +14,8 @@ import com.edut.springboot.tarena.common.utils.Assert;
 import com.edut.springboot.tarena.common.vo.PageObject;
 import com.edut.springboot.tarena.common.vo.SysUserDeptVo;
 import com.edut.springboot.tarena.dao.SysUserDao;
+import com.edut.springboot.tarena.dao.SysUserRoleDao;
+import com.edut.springboot.tarena.pojo.SysUser;
 import com.edut.springboot.tarena.service.SysUserService;
 
 @Service
@@ -17,6 +23,9 @@ public class SysUserServiceImpl implements SysUserService {
 	
 	@Autowired
 	private SysUserDao sysUserDao ;
+	
+	@Autowired
+	private SysUserRoleDao sysUserRoleDao ; 
 	
 	@Autowired
 	private PaginationProperties paginationProperties ; 
@@ -58,6 +67,46 @@ public class SysUserServiceImpl implements SysUserService {
 		Assert.isServiceValid(rows==0, "记录可能不存在了！");
 		//3. 返回结果
 		return rows ;
+	}
+
+	@Override
+	public int saveObject(SysUser sysUser, Integer[] roleIds) {
+		//校验
+		Assert.isArgumentValid(sysUser==null, "请填入数据！");
+		Assert.isEmpty(sysUser.getUsername(), "用户名不能为空！");
+		Assert.isEmpty(sysUser.getPassword(), "密码不能为空");
+		Assert.isArgumentValid( roleIds==null || roleIds.length==0 , "必须选择一个角色！");
+		//执行、校验
+		int rows = sysUserDao.insertObject(sysUser);
+		Integer id = sysUser.getId();
+		Assert.isServiceValid(rows==0||id==null|| id<1, "存储异常！");
+		
+		rows = sysUserRoleDao.insertObjects(id , roleIds) ;
+		Assert.isServiceValid(rows==0, "存储异常！");
+		
+		//返回结果
+		return rows;
+	}
+
+	@Override
+	public Map<String, Object> findObjectById(Integer id) {
+		/**
+		 * 验证
+		 */
+		Assert.isArgumentValid(id==null || id<1, "请先选择要修改项");
+		/**
+		 * 执行、验证
+		 */
+		SysUserDeptVo user = sysUserDao.findObjectById(id);
+		Assert.isServiceValid(user==null, "记录可能不存在了！");
+		List<Integer> roleIds = sysUserRoleDao.findRoleIdsByUserId(id) ; 
+		/**
+		 * 返回
+		 */
+		Map<String, Object > map = new HashMap<>() ;
+		map.put("user",user );
+		map.put("roleIds" , roleIds) ;
+		return map;
 	} 
 	
 }

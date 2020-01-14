@@ -1,5 +1,8 @@
 package com.edut.springboot.tarena.service;
 
+import java.util.List;
+
+import com.edut.springboot.tarena.common.vo.CheckBox;
 import com.edut.springboot.tarena.common.vo.PageObject;
 import com.edut.springboot.tarena.common.vo.SysRoleMenuVo;
 import com.edut.springboot.tarena.pojo.SysRole;
@@ -25,5 +28,7 @@ public interface SysRoleService {
 
 	int saveObject(SysRole entity, Integer[] menuIds);
 
-	int updateObject(SysRoleMenuVo entity); 
+	int updateObject(SysRoleMenuVo entity);
+
+	List<CheckBox> findObjects(); 
 }

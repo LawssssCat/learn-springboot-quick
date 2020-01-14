@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.edut.springboot.tarena.common.vo.SysUserDeptVo;
+import com.edut.springboot.tarena.pojo.SysUser;
 
 @Mapper
 public interface SysUserDao {
@@ -30,4 +31,9 @@ public interface SysUserDao {
 			@Param("username") String username, 
 			@Param("pageSize") Integer pageSize, 
 			@Param("startIndex") Integer startIndex);
+
+
+	int insertObject(SysUser sysUser);
+
+	SysUserDeptVo findObjectById(@Param("id") Integer id);
 }

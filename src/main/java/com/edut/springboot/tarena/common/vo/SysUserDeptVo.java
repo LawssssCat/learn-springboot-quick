@@ -1,25 +1,15 @@
 package com.edut.springboot.tarena.common.vo;
 
-import java.io.Serializable;
-import java.util.Date;
 
 import com.edut.springboot.tarena.pojo.SysDept;
+import com.edut.springboot.tarena.pojo.SysUser;
 
 import lombok.Data;
 
 @Data
-public class SysUserDeptVo implements Serializable {
-	private static final long serialVersionUID = 3198359491218084373L;
-	private Integer id;
-	private String username;
-	private String password;//md5
-	private String salt;
-	private String email;
-	private String mobile;
-	private Integer valid=1; //状态
+public class SysUserDeptVo extends SysUser  {
+	
+	private static final long serialVersionUID = 3236709082715096978L;
 	private SysDept sysDept; //private Integer deptId;
-	private Date createdTime;
-	private Date modifiedTime;
-	private String createdUser;
-	private String modifiedUser;
+
 }

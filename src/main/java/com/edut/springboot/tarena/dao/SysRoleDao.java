@@ -5,8 +5,10 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.edut.springboot.tarena.common.vo.CheckBox;
 import com.edut.springboot.tarena.common.vo.SysRoleMenuVo;
 import com.edut.springboot.tarena.pojo.SysRole;
 
@@ -49,4 +51,7 @@ public interface SysRoleDao {
 			@Param("id") Integer id, 
 			@Param("name") String name, 
 			@Param("note") String note);
+
+	@Select("select id , name from sys_roles ")
+	List<CheckBox> findObejcts();
 }

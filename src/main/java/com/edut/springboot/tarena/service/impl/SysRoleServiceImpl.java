@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.edut.springboot.tarena.common.config.PaginationProperties;
 import com.edut.springboot.tarena.common.utils.Assert;
+import com.edut.springboot.tarena.common.vo.CheckBox;
 import com.edut.springboot.tarena.common.vo.PageObject;
 import com.edut.springboot.tarena.common.vo.SysRoleMenuVo;
 import com.edut.springboot.tarena.dao.SysRoleDao;
@@ -124,6 +125,12 @@ public class SysRoleServiceImpl implements SysRoleService {
 		sysRoleMenuDao.deleteObjectsByRoleId(id) ; 
 		sysRoleMenuDao.insertObjects(id,  menuIds.toArray(new Integer[menuIds.size()]));
 		return rows ;
+	}
+
+	@Override
+	public List<CheckBox> findObjects() {
+		List<CheckBox> result = sysRoleDao.findObejcts() ;
+		return result ;
 	}
 
 }

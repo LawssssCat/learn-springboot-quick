@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +78,29 @@ public class SysUserServiceImpl implements SysUserService {
 		Assert.isEmpty(sysUser.getUsername(), "用户名不能为空！");
 		Assert.isEmpty(sysUser.getPassword(), "密码不能为空");
 		Assert.isArgumentValid( roleIds==null || roleIds.length==0 , "必须选择一个角色！");
+		
+		//2.保存用户自身信息
+        //2.1对密码进行加密
+		/* 
+		 spring框架也有：
+		 
+		  DigestUtils.md5DigestAsHex((password+salt).getBytes()) ; // 
+		 
+		 但这里没有指定加密次数
+		 因此，用下面第三方框架 shiro
+		 */
+		String source = sysUser.getPassword() ; 
+		String salt = UUID.randomUUID().toString() ; 
+    	//1. 不可逆
+    	//2. 相同字段加密相同，不同字段加密（超小概率重复）
+		SimpleHash sh = new SimpleHash( // Shiro框架
+				"MD5",// algorithmName 算法
+				source, // 原密码
+				salt,  // 盐值
+				1) ; //hashIterations 表示加密次数
+		sysUser.setSalt(salt);
+		sysUser.setPassword(sh.toHex());//将密码加密结果转换为16进制并存储到entity内
+		
 		//执行、校验
 		int rows = sysUserDao.insertObject(sysUser);
 		Integer id = sysUser.getId();

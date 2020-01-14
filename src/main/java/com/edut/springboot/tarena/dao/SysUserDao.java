@@ -12,6 +12,12 @@ import com.edut.springboot.tarena.pojo.SysUser;
 
 @Mapper
 public interface SysUserDao {
+	
+	int verificationModule(
+			@Param("columnName") String columnName ,
+			@Param("columnValue") String columnValue ) ;
+	
+	
 	/**
 	 * 禁用/启动用户对象
 	 * valid 状态值

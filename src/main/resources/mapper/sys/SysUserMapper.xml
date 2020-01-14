@@ -71,4 +71,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where id = #{id}
 	</select>
 	
+	<select id="verificationModule" resultType="int">
+		select count(*) from sys_users
+		where  ${columnName} = #{columnValue}
+	</select>
+	
 </mapper>

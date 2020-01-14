@@ -14,4 +14,12 @@
 			(#{roleId} , #{menuId})
 		</foreach>
 	</insert>
+	
+	<!--基于角色id信息 查询菜单id-->
+	<select id="findMenuIdsByRoleId" resultType="java.lang.Integer">
+		select menu_id from sys_role_menus 
+		where role_id = #{roleId}
+	</select>
+	
+	
 </mapper>

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.edut.springboot.tarena.common.vo.SysRoleMenuVo;
 import com.edut.springboot.tarena.pojo.SysRole;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,18 +37,23 @@ public class SysRoleDaoTest {
 	
 	@Test
 	public void test_insertObject() {
-		Date time = new Date() ; 
 		String user = "username";
 		SysRole sysRole = new SysRole()
 		.setName("name")
 		.setNote("Note")
-		.setCreatedTime(time)
-		.setModifiedTime(time)
 		.setCreatedUser(user )
 		.setModifiedUser(user);
 		
 		int i = sysRoleDao.insertObject(sysRole) ;
 		log.info("rows=" + i);
 		log.info("id="+ sysRole.getId());
+	}
+	
+	@Test
+	public void test_findObjectById() {
+		Integer id1= 1 ; 
+		Integer id = 45 ; //运维经理	运维经理..	2018/4/22 下午8:51:43	2018/4/22 下午8:51:43nullnull
+		SysRoleMenuVo vo = sysRoleDao.findObjectById(id1 );
+		log.info(vo.toString());
 	}
 }

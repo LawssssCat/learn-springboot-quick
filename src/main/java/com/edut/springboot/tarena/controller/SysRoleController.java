@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edut.springboot.tarena.common.vo.JsonResult;
+import com.edut.springboot.tarena.common.vo.SysRoleMenuVo;
 import com.edut.springboot.tarena.pojo.SysRole;
 import com.edut.springboot.tarena.service.SysRoleService;
 
@@ -17,11 +18,13 @@ public class SysRoleController {
 	@Autowired
 	private SysRoleService sysRoleService ; 
 	
+	@RequestMapping("/doFindRoles")
+	public JsonResult doFindRoles() {
+		return new JsonResult(sysRoleService.findObjects());
+	}
 	
 	@RequestMapping("/doFindPageObjects")
-	public JsonResult dofindPageObject(
-			 String name , 
-			@RequestParam("pageCurrent") Integer pageCurrent) {
+	public JsonResult dofindPageObject(String name ,Integer pageCurrent) {
 		return new JsonResult(sysRoleService.findPageObjects(name, pageCurrent));
 	}
 	
@@ -35,4 +38,14 @@ public class SysRoleController {
 		return new JsonResult("save ok! rows="+sysRoleService.saveObject(entity , menuIds));
 	}
 
+	@RequestMapping("/doFindObjectById")
+	public JsonResult doFindObjectById(@RequestParam("id") Integer id) {
+		return new JsonResult(sysRoleService.findObjectById(id)) ; 
+	}
+
+	@RequestMapping("/doUpdateObject")
+	public JsonResult doUpdateObject(SysRoleMenuVo entity) {
+		return  new JsonResult("update ok! rows="+sysRoleService.updateObject(entity));
+	}
+	
 }

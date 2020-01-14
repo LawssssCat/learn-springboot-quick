@@ -74,6 +74,8 @@
 <script type="text/javascript" src="bower_components/ztree/jquery.ztree.all.min.js"></script>
 <script type="text/javascript" src="bower_components/layer/layer.js"></script>
 <script type="text/javascript">
+
+
  var zTree; 
  //初始化zTree时会用到
  var setting = {
@@ -100,7 +102,30 @@
 	 
 	 $(".form-horizontal")
 	 .on("click",".load-sys-dept",doLoadZTreeNodes);
+	 
+	 $(".form-horizontal")
+	 .on("change","#usernameId,#emailId,#phoneId",isExist);
  });
+ 
+	function isExist() {
+		var url = "/user/doIsExist";
+		var columnName = $(this).prop("name") ; 
+		var columnValue = $(this).val() ; 
+		var name = $(this).parents(".form-group").find("label").html() ; 
+		var params = {
+				"columnName":columnName , 
+				"columnValue":columnValue
+			}
+		$.getJSON(url,params, function(result) {
+			doHandleExist(name , result);
+		});
+	}
+	function doHandleExist(name , result) {
+		if(result.state==0){//存在 exist
+			alert("\""+name+"\""+result.message);
+		}
+	}
+ 
  function doHideTree(){
 	  $("#treeLayer").css("display","none");
  }
@@ -116,6 +141,8 @@
 	  //3.隐藏zTree对应的Div
 	  doHideTree();
  }
+ 
+
  
  function doLoadZTreeNodes(){
 	  var url="dept/doFindZTreeNodes";

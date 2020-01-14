@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.edut.springboot.tarena.common.config.PaginationProperties;
 import com.edut.springboot.tarena.common.utils.Assert;
+import com.edut.springboot.tarena.common.vo.CheckBox;
 import com.edut.springboot.tarena.common.vo.PageObject;
+import com.edut.springboot.tarena.common.vo.SysRoleMenuVo;
 import com.edut.springboot.tarena.dao.SysRoleDao;
 import com.edut.springboot.tarena.dao.SysRoleMenuDao;
 import com.edut.springboot.tarena.dao.SysUserRoleDao;
@@ -86,6 +88,49 @@ public class SysRoleServiceImpl implements SysRoleService {
 		 */
 		Assert.isServiceValid(rows==0, "服务异常...");
 		return rows;
+	}
+
+	@Override
+	public SysRoleMenuVo findObjectById(Integer id) {
+		Assert.isArgumentValid(id==null || id<1, "请选择一个");
+		SysRoleMenuVo result = sysRoleDao.findObjectById(id);
+		Assert.isServiceValid(result==null, "记录不存在哦！");
+		return result;
+	}
+
+	@Override
+	public int updateObject(SysRoleMenuVo entity) {
+		/**
+		 * 参数校验
+		 */
+		Assert.isArgumentValid(entity==null, "请填入数据 Q~Q");
+		Integer id =entity.getId() ; 
+		Assert.isArgumentValid(id==null || id<1 , "传参异常 ， id="+id);
+		String name = entity.getName() ;
+		Assert.isEmpty(name, "名字不能为空 Q~Q ");
+		List<Integer> menuIds = entity.getMenuIds(); 
+		Assert.isListEmpty(menuIds, "请指定一个权限 ！");
+		
+		/**
+		 * 方法执行
+		 */
+		int rows = sysRoleDao.updateObject(id , name , entity.getNote() ) ;
+		/**
+		 * 结果校验
+		 */
+		Assert.isServiceValid(rows==0, "数据可能不存在了！ Q~Q");
+		/**
+		 * 方法执行 - 2
+		 */
+		sysRoleMenuDao.deleteObjectsByRoleId(id) ; 
+		sysRoleMenuDao.insertObjects(id,  menuIds.toArray(new Integer[menuIds.size()]));
+		return rows ;
+	}
+
+	@Override
+	public List<CheckBox> findObjects() {
+		List<CheckBox> result = sysRoleDao.findObejcts() ;
+		return result ;
 	}
 
 }

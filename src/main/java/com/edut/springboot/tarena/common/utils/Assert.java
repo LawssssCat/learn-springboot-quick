@@ -22,14 +22,21 @@ public abstract class Assert {
 		}
 	}
 	//.....
+	/** 字符串空 */
 	public static void isEmpty(String data, String message) {
 		if(data==null || "".equals(data)) {
 			throw new IllegalArgumentException(message);
 		}
 	}
-	public static void isListEmpty(List<SysRole> records, String message) {
+	
+	public static <T> void isListEmpty(List<T> records, String message) {
 		if(records==null || records.size()==0) {
-			throw new ServiceException(message) ; 
+			throw new IllegalArgumentException(message) ; 
+		}
+	}
+	public static void isErrorInteger(Integer i, String message) {
+		if(i==null || i<1) {
+			throw new IllegalArgumentException(message) ; 
 		}
 	}
 }

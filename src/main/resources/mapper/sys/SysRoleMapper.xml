@@ -51,5 +51,27 @@
 		limit #{startIndex} , #{pageSize} 
 	</select>
 	
+	<!-- resultMap 嵌套查询 -->
+	<select id="findObjectById" resultMap="sysRoleMenuVo">
+		select id roleId , name , note 
+		from  sys_roles  
+		where id = #{roleId}
+	</select>
+	
+	<!-- resultMap一般用于自定义映射或一些关联查询中 -->
+	<resultMap id="sysRoleMenuVo" 
+		type="com.edut.springboot.tarena.common.vo.SysRoleMenuVo">
+		<!-- 假如基于id做关联查询，又希望将id值存储到值对象，
+                           可以对id进行专门映射 -->
+		<id property="id" column="roleId"/>
+		<result property="name" column="name"/>
+		 <!-- collection一般应用于one2many查询 -->
+		<collection 
+			property="menuIds" 
+			select="com.edut.springboot.tarena.dao.SysRoleMenuDao.findMenuIdsByRoleId"
+			column="roleId">
+			<!-- 上面id的映射 -->
+		</collection>
+	</resultMap>
 	
 </mapper>

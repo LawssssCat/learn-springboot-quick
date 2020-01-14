@@ -46,4 +46,9 @@ public class SysUserController {
 		int rows = sysUserService.updateObject(sysUser , roleIds);
 		return new JsonResult("update ok! rows="+rows);
 	}
+	
+	@RequestMapping("/doIsExist")
+	public void doIsExist(String columnName , String columnValue) {
+		sysUserService.isExist(columnName , columnValue);
+	}
 }

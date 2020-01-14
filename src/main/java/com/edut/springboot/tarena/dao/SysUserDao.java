@@ -13,7 +13,7 @@ import com.edut.springboot.tarena.pojo.SysUser;
 @Mapper
 public interface SysUserDao {
 	
-	int verificationModule(
+	int isExist(
 			@Param("columnName") String columnName ,
 			@Param("columnValue") String columnValue ) ;
 	

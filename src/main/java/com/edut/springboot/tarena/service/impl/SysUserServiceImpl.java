@@ -31,6 +31,12 @@ public class SysUserServiceImpl implements SysUserService {
 	
 	@Autowired
 	private PaginationProperties paginationProperties ; 
+	
+	public void isExist(String columnName , String columnValue) {
+		int rows = sysUserDao.isExist(columnName, columnValue);
+		Assert.isServiceValid(rows!=0, "已存在！");
+	}
+	
 
 	@Override
 	public PageObject<SysUserDeptVo> findPageObjects(Integer pageCurrent, String username) {
@@ -78,6 +84,10 @@ public class SysUserServiceImpl implements SysUserService {
 		Assert.isEmpty(sysUser.getUsername(), "用户名不能为空！");
 		Assert.isEmpty(sysUser.getPassword(), "密码不能为空");
 		Assert.isArgumentValid( roleIds==null || roleIds.length==0 , "必须选择一个角色！");
+		
+		//校验重复
+		isSame(sysUser.getUsername(),sysUser.getEmail() , sysUser.getMobile());
+		
 		
 		//2.保存用户自身信息
         //2.1对密码进行加密
@@ -136,9 +146,14 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public int updateObject(SysUser sysUser, Integer[] roleIds) {
+		//校验1
 		Assert.isArgumentValid(sysUser==null, "请输入");
 		Assert.isEmpty(sysUser.getUsername(), "用户名不能为空");
 		Assert.isArgumentValid(roleIds==null||roleIds.length==0, "必须制定权限");
+		
+		//校验2 重复
+		isSame(sysUser.getUsername(),sysUser.getEmail() , sysUser.getMobile());
+		
 		
 		int rows = sysUserDao.updateObejct(sysUser);
 		Assert.isServiceValid(rows==0, "数据可能不存在了！");
@@ -147,6 +162,12 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUserRoleDao.insertObjects(sysUser.getId(), roleIds);
 		
 		return rows;
+	}
+
+	private void isSame(String username, String email, String mobile) {
+		Assert.isServiceValid(username!=null&&sysUserDao.isExist("username", username)!=0, "用户名已存在！"); ; 
+		Assert.isServiceValid(email!=null&&sysUserDao.isExist("email", email)!=0, "用户名已存在！"); ; 
+		Assert.isServiceValid(mobile!=null&&sysUserDao.isExist("mobile", mobile)!=0, "用户名已存在！"); ;		
 	} 
 	
 }

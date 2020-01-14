@@ -15,13 +15,13 @@ public class SysUserDaoTest {
 		
 		String columnName = "username";
 		String columnValue = "aaaaaa" ;
-		int rows = sysUserDao.verificationModule(columnName , columnValue);
+		int rows = sysUserDao.isExist(columnName , columnValue);
 		System.out.println("username - rows="+rows);
 
-		rows = sysUserDao.verificationModule("mobile" , "13624356789");
+		rows = sysUserDao.isExist("mobile" , "13624356789");
 		System.out.println("mobile - rows="+rows);
 		
-		rows = sysUserDao.verificationModule("email" , "admin@t.cn");
+		rows = sysUserDao.isExist("email" , "admin@t.cn");
 		System.out.println("email - rows="+rows);
 	}
 }

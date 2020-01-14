@@ -16,4 +16,5 @@ public interface SysUserService {
 	int saveObject(SysUser sysUser, Integer[] roleIds);
 	int updateObject(SysUser sysUser, Integer[] roleIds); 
 	Map<String, Object> findObjectById(Integer id);
+	void isExist(String columnName , String columnValue)  ; 
 }

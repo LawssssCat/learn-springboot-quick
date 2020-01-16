@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edut.springboot.tarena.common.annotation.RequiredCache;
 import com.edut.springboot.tarena.common.exception.ServiceException;
 import com.edut.springboot.tarena.common.utils.Assert;
 import com.edut.springboot.tarena.common.vo.JsonResult;
@@ -25,6 +26,8 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Autowired
 	private SysRoleMenuDao sysRoleMenuDao ; 
 	
+	@RequiredCache
+	@Override
 	public JsonResult findObjects() {
 		List<Map<String, Object>> data = sysMenuDao.findObjects();
 		Assert.isServiceValid(data == null , "没有数据！");
@@ -32,6 +35,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 	
 	
+	@Override
 	public int deleteObject(Integer id ) {
 		//1. 参数校验 null , <1
 		Assert.isArgumentValid(id==null || id<1, "id错误！~");

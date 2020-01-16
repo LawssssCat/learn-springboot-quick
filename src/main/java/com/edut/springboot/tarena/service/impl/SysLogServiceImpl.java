@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 //@Service("sysLogService")
 @Service()
-public class SyslogServiceImpl implements  SysLogService {
+public class SysLogServiceImpl implements  SysLogService {
 	
 	@Autowired
 	private PaginationProperties paginationProperties ; 
@@ -76,6 +76,12 @@ public class SyslogServiceImpl implements  SysLogService {
 		
 		Assert.isServiceValid(rows == 0, "数据可能不存在");
 		return rows;
+	}
+
+	@Override
+	public void saveObject(SysLog entity) {
+		//验证？
+		sysLogDao.insertObject(entity) ; 
 	}
 	
 }

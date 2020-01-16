@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edut.springboot.tarena.common.annotation.ClearCache;
 import com.edut.springboot.tarena.common.annotation.RequiredCache;
 import com.edut.springboot.tarena.common.exception.ServiceException;
 import com.edut.springboot.tarena.common.utils.Assert;
@@ -57,6 +58,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 
+	@ClearCache
 	@Override
 	public int saveObject(SysMenu entity) {
 		Assert.isArgumentValid(entity==null , "数据不能为空!!!");

@@ -5,10 +5,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+
+import com.edut.springboot.tarena.common.annotation.ClearCache;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +27,7 @@ public class SysCacheAspect {
 	
 	
 	@Around("doCache()")
-	public Object doAround(ProceedingJoinPoint jp) throws Throwable {
+	public Object doCacheAround(ProceedingJoinPoint jp) throws Throwable {
 		
 		Signature signature = jp.getSignature();
 		
@@ -43,5 +46,11 @@ public class SysCacheAspect {
 		}catch (Exception e) {
 			throw e ; 
 		}
+	}
+	
+	@AfterReturning(pointcut = "@annotation(com.edut.springboot.tarena.common.annotation.ClearCache)")
+	public void doClearAround() {
+		map.clear(); 
+		log.info("clear data from cache ... ");
 	}
 }

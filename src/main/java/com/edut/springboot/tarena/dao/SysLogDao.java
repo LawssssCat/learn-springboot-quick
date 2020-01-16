@@ -13,6 +13,12 @@ import com.edut.springboot.tarena.pojo.SysLog;
  */
 @Mapper
 public interface SysLogDao {
+	
+	
+	int insertObject(SysLog entity) ;
+	
+	
+	
 	/**
 	 * 基于ids的值，删除
 	 */

@@ -19,7 +19,8 @@ import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service	
+//@Service("sysLogService")
+@Service()
 public class SyslogServiceImpl implements  SysLogService {
 	
 	@Autowired

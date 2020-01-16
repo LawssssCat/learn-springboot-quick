@@ -19,6 +19,10 @@
 	</properties>
 
 	<dependencies>
+	 	<dependency>
+	       <groupId>org.springframework.boot</groupId>
+	       <artifactId>spring-boot-starter-aop</artifactId>
+	   </dependency>
 		<!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
 		<dependency>
 		    <groupId>com.github.pagehelper</groupId>

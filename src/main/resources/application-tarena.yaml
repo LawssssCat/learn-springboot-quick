@@ -15,6 +15,13 @@ spring:
     cache: false
     prefix: classpath:/templates/pages
     suffix: .html
+  aop:
+    proxy-target-class: false 
+  # true 默认 使用继承代理
+  # false 使用 组合代理(jdk代理) 
+ 
+ 
+ 
     
 #mybatis
 mybatis:
@@ -23,8 +30,7 @@ mybatis:
 #log
 logging:
   level:
-    com.edut.springboot: debug 
-    
+    com.edut.springboot: debug   file:    path: D://temp/
 
 #page
 page: 

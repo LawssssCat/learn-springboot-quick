@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.edut.springboot.tarena.common.annotation.ClearCache;
+import com.edut.springboot.tarena.common.annotation.RequiredCache;
 import com.edut.springboot.tarena.common.config.PaginationProperties;
 import com.edut.springboot.tarena.common.exception.ServiceException;
 import com.edut.springboot.tarena.common.utils.Assert;
@@ -81,8 +83,8 @@ public class SysLogServiceImpl implements  SysLogService {
 		return rows;
 	}
 
-	//@Async
-	//@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public void saveObject(SysLog entity) {
 		//验证？

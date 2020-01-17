@@ -6,7 +6,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 //@EnableCaching
-//@EnableAsync
+@EnableAsync  //spring容器启动时会创建线程池 (系统底层会进行异步的自动配置)
 @SpringBootApplication
 public class TarenaSpringBootApplicationContext {
 

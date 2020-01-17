@@ -56,6 +56,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 
+	@RequiredCache
 	@Override
 	public List<Node> findZtreeMenuNodes() {
 		return sysMenuDao.findZtreeMenuNodes() ;

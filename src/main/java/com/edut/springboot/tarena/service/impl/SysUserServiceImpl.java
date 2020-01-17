@@ -10,7 +10,9 @@ import java.util.UUID;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.edut.springboot.tarena.common.annotation.RequiredLog;
 import com.edut.springboot.tarena.common.config.PaginationProperties;
 import com.edut.springboot.tarena.common.utils.Assert;
 import com.edut.springboot.tarena.common.vo.PageObject;
@@ -20,6 +22,7 @@ import com.edut.springboot.tarena.dao.SysUserRoleDao;
 import com.edut.springboot.tarena.pojo.SysUser;
 import com.edut.springboot.tarena.service.SysUserService;
 
+@Transactional
 @Service
 public class SysUserServiceImpl implements SysUserService {
 	
@@ -37,7 +40,9 @@ public class SysUserServiceImpl implements SysUserService {
 		Assert.isServiceValid(rows!=0, "已存在！");
 	}
 	
-
+	//自定义切面优先级低时候，和下面注解在同一个事务中 ，@RequiredLog(operation = "分页查询")
+	@Transactional(readOnly = true )   
+	@RequiredLog(operation = "分页查询")
 	@Override
 	public PageObject<SysUserDeptVo> findPageObjects(Integer pageCurrent, String username) {
 		/**
@@ -60,6 +65,12 @@ public class SysUserServiceImpl implements SysUserService {
 		return new PageObject<SysUserDeptVo>(rowCount, records, pageSize, pageCurrent);
 	}
 
+	/*
+	 * 加入在spring中，没有控制事务，现在有事务吗？
+	 * 默认是mybatis框架在控制事务 ==》 mybatis无法控制业务层事务 ==》 在切面 AOP 中控制事务
+	 */
+	@Transactional
+	@RequiredLog(operation = "禁用按钮点击")
 	@Override
 	public int validById(Integer id, Integer valid) {
 		//1. 参数校验 

@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DaoSupport;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.edut.springboot.tarena.common.config.PaginationProperties;
 import com.edut.springboot.tarena.common.exception.ServiceException;
@@ -78,10 +81,13 @@ public class SysLogServiceImpl implements  SysLogService {
 		return rows;
 	}
 
+	@Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public void saveObject(SysLog entity) {
 		//验证？
 		sysLogDao.insertObject(entity) ; 
+		try {Thread.sleep(5000);}catch(InterruptedException e) {};
 	}
 	
 }

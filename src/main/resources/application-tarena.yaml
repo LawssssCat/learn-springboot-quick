@@ -3,8 +3,13 @@ server:
   port: 80
   servlet:
     context-path: /
+  tomcat: 
+  #tomcat 线程配置
+    uri-encoding: utf-8
+    max-threads: 1000
+    min-spare-threads: 100
 
-#spring
+# spring
 spring:
   datasource:
     url: jdbc:mysql://111.229.121.30:3306/jtsys?characterEncoding=utf8&serverTimezone=GMT%2B8
@@ -19,7 +24,15 @@ spring:
     proxy-target-class: false 
   # true 默认 使用继承代理
   # false 使用 组合代理(jdk代理) 
- 
+  task:
+    execution:
+      pool:
+        # core-size: 3 # 默认CPU核数+1
+        max-size: 5 # 最大吞吐量 = max-size+queue-capacity . 超了报异常
+        queue-capacity: 100 #默认100多个亿 INTEGER.MAX_VALUE
+        keep-alive: 30 #30s后 释放 多余 core-size 的线程
+        allow-core-thread-timeout: false #默认false 不释放core-size
+      thread-name-prefix: spring.async.task- # 默认 task-
  
  
     
@@ -30,7 +43,9 @@ mybatis:
 #log
 logging:
   level:
-    com.edut.springboot: debug   file:    path: D://temp/
+    com.edut.springboot: debug 
+  file:
+    path: D://temp/
 
 #page
 page: 

@@ -27,16 +27,30 @@ class DateUtils{
 //	}
 	
 //	方案3==========  既要考虑线程，又要考虑安全，减少对象创建次数-一个线程一个对象
-	private static ThreadLocal<SimpleDateFormat> threadLocal = new ThreadLocal<SimpleDateFormat>() {
-		protected SimpleDateFormat initialValue() {
-			System.out.println(1);
-			return new SimpleDateFormat();
-		};
-	};
+//	private static ThreadLocal<SimpleDateFormat> threadLocal = new ThreadLocal<SimpleDateFormat>() {
+//		protected SimpleDateFormat initialValue() {
+//			System.out.println(1);
+//			return new SimpleDateFormat("yyyy/MM/dd");
+//		};
+//	};
+//	
+//	public static String formart(Date date ) {
+//		return threadLocal.get().format(date) ; 
+//	}
+	
+//	方案4==========  实际上，与3相同
+	private static ThreadLocal<SimpleDateFormat> threadLocal = new ThreadLocal<SimpleDateFormat>() ;  
 	
 	public static String formart(Date date ) {
-		return threadLocal.get().format(date) ; 
+		SimpleDateFormat sdf = threadLocal.get(); 
+		if(sdf==null) {
+			sdf = new SimpleDateFormat("yyyy/MM/dd") ;
+			threadLocal.set(sdf);
+		}
+		return sdf.format(date) ; 
 	}
+	
+	
 }
 
 

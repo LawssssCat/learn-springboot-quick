@@ -31,7 +31,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	
 	
 	//@Cacheable(value = "menuCache")
-	//@RequiredCache // 自己的cache
+	@RequiredCache // 自己的cache
 	@Override
 	public JsonResult findObjects() {
 		List<Map<String, Object>> data = sysMenuDao.findObjects();
@@ -63,7 +63,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 
 	//@CacheEvict(value = "menuCache" ,allEntries = true ,beforeInvocation = false)
-	//@ClearCache
+	@ClearCache
 	@Override
 	public int saveObject(SysMenu entity) {
 		Assert.isArgumentValid(entity==null , "数据不能为空!!!");

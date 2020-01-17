@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.edut.springboot.tarena.common.annotation.ClearCache;
@@ -27,7 +29,9 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Autowired
 	private SysRoleMenuDao sysRoleMenuDao ; 
 	
-	@RequiredCache
+	
+	//@Cacheable(value = "menuCache")
+	//@RequiredCache // 自己的cache
 	@Override
 	public JsonResult findObjects() {
 		List<Map<String, Object>> data = sysMenuDao.findObjects();
@@ -58,7 +62,8 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 
-	@ClearCache
+	//@CacheEvict(value = "menuCache" ,allEntries = true ,beforeInvocation = false)
+	//@ClearCache
 	@Override
 	public int saveObject(SysMenu entity) {
 		Assert.isArgumentValid(entity==null , "数据不能为空!!!");

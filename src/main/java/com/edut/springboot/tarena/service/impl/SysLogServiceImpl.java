@@ -81,8 +81,8 @@ public class SysLogServiceImpl implements  SysLogService {
 		return rows;
 	}
 
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	//@Async
+	//@Transactional(propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public void saveObject(SysLog entity) {
 		//验证？

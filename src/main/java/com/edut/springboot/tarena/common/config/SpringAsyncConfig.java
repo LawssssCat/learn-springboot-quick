@@ -9,13 +9,17 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+@ConfigurationProperties(prefix =  "async-thread-pool")
+@Setter
 @Slf4j
 @Configuration
 public class SpringAsyncConfig implements AsyncConfigurer {

@@ -29,7 +29,7 @@ spring:
       pool:
         core-size: 2 # 默认CPU核数+1
         max-size: 5 # 最大吞吐量 = max-size+queue-capacity . 超了报异常
-        queue-capacity: 100 #默认100多个亿 INTEGER.MAX_VALUE
+        queue-capacity: 3 #默认100多个亿 INTEGER.MAX_VALUE
         keep-alive: 30 #30s后 释放 多余 core-size 的线程
         allow-core-thread-timeout: false #默认false 不释放core-size
       thread-name-prefix: spring.async.task- # 默认 task-
@@ -51,3 +51,14 @@ logging:
 page: 
   config:
     pageSize: 3
+    
+async-thread-pool:
+  corePoolSize: 1
+  maxPoolSize: 2
+  keepAliveSeconds: 30
+  queueCapacity: 1
+  
+  
+  
+  
+  

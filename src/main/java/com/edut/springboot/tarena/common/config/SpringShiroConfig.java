@@ -67,7 +67,8 @@ public class SpringShiroConfig {
 		map.put("/dist/**", "anon") ;
 		map.put("/docs/**", "anon") ;
 		map.put("/plugins/**", "anon") ;
-		map.put("/user/doLogin", "authc") ; 
+		map.put("/user/doLogin", "anon") ; 
+		map.put("/doLogout", "logout") ; 
 		//除了匿名访问的资源，其他都要认证"authc"
 		
 		map.put("/**", "authc") ;

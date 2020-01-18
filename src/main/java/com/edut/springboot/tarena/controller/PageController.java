@@ -19,6 +19,11 @@ public class PageController {
 		return  "/common/page" ; 
 	}
 	
+	@RequestMapping("/doLoginUI")
+	public String doLoginUI() {
+		return "/login" ; 
+	}
+	
 //	@RequestMapping("/log/log_list")
 //	public String doLogUI() {
 //		return "/sys/log_list" ; 

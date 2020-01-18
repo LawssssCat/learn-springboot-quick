@@ -68,6 +68,7 @@ public class SpringAsyncConfig implements AsyncConfigurer {
 		
 		return executor;
 	}
+	
 	@Override
 	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
 		return new AsyncUncaughtExceptionHandler() {

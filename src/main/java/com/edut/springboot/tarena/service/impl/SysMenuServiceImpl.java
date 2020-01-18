@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.edut.springboot.tarena.common.annotation.ClearCache;
 import com.edut.springboot.tarena.common.annotation.RequiredCache;
+import com.edut.springboot.tarena.common.annotation.RequiredLog;
 import com.edut.springboot.tarena.common.exception.ServiceException;
 import com.edut.springboot.tarena.common.utils.Assert;
 import com.edut.springboot.tarena.common.vo.JsonResult;
@@ -29,9 +30,10 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Autowired
 	private SysRoleMenuDao sysRoleMenuDao ; 
 	
-	
+	@Cacheable(cacheNames = "menuCache")
+	@RequiredLog(operation = "查询")
 	//@Cacheable(value = "menuCache")
-	@RequiredCache // 自己的cache
+	//@RequiredCache // 自己的cache
 	@Override
 	public JsonResult findObjects() {
 		List<Map<String, Object>> data = sysMenuDao.findObjects();
@@ -39,7 +41,10 @@ public class SysMenuServiceImpl implements SysMenuService {
 		return new JsonResult(data) ;   
 	}
 	
-	
+	@CacheEvict(	beforeInvocation = false  , 
+					value = "menuCache" , 
+					allEntries = true)
+	@RequiredLog(operation = "修改")
 	@Override
 	public int deleteObject(Integer id ) {
 		//1. 参数校验 null , <1
@@ -63,8 +68,9 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 
+	@RequiredLog(operation = "添加")
 	//@CacheEvict(value = "menuCache" ,allEntries = true ,beforeInvocation = false)
-	@ClearCache
+	//@ClearCache
 	@Override
 	public int saveObject(SysMenu entity) {
 		Assert.isArgumentValid(entity==null , "数据不能为空!!!");
@@ -80,7 +86,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 		return rows ;
 	}
 
-
+	@RequiredLog(operation = "修改")
 	public int updateObject(SysMenu entity) {
 		Assert.isArgumentValid(entity==null , "数据不能为空!!!");
 		Assert.isEmpty(entity.getName(), "用户名不能为空!!!");

@@ -39,7 +39,10 @@ public class SysLogAspect {
 	@Pointcut("bean(sysUserServiceImpl)")
 	public void joinPoint() {} ; 
 	
-	@Around("joinPoint()")
+	@Pointcut("bean(sysMenuServiceImpl)")
+	public void joinPoint1() {} ; 
+	
+	@Around("joinPoint()||joinPoint1()")
 	public Object around(ProceedingJoinPoint pj ) throws Throwable {
 		try {
 			long start = System.currentTimeMillis(); 

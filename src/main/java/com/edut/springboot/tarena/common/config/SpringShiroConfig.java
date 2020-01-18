@@ -2,7 +2,8 @@ package com.edut.springboot.tarena.common.config;
 
 import java.util.LinkedHashMap;
 
-import org.apache.shiro.mgt.SecurityManager;  
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,9 @@ public class SpringShiroConfig {
 	 * 有抽象，尽量写抽象
 	 */
 	@Bean("sManager")
-	public SecurityManager securityManager() {
-		SecurityManager sManager = new DefaultWebSecurityManager();
+	public SecurityManager securityManager(Realm realm) { //这里的 Realm 是我们自定义的  ShiroUserRealm
+		DefaultWebSecurityManager sManager = new DefaultWebSecurityManager();
+		sManager.setRealm(realm);
 		return sManager; 
 	}
 	
@@ -64,7 +66,8 @@ public class SpringShiroConfig {
 		map.put("/build/**", "anon");
 		map.put("/dist/**", "anon") ;
 		map.put("/docs/**", "anon") ;
-		map.put("/plugins/**", "anon") ; 
+		map.put("/plugins/**", "anon") ;
+		map.put("/user/doLogin", "authc") ; 
 		//除了匿名访问的资源，其他都要认证"authc"
 		
 		map.put("/**", "authc") ;

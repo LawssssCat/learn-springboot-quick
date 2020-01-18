@@ -14,7 +14,7 @@ public class SysUser implements Serializable {
 	private String salt; //颜值 
 	private String email;
 	private String mobile;
-	private Integer valid=1; //状态
+	private Integer valid=1; //状态 1=OK 0=禁用
 	private Integer deptId ; 
 	private Date createdTime;
 	private Date modifiedTime;

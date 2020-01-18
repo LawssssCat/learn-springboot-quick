@@ -183,8 +183,8 @@ public class SysUserServiceImpl implements SysUserService {
 
 	private void isSame(String username, String email, String mobile) {
 		Assert.isServiceValid(username!=null&&sysUserDao.isExist("username", username)!=0, "用户名已存在！"); ; 
-		Assert.isServiceValid(email!=null&&sysUserDao.isExist("email", email)!=0, "用户名已存在！"); ; 
-		Assert.isServiceValid(mobile!=null&&sysUserDao.isExist("mobile", mobile)!=0, "用户名已存在！"); ;		
+		Assert.isServiceValid(email!=null&&sysUserDao.isExist("email", email)!=0, "email已存在！"); ; 
+		Assert.isServiceValid(mobile!=null&&sysUserDao.isExist("mobile", mobile)!=0, "mobile已存在！"); ;		
 	} 
 	
 }

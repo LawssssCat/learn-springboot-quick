@@ -2,6 +2,12 @@ package com.edut.springboot.tarena.controller;
 
 import javax.naming.spi.DirStateFactory.Result;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +24,28 @@ public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService ; 
 
+	@Autowired
+	private SecurityManager securityManager ;  
+	
+	
+	/**username/password 要与前端一致*/
+	@RequestMapping("/doLogin") 
+	public JsonResult doLogin(String username , String password) {
+		
+		//用户状态
+		Subject subject =   SecurityUtils.getSubject() ; 
+
+		AuthenticationToken authenticationToken  = 
+				new UsernamePasswordToken(
+				username , password) ;
+		
+		//尝试登录
+		securityManager.login(subject, authenticationToken) ; 
+		
+		return new JsonResult("login ok !") ; 
+	}
+	
+	
 	@RequestMapping("/doFindPageObjects")
 	public JsonResult doFindPageObjects(Integer pageCurrent ,String username) {
 		return new JsonResult(sysUserService.findPageObjects(pageCurrent , username));

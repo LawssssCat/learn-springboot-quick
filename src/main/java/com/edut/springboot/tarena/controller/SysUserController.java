@@ -32,15 +32,7 @@ public class SysUserController {
 	@RequestMapping("/doLogin") 
 	public JsonResult doLogin(String username , String password) {
 		
-		//用户状态
-		Subject subject =   SecurityUtils.getSubject() ; 
-
-		AuthenticationToken authenticationToken  = 
-				new UsernamePasswordToken(
-				username , password) ;
-		
-		//尝试登录
-		securityManager.login(subject, authenticationToken) ; 
+		sysUserService.doLogin(username , password) ; 
 		
 		return new JsonResult("login ok !") ; 
 	}

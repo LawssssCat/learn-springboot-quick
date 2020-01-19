@@ -68,7 +68,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 
-	@RequiredLog(operation = "添加")
+	@RequiredLog(operation =  "添加")
 	//@CacheEvict(value = "menuCache" ,allEntries = true ,beforeInvocation = false)
 	//@ClearCache
 	@Override

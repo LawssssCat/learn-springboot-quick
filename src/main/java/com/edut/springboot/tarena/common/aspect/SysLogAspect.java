@@ -11,8 +11,10 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.edut.springboot.tarena.common.annotation.RequiredLog;
+import com.edut.springboot.tarena.common.utils.ShiroUtils;
 import com.edut.springboot.tarena.dao.SysLogDao;
 import com.edut.springboot.tarena.pojo.SysLog;
 import com.edut.springboot.tarena.service.SysLogService;
@@ -45,7 +47,8 @@ public class SysLogAspect {
 	@Around("joinPoint()||joinPoint1()")
 	public Object around(ProceedingJoinPoint pj ) throws Throwable {
 		try {
-			long start = System.currentTimeMillis(); 
+			long start = System.currentTimeMillis();
+			//执行操作
 			Object result = pj.proceed();
 			long  end = System.currentTimeMillis() ; 
 			
@@ -70,25 +73,20 @@ public class SysLogAspect {
 		MethodSignature signature =(MethodSignature) pj.getSignature(); // (MethodSignature) : 提供了参数的 字符串到类型的转换
 		Object target = pj.getTarget(); 
 		Class<?> clazz = target.getClass(); // 实现 - 类
-		
-		String ip =  "192.168.0.1";
-		String username = "GBK1910";
-		//1.3 获取目标方法实际参数
-		String params = Arrays.toString(pj.getArgs());
 		//1.4 获取操作名称(由此注解RequiredLog指定)
 		//1.4.1 获取目标方法
 		Method method = clazz.getDeclaredMethod(signature.getName() , signature.getParameterTypes());
-		//Method method  = signature.getMethod() ; 
 		String methodName =clazz.getName() +"."+ method.getName(); 
 		
-		/*
-		 * 老师加了判断。。。。
-		 */
-		String operation ="operation" ; 
+		
 		RequiredLog annotation = method.getAnnotation(RequiredLog.class);
-		if(annotation!=null) {
-			operation = annotation.operation() ; 
-		}
+		if(annotation==null) return ;
+		String operation = Arrays.toString(annotation.operation() ) ;
+		
+		String ip = ShiroUtils.getId() ;
+		String username = ShiroUtils.getUsername() ;
+		//1.3 获取目标方法实际参数
+		String params = Arrays.toString(pj.getArgs());
 		
 		//2. 封装为日志
 		SysLog entity = new SysLog()

@@ -1,16 +1,25 @@
 package com.edut.springboot.tarena.controller;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.edut.springboot.tarena.pojo.SysUser;
+
 @Controller
 public class PageController {
 
 	@RequestMapping("/doIndexUI")
-	public String doIndexUI() {
+	public String doIndexUI(Model model ) {
+		
+		SysUser user =  (SysUser) SecurityUtils.getSubject().getPrincipal();
+		
+		model.addAttribute("username", user.getUsername()) ; 
+		
 		return "/starter";
 	}
 	

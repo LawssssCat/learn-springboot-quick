@@ -7,8 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.collections.functors.TruePredicate;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +38,9 @@ import com.edut.springboot.tarena.service.SysUserService;
 public class SysUserServiceImpl implements SysUserService {
 	
 	@Autowired
+	private SecurityManager securityManager ; 
+	
+	@Autowired
 	private SysUserDao sysUserDao ;
 	
 	@Autowired
@@ -38,6 +49,7 @@ public class SysUserServiceImpl implements SysUserService {
 	@Autowired
 	private PaginationProperties paginationProperties ; 
 	
+	
 	public void isExist(String columnName , String columnValue) {
 		int rows = sysUserDao.isExist(columnName, columnValue);
 		Assert.isServiceValid(rows!=0, "已存在！");
@@ -45,6 +57,7 @@ public class SysUserServiceImpl implements SysUserService {
 	
 	//@RequiredCache
 	//自定义切面优先级低时候，和下面注解在同一个事务中 ，@RequiredLog(operation = "分页查询")
+	@Cacheable(value = {"page"} , key = "#pageCurrent")
 	@Transactional(readOnly = true  )   
 	@RequiredLog(operation = "分页查询")
 	@Override
@@ -73,6 +86,7 @@ public class SysUserServiceImpl implements SysUserService {
 	 * 加入在spring中，没有控制事务，现在有事务吗？
 	 * 默认是mybatis框架在控制事务 ==》 mybatis无法控制业务层事务 ==》 在切面 AOP 中控制事务
 	 */
+	@CacheEvict(value = {"page" , "user"} , beforeInvocation = true , allEntries = true)
 	@Transactional
 	@RequiredLog(operation = "禁用按钮点击")
 	@Override
@@ -92,6 +106,7 @@ public class SysUserServiceImpl implements SysUserService {
 		return rows ;
 	}
 
+	@CacheEvict(value = {"page" , "user"} , beforeInvocation = true , allEntries = true)
 	//@ClearCache
 	@Override
 	public int saveObject(SysUser sysUser, Integer[] roleIds) {
@@ -139,6 +154,7 @@ public class SysUserServiceImpl implements SysUserService {
 		return rows;
 	}
 
+	@Cacheable(cacheNames = "user" , key = "#id")
 	@Override
 	public Map<String, Object> findObjectById(Integer id) {
 		/**
@@ -160,6 +176,8 @@ public class SysUserServiceImpl implements SysUserService {
 		return map;
 	}
 
+	@RequiredLog(operation = "修改数据")
+	@CacheEvict(value = {"page" , "user"} , beforeInvocation = true , allEntries = true)
 	//@ClearCache
 	@Override
 	public int updateObject(SysUser sysUser, Integer[] roleIds) {
@@ -181,10 +199,25 @@ public class SysUserServiceImpl implements SysUserService {
 		return rows;
 	}
 
+	
 	private void isSame(String username, String email, String mobile) {
 		Assert.isServiceValid(username!=null&&sysUserDao.isExist("username", username)!=0, "用户名已存在！"); ; 
 		Assert.isServiceValid(email!=null&&sysUserDao.isExist("email", email)!=0, "email已存在！"); ; 
 		Assert.isServiceValid(mobile!=null&&sysUserDao.isExist("mobile", mobile)!=0, "mobile已存在！"); ;		
+	}
+
+	@RequiredLog(operation = "用户登录")
+	@Override
+	public void doLogin(String username, String password) {
+		//用户状态
+		Subject subject = SecurityUtils.getSubject() ; 
+
+		//凭证
+		AuthenticationToken authenticationToken  = new UsernamePasswordToken(username , password) ;
+		
+		//尝试登录
+		subject.login(authenticationToken);
+		//securityManager.login(subject, authenticationToken) ; 		
 	} 
 	
 }

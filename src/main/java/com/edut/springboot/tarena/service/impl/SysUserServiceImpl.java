@@ -17,6 +17,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,7 +56,6 @@ public class SysUserServiceImpl implements SysUserService {
 		Assert.isServiceValid(rows!=0, "已存在！");
 	}
 	
-	//@RequiredCache
 	//自定义切面优先级低时候，和下面注解在同一个事务中 ，@RequiredLog(operation = "分页查询")
 	@Cacheable(value = {"page"} , key = "#pageCurrent")
 	@Transactional(readOnly = true  )   
@@ -86,7 +86,12 @@ public class SysUserServiceImpl implements SysUserService {
 	 * 加入在spring中，没有控制事务，现在有事务吗？
 	 * 默认是mybatis框架在控制事务 ==》 mybatis无法控制业务层事务 ==》 在切面 AOP 中控制事务
 	 */
-	@CacheEvict(value = {"page" , "user"} , beforeInvocation = true , allEntries = true)
+	@Caching(
+			evict = {
+				@CacheEvict(cacheNames = "page" , allEntries = true , beforeInvocation = true) ,
+				@CacheEvict(cacheNames = "user" , key = "#id" , beforeInvocation = true)
+			}  
+		)
 	@Transactional
 	@RequiredLog(operation = "禁用按钮点击")
 	@Override
@@ -106,7 +111,12 @@ public class SysUserServiceImpl implements SysUserService {
 		return rows ;
 	}
 
-	@CacheEvict(value = {"page" , "user"} , beforeInvocation = true , allEntries = true)
+	@Caching(
+			evict = {
+				@CacheEvict(cacheNames = "page" , allEntries = true , beforeInvocation = true) ,
+				@CacheEvict(cacheNames = "user" , key = "#sysUser.id" , beforeInvocation = true)
+			}  
+		)
 	//@ClearCache
 	@Override
 	public int saveObject(SysUser sysUser, Integer[] roleIds) {
@@ -154,7 +164,12 @@ public class SysUserServiceImpl implements SysUserService {
 		return rows;
 	}
 
-	@Cacheable(cacheNames = "user" , key = "#id")
+	@Caching(
+			evict = {
+				@CacheEvict(cacheNames = "page" , allEntries = true , beforeInvocation = true) ,
+				@CacheEvict(cacheNames = "user" , key = "#id" , beforeInvocation = true)
+			}  
+		)
 	@Override
 	public Map<String, Object> findObjectById(Integer id) {
 		/**
@@ -176,8 +191,13 @@ public class SysUserServiceImpl implements SysUserService {
 		return map;
 	}
 
+	@Caching(
+			evict = {
+				@CacheEvict(cacheNames = "page" , allEntries = true , beforeInvocation = true) ,
+				@CacheEvict(cacheNames = "user" , key = "#sysUser.id" , beforeInvocation = true)
+			}  
+		)
 	@RequiredLog(operation = "修改数据")
-	@CacheEvict(value = {"page" , "user"} , beforeInvocation = true , allEntries = true)
 	//@ClearCache
 	@Override
 	public int updateObject(SysUser sysUser, Integer[] roleIds) {

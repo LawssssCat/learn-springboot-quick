@@ -17,5 +17,5 @@ public interface SysUserService {
 	Map<String, Object> findObjectById(Integer id);
 	/**除userId外，相同，则相同*/
 	void isExist(String columnName , String columnValue , Integer userId)  ;
-	void doLogin(String username, String password); 
+	void doLogin(String username, String password, boolean isRememberMe); 
 }

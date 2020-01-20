@@ -68,7 +68,7 @@ public class SysUserController {
 	}
 	
 	@RequestMapping("/doIsExist")
-	public void doIsExist(String columnName , String columnValue) {
-		sysUserService.isExist(columnName , columnValue);
+	public void doIsExist(String columnName , String columnValue , Integer userId) {
+		sysUserService.isExist(columnName , columnValue ,userId );
 	}
 }

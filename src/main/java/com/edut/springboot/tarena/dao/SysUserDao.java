@@ -18,7 +18,8 @@ public interface SysUserDao {
 	
 	int isExist(
 			@Param("columnName") String columnName ,
-			@Param("columnValue") String columnValue ) ;
+			@Param("columnValue") String columnValue  , 
+			@Param("id") Integer userId) ;
 	
 	
 	/**

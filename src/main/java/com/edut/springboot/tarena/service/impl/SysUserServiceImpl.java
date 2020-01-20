@@ -40,8 +40,8 @@ import com.edut.springboot.tarena.service.SysUserService;
 @Service
 public class SysUserServiceImpl implements SysUserService {
 	
-	@Autowired
-	private SecurityManager securityManager ; 
+	//@Autowired
+	//private SecurityManager securityManager ; 
 	
 	@Autowired
 	private SysUserDao sysUserDao ;
@@ -53,10 +53,15 @@ public class SysUserServiceImpl implements SysUserService {
 	private PaginationProperties paginationProperties ; 
 	
 	
-	public void isExist(String columnName , String columnValue) {
-		int rows = sysUserDao.isExist(columnName, columnValue);
-		Assert.isServiceValid(rows!=0, "已存在！");
+
+	public void isExist(String columnName , String columnValue , Integer userId ) {
+		int rows = sysUserDao.isExist(columnName, columnValue , userId);
+		Assert.isServiceValid(rows>0, "已存在！");
 	}
+	
+	
+	
+	
 
 	@RequiresPermissions({"sys:user:view"})
 	@Cacheable(value = {"page"} , key = "#pageCurrent")
@@ -117,8 +122,7 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Caching(
 			evict = {
-				@CacheEvict(cacheNames = "page" , allEntries = true , beforeInvocation = true) ,
-				@CacheEvict(cacheNames = "user" , key = "#sysUser.id" , beforeInvocation = true)
+				@CacheEvict(cacheNames = "page" , allEntries = true , beforeInvocation = true) 
 			}  
 		)
 	//@ClearCache
@@ -130,9 +134,11 @@ public class SysUserServiceImpl implements SysUserService {
 		Assert.isEmpty(sysUser.getPassword(), "密码不能为空");
 		Assert.isArgumentValid( roleIds==null || roleIds.length==0 , "必须选择一个角色！");
 		
-		//校验重复
-		isSame(sysUser.getUsername(),sysUser.getEmail() , sysUser.getMobile());
 		
+		//重复校验
+		isExist( "username",sysUser.getUsername(), null ) ;
+		isExist( "email",sysUser.getEmail(), null );
+		isExist(  "mobile",sysUser.getMobile(), null );
 		
 		//2.保存用户自身信息
         //2.1对密码进行加密
@@ -156,26 +162,21 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUser.setSalt(salt);
 		sysUser.setPassword(sh.toHex());//将密码加密结果转换为16进制并存储到entity内
 		
-		String username = ShiroUtils.getUsername();
-		sysUser.setModifiedUser(username);
+		sysUser.setModifiedUser(ShiroUtils.getUsername());
 		//执行、校验
 		int rows = sysUserDao.insertObject(sysUser);
 		Integer id = sysUser.getId();
 		Assert.isServiceValid(rows==0||id==null|| id<1, "存储异常！");
 		
-		rows = sysUserRoleDao.insertObjects(id , roleIds) ;
+		//关系
+		sysUserRoleDao.insertObjects(id , roleIds) ;
 		Assert.isServiceValid(rows==0, "存储异常！");
 		
 		//返回结果
 		return rows;
 	}
 
-	@Caching(
-			evict = {
-				@CacheEvict(cacheNames = "page" , allEntries = true , beforeInvocation = true) ,
-				@CacheEvict(cacheNames = "user" , key = "#id" , beforeInvocation = true)
-			}
-		)
+	@Cacheable(key = "#id" , cacheNames = "user")
 	@Override
 	public Map<String, Object> findObjectById(Integer id) {
 		/**
@@ -212,15 +213,18 @@ public class SysUserServiceImpl implements SysUserService {
 		Assert.isEmpty(sysUser.getUsername(), "用户名不能为空");
 		Assert.isArgumentValid(roleIds==null||roleIds.length==0, "必须制定权限");
 		
-		//校验2 重复
-		isSame(sysUser.getUsername(),sysUser.getEmail() , sysUser.getMobile());
+		//重复校验
+		isExist( "username", sysUser.getUsername(),sysUser.getId()) ;
+		isExist("email", sysUser.getEmail(),  sysUser.getId());
+		isExist("mobile", sysUser.getMobile(),  sysUser.getId());
 		
 		
-		String username = ShiroUtils.getUsername();
-		sysUser.setModifiedUser(username);
+		sysUser.setModifiedUser(ShiroUtils.getUsername());
+		
 		int rows = sysUserDao.updateObejct(sysUser);
 		Assert.isServiceValid(rows==0, "数据可能不存在了！");
 		
+		//关系
 		sysUserRoleDao.deleteObjectsByUserId(sysUser.getId());
 		sysUserRoleDao.insertObjects(sysUser.getId(), roleIds);
 		
@@ -228,12 +232,6 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	
-	private void isSame(String username, String email, String mobile) {
-		Assert.isServiceValid(username!=null&&sysUserDao.isExist("username", username)!=0, "用户名已存在！"); ; 
-		Assert.isServiceValid(email!=null&&sysUserDao.isExist("email", email)!=0, "email已存在！"); ; 
-		Assert.isServiceValid(mobile!=null&&sysUserDao.isExist("mobile", mobile)!=0, "mobile已存在！"); ;		
-	}
-
 	@RequiredLog(operation = "用户登录")
 	@Override
 	public void doLogin(String username, String password) {

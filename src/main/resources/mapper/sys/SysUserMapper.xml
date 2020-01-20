@@ -72,8 +72,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="isExist" resultType="int">
-		select count(*) from sys_users
-		where  ${columnName} = #{columnValue}
+		select count(id) from sys_users
+		where  ${columnName} = #{columnValue} 
+		<if test="id!=null">
+		and not ( id = #{id}) 
+		</if>
 	</select>
 	
 </mapper>

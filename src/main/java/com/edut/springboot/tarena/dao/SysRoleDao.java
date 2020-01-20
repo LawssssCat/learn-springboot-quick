@@ -37,10 +37,7 @@ public interface SysRoleDao {
 	 * @return 当前页的角色记录信息
 	 * 数据库中每条角色信息封装到一个SysLog对象中
 	 */
-	List<SysRole> findObjects(
-			@Param("name") String name , 
-			@Param("startIndex") Integer startIndex , 
-			@Param("pageSize") Integer pageSize) ;
+	List<SysRole> findObjects(@Param("name") String name ) ;
 	
 	
 	@Delete("delete from sys_roles where id = #{id}")

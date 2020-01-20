@@ -27,7 +27,7 @@
 		select distinct menu_id 
 		from sys_role_menus 
 		<where>
-			1==2 
+			1=2 
 			<foreach collection="roleIds" item="roleId">
 				or role_id=#{roleId}
 			</foreach>

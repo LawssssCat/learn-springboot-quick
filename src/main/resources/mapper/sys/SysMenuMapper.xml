@@ -50,11 +50,11 @@
 	<!-- 查 权限 permission -->
 	<select id="findPermissions" resultType="string">
 		select permission 
-		from sys_menu 
+		from sys_menus 
 		<where >
-			1==2
+			1=2
 			<foreach collection="menuIds" item="menuId">
-				or menu_id = #{menuId}
+				or id = #{menuId}
 			</foreach>
 		</where>
 	</select>

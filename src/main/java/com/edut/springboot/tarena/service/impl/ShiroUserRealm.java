@@ -2,6 +2,7 @@ package com.edut.springboot.tarena.service.impl;
 
 
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -20,27 +21,47 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import com.edut.springboot.tarena.dao.SysMenuDao;
+import com.edut.springboot.tarena.dao.SysRoleMenuDao;
 import com.edut.springboot.tarena.dao.SysUserDao;
+import com.edut.springboot.tarena.dao.SysUserRoleDao;
 import com.edut.springboot.tarena.pojo.SysUser;
 
 @Service
 public class ShiroUserRealm extends AuthorizingRealm {
+	@Autowired
+	private SysUserDao sysUserDao ; 
+	@Autowired
+	private SysUserRoleDao sysUserRoleDao ; 
+	@Autowired
+	private SysRoleMenuDao sysRoleMenuDao ; 
+	@Autowired
+	private SysMenuDao sysMenuDao ; 
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		
-		
+		SysUser user = (SysUser) principals.getPrimaryPrincipal() ; 
+				
+		Integer[] array = {} ;
+		List<Integer> roleIds = sysUserRoleDao.findRoleIdsByUserId(user.getId());
+		List<Integer> menuIds = sysRoleMenuDao.findMenuIdsByRoleIds(roleIds.toArray(array)); 
+		List<String> permissionList = sysMenuDao.findPermissions(menuIds.toArray(array)); 
 		HashSet<String> permissions = new HashSet<>();
+		
+		for (String permission : permissionList) {
+			if(!StringUtils.isEmpty(permission)) {
+				permissions.add(permission) ; 
+			}
+		}
 		
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo() ; 
 		info.setStringPermissions(permissions);
 		return info ;
 	}
 
-	@Autowired
-	private SysUserDao sysUserDao ; 
-	
 	
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {

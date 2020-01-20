@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * POJO:(普通的java对象)
@@ -20,6 +21,7 @@ import lombok.Data;
  * ...
  */
 @Data
+@Accessors(chain = true) 
 public class SysLog implements Serializable {
 
 	/**

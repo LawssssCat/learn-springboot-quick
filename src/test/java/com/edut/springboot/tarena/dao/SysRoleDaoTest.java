@@ -29,11 +29,11 @@ public class SysRoleDaoTest {
 		log.info("rows="+rows); // 0
 	}
 	
-	@Test
-	public void test_findObjects() {
-		 List<SysRole> roles = sysRoleDao.findObjects("", 0, 2); 
-		 roles.forEach(r -> log.info(r.toString()));
-	}
+//	@Test
+//	public void test_findObjects() {
+//		 List<SysRole> roles = sysRoleDao.findObjects("", 0, 2); 
+//		 roles.forEach(r -> log.info(r.toString()));
+//	}
 	
 	@Test
 	public void test_insertObject() {

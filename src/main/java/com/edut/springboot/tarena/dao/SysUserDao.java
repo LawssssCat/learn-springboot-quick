@@ -13,9 +13,13 @@ import com.edut.springboot.tarena.pojo.SysUser;
 @Mapper
 public interface SysUserDao {
 	
+	@Select("select * from  sys_users where username = #{username}")
+	SysUser findUserByUsername(@Param("username") String username) ;
+	
 	int isExist(
 			@Param("columnName") String columnName ,
-			@Param("columnValue") String columnValue ) ;
+			@Param("columnValue") String columnValue  , 
+			@Param("id") Integer userId) ;
 	
 	
 	/**

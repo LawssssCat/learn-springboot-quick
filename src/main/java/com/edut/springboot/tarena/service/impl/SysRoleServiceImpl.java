@@ -2,11 +2,13 @@ package com.edut.springboot.tarena.service.impl;
 
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edut.springboot.tarena.common.config.PaginationProperties;
 import com.edut.springboot.tarena.common.utils.Assert;
+import com.edut.springboot.tarena.common.utils.ShiroUtils;
 import com.edut.springboot.tarena.common.vo.CheckBox;
 import com.edut.springboot.tarena.common.vo.PageObject;
 import com.edut.springboot.tarena.common.vo.SysRoleMenuVo;
@@ -15,7 +17,12 @@ import com.edut.springboot.tarena.dao.SysRoleMenuDao;
 import com.edut.springboot.tarena.dao.SysUserRoleDao;
 import com.edut.springboot.tarena.pojo.SysRole;
 import com.edut.springboot.tarena.service.SysRoleService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
 	
@@ -29,21 +36,23 @@ public class SysRoleServiceImpl implements SysRoleService {
 	@Autowired
 	private SysUserRoleDao sysUserRoleDao ; 
 
+	@RequiresPermissions("sys:role:view")
 	@Override
 	public PageObject<SysRole> findPageObjects(String name , Integer pageCurrent){
 		//1. 参数校验 null <1
 		Assert.isArgumentValid(pageCurrent==null || pageCurrent<1, "页码值错误！");
 		//2. 查询[总]记录数并校验  ==0
-		int rowCount = sysRoleDao.getRowCount(name); // 分页 - 一定要 - 总页数
-		Assert.isServiceValid(rowCount == 0, "没有数据~~~");
 		//3. 查询当前页角色信息记录
 		Integer pageSize = pagiantionProperties.getPageSize() ;
-		Integer startIndex = pagiantionProperties.getStartIndex( pageCurrent );
-		List<SysRole> records = sysRoleDao.findObjects( name , startIndex , pageSize );
+		Page<Object> page = PageHelper.startPage(pageCurrent , pageSize); 
+		//Integer startIndex = pagiantionProperties.getStartIndex( pageCurrent );
+		List<SysRole> records = sysRoleDao.findObjects( name);
+		log.debug("## --- "+records.size()); //这是分页后的结果
 		//4. 封装查询结果
-		return new PageObject<SysRole>(rowCount, records, pageSize, pageCurrent); 
+		return new PageObject<SysRole>((int)page.getTotal(), records, pageSize, pageCurrent); 
 	}
 
+	@RequiresPermissions("sys:role:delete")
 	@Override
 	public int deleteObject(Integer id) {
 		/**
@@ -69,6 +78,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		return rows ;
 	}
 
+	@RequiresPermissions("sys:role:add")
 	@Override
 	public int saveObject(SysRole entity, Integer[] menuIds) {
 		/**
@@ -80,6 +90,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 		/**
 		 * 保存
 		 */
+		String username = ShiroUtils.getUsername();
+		entity.setModifiedUser(username);
 		int rows = sysRoleDao.insertObject(entity) ;
 		int id = entity.getId();
 		sysRoleMenuDao.insertObjects(id , menuIds) ;
@@ -90,6 +102,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		return rows;
 	}
 
+	@RequiresPermissions("sys:role:view")
 	@Override
 	public SysRoleMenuVo findObjectById(Integer id) {
 		Assert.isArgumentValid(id==null || id<1, "请选择一个");
@@ -98,6 +111,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		return result;
 	}
 
+	@RequiresPermissions("sys:role:update")
 	@Override
 	public int updateObject(SysRoleMenuVo entity) {
 		/**
@@ -114,6 +128,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 		/**
 		 * 方法执行
 		 */
+		String username = ShiroUtils.getUsername();
+		entity.setName(username);
 		int rows = sysRoleDao.updateObject(id , name , entity.getNote() ) ;
 		/**
 		 * 结果校验
@@ -127,6 +143,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		return rows ;
 	}
 
+	@RequiresPermissions("sys:role:view")
 	@Override
 	public List<CheckBox> findObjects() {
 		List<CheckBox> result = sysRoleDao.findObejcts() ;

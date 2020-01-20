@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -30,6 +31,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Autowired
 	private SysRoleMenuDao sysRoleMenuDao ; 
 	
+	@RequiresPermissions("sys:menu:view")
 	@Cacheable(cacheNames = "menuCache")
 	@RequiredLog(operation = "查询")
 	//@Cacheable(value = "menuCache")
@@ -41,9 +43,11 @@ public class SysMenuServiceImpl implements SysMenuService {
 		return new JsonResult(data) ;   
 	}
 	
-	@CacheEvict(	beforeInvocation = false  , 
-					value = "menuCache" , 
-					allEntries = true)
+	
+	@RequiresPermissions("sys:menu:delete")
+	@CacheEvict(beforeInvocation = false  , 
+				value = "menuCache" , 
+				allEntries = true)
 	@RequiredLog(operation = "删除")
 	@Override
 	public int deleteObject(Integer id ) {
@@ -61,6 +65,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 
+	@RequiresPermissions("sys:menu:view")
 	@RequiredCache
 	@Override
 	public List<Node> findZtreeMenuNodes() {
@@ -68,6 +73,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 
+	@RequiresPermissions("sys:menu:add")
 	@RequiredLog(operation =  "添加")
 	//@CacheEvict(value = "menuCache" ,allEntries = true ,beforeInvocation = false)
 	//@ClearCache
@@ -88,6 +94,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 		return rows ;
 	}
 
+	@RequiresPermissions("sys:menu:update")
 	@RequiredLog(operation = "修改")
 	public int updateObject(SysMenu entity) {
 		Assert.isArgumentValid(entity==null , "数据不能为空!!!");

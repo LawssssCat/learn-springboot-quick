@@ -58,12 +58,8 @@ public class SysUserServiceImpl implements SysUserService {
 		int rows = sysUserDao.isExist(columnName, columnValue , userId);
 		Assert.isServiceValid(rows>0, "已存在！");
 	}
-	
-	
-	
-	
 
-	@RequiresPermissions({"sys:user:view"})
+	@RequiresPermissions({"sys:user:view"}) //访问权限
 	@Cacheable(value = {"page"} , key = "#pageCurrent")
 	@Transactional(readOnly = true)
 	@RequiredLog(operation = "分页查询")
@@ -93,7 +89,7 @@ public class SysUserServiceImpl implements SysUserService {
 	 * 加入在spring中，没有控制事务，现在有事务吗？
 	 * 默认是mybatis框架在控制事务 ==》 mybatis无法控制业务层事务 ==》 在切面 AOP 中控制事务
 	 */
-	@RequiresPermissions({"sys:user:add"})
+	@RequiresPermissions({"sys:user:update"})
 	@Caching(
 			evict = {
 				@CacheEvict(cacheNames = "page" , allEntries = true , beforeInvocation = true) ,
@@ -120,6 +116,7 @@ public class SysUserServiceImpl implements SysUserService {
 		return rows ;
 	}
 
+	@RequiresPermissions({"sys:user:add"})
 	@Caching(
 			evict = {
 				@CacheEvict(cacheNames = "page" , allEntries = true , beforeInvocation = true) 
@@ -176,6 +173,7 @@ public class SysUserServiceImpl implements SysUserService {
 		return rows;
 	}
 
+	@RequiresPermissions({"sys:role:view"})
 	@Cacheable(key = "#id" , cacheNames = "user")
 	@Override
 	public Map<String, Object> findObjectById(Integer id) {
@@ -198,6 +196,7 @@ public class SysUserServiceImpl implements SysUserService {
 		return map;
 	}
 
+	@RequiresPermissions({"sys:role:update"})
 	@Caching(
 			evict = {
 				@CacheEvict(cacheNames = "page" , allEntries = true , beforeInvocation = true) ,

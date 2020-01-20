@@ -2,6 +2,7 @@ package com.edut.springboot.tarena.service.impl;
 
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 	@Autowired
 	private SysUserRoleDao sysUserRoleDao ; 
 
+	@RequiresPermissions("sys:role:view")
 	@Override
 	public PageObject<SysRole> findPageObjects(String name , Integer pageCurrent){
 		//1. 参数校验 null <1
@@ -50,6 +52,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		return new PageObject<SysRole>((int)page.getTotal(), records, pageSize, pageCurrent); 
 	}
 
+	@RequiresPermissions("sys:role:delete")
 	@Override
 	public int deleteObject(Integer id) {
 		/**
@@ -75,6 +78,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		return rows ;
 	}
 
+	@RequiresPermissions("sys:role:add")
 	@Override
 	public int saveObject(SysRole entity, Integer[] menuIds) {
 		/**
@@ -98,6 +102,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		return rows;
 	}
 
+	@RequiresPermissions("sys:role:view")
 	@Override
 	public SysRoleMenuVo findObjectById(Integer id) {
 		Assert.isArgumentValid(id==null || id<1, "请选择一个");
@@ -106,6 +111,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		return result;
 	}
 
+	@RequiresPermissions("sys:role:update")
 	@Override
 	public int updateObject(SysRoleMenuVo entity) {
 		/**
@@ -137,6 +143,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		return rows ;
 	}
 
+	@RequiresPermissions("sys:role:view")
 	@Override
 	public List<CheckBox> findObjects() {
 		List<CheckBox> result = sysRoleDao.findObejcts() ;

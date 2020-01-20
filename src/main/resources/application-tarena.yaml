@@ -50,7 +50,7 @@ logging:
 #page
 page: 
   config:
-    pageSize: 3
+    pageSize: 10
     
 async-thread-pool:
   corePoolSize: 1

@@ -24,8 +24,8 @@ public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService ; 
 
-	@Autowired
-	private SecurityManager securityManager ;  
+//	@Autowired
+//	private SecurityManager securityManager ;  
 	
 	
 	/**username/password 要与前端一致*/

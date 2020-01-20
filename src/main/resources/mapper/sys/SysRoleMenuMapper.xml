@@ -32,14 +32,6 @@
 				or role_id=#{roleId}
 			</foreach>
 		</where>
-		<!--
-		 或者
-		 from sys_role_menus 
-		 where role_id in 
-		 <foreach .... open="(" separator="," close=")">  
-		 #{roleId}
-		 </foreach>
-		 -->
 	</select>
 	
 </mapper>

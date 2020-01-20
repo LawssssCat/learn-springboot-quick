@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.edut.springboot.tarena.common.utils.Assert;
 import com.edut.springboot.tarena.common.vo.JsonResult;
 import com.edut.springboot.tarena.common.vo.Node;
+import com.edut.springboot.tarena.common.vo.SysUserMenuVo;
 import com.edut.springboot.tarena.dao.SysMenuDao;
 import com.edut.springboot.tarena.dao.SysRoleMenuDao;
 import com.edut.springboot.tarena.pojo.SysMenu;
@@ -24,4 +25,6 @@ public interface SysMenuService {
 	List<Node> findZtreeMenuNodes() ;
 
 	int updateObject(SysMenu entity);
+	
+	List<SysUserMenuVo> findUserMenus(Integer userId);
 }

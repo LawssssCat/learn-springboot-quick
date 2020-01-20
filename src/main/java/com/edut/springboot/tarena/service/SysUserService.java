@@ -18,4 +18,6 @@ public interface SysUserService {
 	/**除userId外，相同，则相同*/
 	void isExist(String columnName , String columnValue , Integer userId)  ;
 	void doLogin(String username, String password, boolean isRememberMe); 
+	
+	
 }

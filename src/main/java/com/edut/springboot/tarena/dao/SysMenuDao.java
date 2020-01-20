@@ -14,23 +14,22 @@ import com.edut.springboot.tarena.pojo.SysMenu;
 @Mapper
 public interface SysMenuDao {
 	
+	List<String> findPermissions(
+			@Param("menuIds") Integer ... menuIds) ; 
+	
 	int updateObject(SysMenu entity);
 	int saveObject(SysMenu entity) ;
 	
 	@Select("select id, name ,  parentId from sys_menus")
 	List<Node> findZtreeMenuNodes() ;
 	
-	/**
-	 * 基于菜单id统计其子元素的个数
-	 * getChildCount
-	 */
-	int getChildCount(@Param("id") Integer menuId) ;
+	/**基于菜单id统计其子元素的个数*/
+	int getChildCount(
+			@Param("id") Integer menuId) ;
 	
-	/**
-	 * 基于id删除当前菜单对象
-	 * deleteObjcet
-	 */
-	int deleteObjcet(@Param("id") Integer menuId) ;
+	/**基于id删除当前菜单对象*/
+	int deleteObjcet(
+			@Param("id") Integer menuId) ;
 
 	/**
 	 * 查询所有菜单以及菜单对应的上级菜单id和名称

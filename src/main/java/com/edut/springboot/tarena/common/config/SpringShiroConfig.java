@@ -4,12 +4,17 @@ import java.util.LinkedHashMap;
 
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.jca.cci.CannotCreateRecordException;
 
 
 
@@ -77,5 +82,29 @@ public class SpringShiroConfig {
 		
 		return shiroFilterFactoryBean ;  
 	}
+	
+	@Bean//bean声明周期管理
+	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+		return new LifecycleBeanPostProcessor() ;
+	}
+	
+	//默认顾问代理生产者
+	@Bean
+	@DependsOn("lifecycleBeanPostProcessor") 
+	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+		DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+		advisorAutoProxyCreator.setProxyTargetClass(true);
+		return  advisorAutoProxyCreator ; 
+	}
+	
+	//授权属性源顾问
+	@Bean
+	public AuthorizationAttributeSourceAdvisor newAuthorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+		AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
+		advisor.setSecurityManager(securityManager);
+		return advisor;  
+	}
+	
+	
 	
 }

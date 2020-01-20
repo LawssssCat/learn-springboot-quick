@@ -17,9 +17,29 @@
 	
 	<!--基于角色id信息 查询菜单id-->
 	<select id="findMenuIdsByRoleId" resultType="java.lang.Integer">
-		select menu_id from sys_role_menus 
+		select menu_id 
+		from sys_role_menus 
 		where role_id = #{roleId}
 	</select>
 	
+	<!-- 多个 roleID 查询 MenuID -->
+	<select id="findMenuIdsByRoleIds" resultType="int">
+		select distinct menu_id 
+		from sys_role_menus 
+		<where>
+			1==2 
+			<foreach collection="roleIds" item="roleId">
+				or role_id=#{roleId}
+			</foreach>
+		</where>
+		<!--
+		 或者
+		 from sys_role_menus 
+		 where role_id in 
+		 <foreach .... open="(" separator="," close=")">  
+		 #{roleId}
+		 </foreach>
+		 -->
+	</select>
 	
 </mapper>

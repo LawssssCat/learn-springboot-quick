@@ -13,7 +13,7 @@ import com.edut.springboot.tarena.common.annotation.ClearCache;
 import com.edut.springboot.tarena.common.annotation.RequiredCache;
 import com.edut.springboot.tarena.common.annotation.RequiredLog;
 import com.edut.springboot.tarena.common.exception.ServiceException;
-import com.edut.springboot.tarena.common.utils.Assert;
+import com.edut.springboot.tarena.common.utils.Assert;import com.edut.springboot.tarena.common.utils.ShiroUtils;
 import com.edut.springboot.tarena.common.vo.JsonResult;
 import com.edut.springboot.tarena.common.vo.Node;
 import com.edut.springboot.tarena.dao.SysMenuDao;
@@ -44,7 +44,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@CacheEvict(	beforeInvocation = false  , 
 					value = "menuCache" , 
 					allEntries = true)
-	@RequiredLog(operation = "修改")
+	@RequiredLog(operation = "删除")
 	@Override
 	public int deleteObject(Integer id ) {
 		//1. 参数校验 null , <1
@@ -77,6 +77,8 @@ public class SysMenuServiceImpl implements SysMenuService {
 		Assert.isEmpty(entity.getName(), "用户名不能为空!!!");
 		int rows = -1  ; 
 		try {
+			String username = ShiroUtils.getUsername() ; 
+			entity.setCreatedUser(username);
 			rows = sysMenuDao.saveObject(entity) ; 
 		}catch (Exception e) {
 			e.getStackTrace() ; 
@@ -91,7 +93,8 @@ public class SysMenuServiceImpl implements SysMenuService {
 		Assert.isArgumentValid(entity==null , "数据不能为空!!!");
 		Assert.isEmpty(entity.getName(), "用户名不能为空!!!");
 		try {
-			entity.setModifiedUser("root");
+			String username = ShiroUtils.getUsername() ; 
+			entity.setModifiedUser(username);
 			entity.setModifiedTime(new Date(new java.util.Date().getTime()));
 			return sysMenuDao.updateObject(entity) ;
 		}catch (Exception e) {

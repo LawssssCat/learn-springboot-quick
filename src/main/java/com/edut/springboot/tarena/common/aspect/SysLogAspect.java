@@ -83,7 +83,7 @@ public class SysLogAspect {
 		if(annotation==null) return ;
 		String operation = Arrays.toString(annotation.operation() ) ;
 		
-		String ip = ShiroUtils.getId() ;
+		String ip = ShiroUtils.getIP() ;
 		String username = ShiroUtils.getUsername() ;
 		//1.3 获取目标方法实际参数
 		String params = Arrays.toString(pj.getArgs());

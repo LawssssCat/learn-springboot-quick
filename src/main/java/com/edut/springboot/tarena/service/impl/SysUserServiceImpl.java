@@ -11,6 +11,7 @@ import org.apache.commons.collections.functors.TruePredicate;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.Subject;
@@ -27,6 +28,7 @@ import com.edut.springboot.tarena.common.annotation.RequiredCache;
 import com.edut.springboot.tarena.common.annotation.RequiredLog;
 import com.edut.springboot.tarena.common.config.PaginationProperties;
 import com.edut.springboot.tarena.common.utils.Assert;
+import com.edut.springboot.tarena.common.utils.ShiroUtils;
 import com.edut.springboot.tarena.common.vo.PageObject;
 import com.edut.springboot.tarena.common.vo.SysUserDeptVo;
 import com.edut.springboot.tarena.dao.SysUserDao;
@@ -55,10 +57,10 @@ public class SysUserServiceImpl implements SysUserService {
 		int rows = sysUserDao.isExist(columnName, columnValue);
 		Assert.isServiceValid(rows!=0, "已存在！");
 	}
-	
-	//自定义切面优先级低时候，和下面注解在同一个事务中 ，@RequiredLog(operation = "分页查询")
+
+	@RequiresPermissions({"sys:user:view"})
 	@Cacheable(value = {"page"} , key = "#pageCurrent")
-	@Transactional(readOnly = true  )   
+	@Transactional(readOnly = true)
 	@RequiredLog(operation = "分页查询")
 	@Override
 	public PageObject<SysUserDeptVo> findPageObjects(Integer pageCurrent, String username) {
@@ -86,6 +88,7 @@ public class SysUserServiceImpl implements SysUserService {
 	 * 加入在spring中，没有控制事务，现在有事务吗？
 	 * 默认是mybatis框架在控制事务 ==》 mybatis无法控制业务层事务 ==》 在切面 AOP 中控制事务
 	 */
+	@RequiresPermissions({"sys:user:add"})
 	@Caching(
 			evict = {
 				@CacheEvict(cacheNames = "page" , allEntries = true , beforeInvocation = true) ,
@@ -101,8 +104,9 @@ public class SysUserServiceImpl implements SysUserService {
 		Assert.isArgumentValid(id==null||id<1, "id值不正确！");
 			//valid 1 0 状态值不正确
 		Assert.isArgumentValid(valid!=1&&valid!=0, "状态异常！");
-		//TODO modifiedUser
-		String modifiedUser = null ;
+		
+		String username = ShiroUtils.getUsername();
+		String modifiedUser = username ;
 		//2. 执行更新并校验
 		int rows = sysUserDao.validById(id, valid, modifiedUser ) ;
 			//rows==0 记录可能不存在了！
@@ -152,6 +156,8 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUser.setSalt(salt);
 		sysUser.setPassword(sh.toHex());//将密码加密结果转换为16进制并存储到entity内
 		
+		String username = ShiroUtils.getUsername();
+		sysUser.setModifiedUser(username);
 		//执行、校验
 		int rows = sysUserDao.insertObject(sysUser);
 		Integer id = sysUser.getId();
@@ -168,7 +174,7 @@ public class SysUserServiceImpl implements SysUserService {
 			evict = {
 				@CacheEvict(cacheNames = "page" , allEntries = true , beforeInvocation = true) ,
 				@CacheEvict(cacheNames = "user" , key = "#id" , beforeInvocation = true)
-			}  
+			}
 		)
 	@Override
 	public Map<String, Object> findObjectById(Integer id) {
@@ -210,6 +216,8 @@ public class SysUserServiceImpl implements SysUserService {
 		isSame(sysUser.getUsername(),sysUser.getEmail() , sysUser.getMobile());
 		
 		
+		String username = ShiroUtils.getUsername();
+		sysUser.setModifiedUser(username);
 		int rows = sysUserDao.updateObejct(sysUser);
 		Assert.isServiceValid(rows==0, "数据可能不存在了！");
 		

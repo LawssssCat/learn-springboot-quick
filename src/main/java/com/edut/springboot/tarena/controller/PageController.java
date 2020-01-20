@@ -17,7 +17,6 @@ public class PageController {
 	public String doIndexUI(Model model ) {
 		
 		SysUser user =  (SysUser) SecurityUtils.getSubject().getPrincipal();
-		
 		model.addAttribute("username", user.getUsername()) ; 
 		
 		return "/starter";

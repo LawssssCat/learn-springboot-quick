@@ -1,6 +1,8 @@
 package com.edut.springboot.tarena.service.impl;
 
 
+import java.util.HashSet;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -11,6 +13,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -26,8 +29,13 @@ public class ShiroUserRealm extends AuthorizingRealm {
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		
+		HashSet<String> permissions = new HashSet<>();
+		
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo() ; 
+		info.setStringPermissions(permissions);
+		return info ;
 	}
 
 	@Autowired
@@ -49,9 +57,6 @@ public class ShiroUserRealm extends AuthorizingRealm {
 		
 		UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken)token;
 		final String username = usernamePasswordToken.getUsername();
-		
-		
-		
 		final SysUser sysUser = sysUserDao.findUserByUsername(username);
 		
 		/*
@@ -73,17 +78,12 @@ public class ShiroUserRealm extends AuthorizingRealm {
 		/*
 		 * 封装凭证
 		 */
-		Object principal = sysUser ;
-		
 		Object hashedCredentials = sysUser.getPassword() ;
-		
 		ByteSource credentialsSalt = ByteSource.Util.bytes(sysUser.getSalt());
-		
 		String realmName = sysUser.getUsername();
-		
 		SimpleAuthenticationInfo info = 
 				new SimpleAuthenticationInfo(
-						principal, 
+						sysUser, 
 						hashedCredentials, 
 						credentialsSalt, 
 						realmName) ; 

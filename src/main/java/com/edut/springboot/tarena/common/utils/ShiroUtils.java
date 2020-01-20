@@ -10,13 +10,13 @@ import com.edut.springboot.tarena.pojo.SysUser;
 
 public abstract class ShiroUtils {
 
-	public static String getId() {
+	public static String getIP() {
 		Subject subject = SecurityUtils.getSubject();
 		if(subject instanceof WebSubject) {
 			WebSubject weSubject = (WebSubject) subject ;
 			ServletRequest request = weSubject.getServletRequest() ;
 			if(request!=null) {
-				return request.getRemoteHost()  ; 
+				return request.getRemoteAddr()  ; 
 			}
 		}
 		return null ; 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.edut.springboot.tarena.common.config.PaginationProperties;
 import com.edut.springboot.tarena.common.utils.Assert;
+import com.edut.springboot.tarena.common.utils.ShiroUtils;
 import com.edut.springboot.tarena.common.vo.CheckBox;
 import com.edut.springboot.tarena.common.vo.PageObject;
 import com.edut.springboot.tarena.common.vo.SysRoleMenuVo;
@@ -85,6 +86,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 		/**
 		 * 保存
 		 */
+		String username = ShiroUtils.getUsername();
+		entity.setModifiedUser(username);
 		int rows = sysRoleDao.insertObject(entity) ;
 		int id = entity.getId();
 		sysRoleMenuDao.insertObjects(id , menuIds) ;
@@ -119,6 +122,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 		/**
 		 * 方法执行
 		 */
+		String username = ShiroUtils.getUsername();
+		entity.setName(username);
 		int rows = sysRoleDao.updateObject(id , name , entity.getNote() ) ;
 		/**
 		 * 结果校验

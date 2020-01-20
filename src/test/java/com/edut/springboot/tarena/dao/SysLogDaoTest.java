@@ -25,16 +25,16 @@ public class SysLogDaoTest {
 		log.info("rows="+rows);
 	}
 	
-	@Test
-	public void test_findPageObjects() {
-		Integer pageSize = 2;
-		Integer startIndex = 1 ; //数据库的从0开始
-		
-		//String username = "admin" ;
-		String username = null ;
-		List<SysLog> list = sysLogDao.findPageObjects(username, startIndex, pageSize);
-		list.forEach(l -> log.info(l.toString()));
-	}
+//	@Test
+//	public void test_findPageObjects() {
+//		Integer pageSize = 2;
+//		Integer startIndex = 1 ; //数据库的从0开始
+//		
+//		//String username = "admin" ;
+//		String username = null ;
+//		List<SysLog> list = sysLogDao.findPageObjects(username, startIndex, pageSize);
+//		list.forEach(l -> log.info(l.toString()));
+//	}
 	
 	@Test
 	public void test_deleteObjects() {

@@ -10,18 +10,18 @@ public class SysUserDaoTest {
 	@Autowired
 	private SysUserDao sysUserDao ; 
 
-	@Test
-	public void test_verificationModule() {
-		
-		String columnName = "username";
-		String columnValue = "aaaaaa" ;
-		int rows = sysUserDao.isExist(columnName , columnValue);
-		System.out.println("username - rows="+rows);
-
-		rows = sysUserDao.isExist("mobile" , "13624356789");
-		System.out.println("mobile - rows="+rows);
-		
-		rows = sysUserDao.isExist("email" , "admin@t.cn");
-		System.out.println("email - rows="+rows);
-	}
+//	@Test
+//	public void test_verificationModule() {
+//		
+//		String columnName = "username";
+//		String columnValue = "aaaaaa" ;
+//		int rows = sysUserDao.isExist(columnName , columnValue);
+//		System.out.println("username - rows="+rows);
+//
+//		rows = sysUserDao.isExist("mobile" , "13624356789");
+//		System.out.println("mobile - rows="+rows);
+//		
+//		rows = sysUserDao.isExist("email" , "admin@t.cn");
+//		System.out.println("email - rows="+rows);
+//	}
 }

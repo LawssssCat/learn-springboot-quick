@@ -9,12 +9,13 @@ import com.edut.springboot.tarena.pojo.SysUser;
 
 public interface SysUserService {
 	PageObject<SysUserDeptVo> findPageObjects(Integer pageCurrent, String username);
-	/**
-	 * 状态
-	 */
+	/**状态*/
 	int validById(Integer id , Integer valid) ;
 	int saveObject(SysUser sysUser, Integer[] roleIds);
 	int updateObject(SysUser sysUser, Integer[] roleIds); 
+	/**根据id找user*/
 	Map<String, Object> findObjectById(Integer id);
-	void isExist(String columnName , String columnValue)  ; 
+	/**除userId外，相同，则相同*/
+	void isExist(String columnName , String columnValue , Integer userId)  ;
+	void doLogin(String username, String password); 
 }

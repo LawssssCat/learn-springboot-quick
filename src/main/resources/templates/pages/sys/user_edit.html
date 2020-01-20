@@ -111,16 +111,24 @@
 		var url = "/user/doIsExist";
 		var columnName = $(this).prop("name") ; 
 		var columnValue = $(this).val() ; 
+		
+		var rowData=$("#mainContentId").data("rowData");
+		var userId = null ; 
+		if(rowData)userId=rowData.user.id;
+		
+		
 		var name = $(this).parents(".form-group").find("label").html() ; 
 		var params = {
 				"columnName":columnName , 
-				"columnValue":columnValue
+				"columnValue":columnValue , 
+				"userId" : userId 
 			}
 		$.getJSON(url,params, function(result) {
 			doHandleExist(name , result);
 		});
 	}
 	function doHandleExist(name , result) {
+		
 		if(result.state==0){//存在 exist
 			alert("\""+name+"\""+result.message);
 		}
@@ -168,7 +176,7 @@
 	 var insertUrl="user/doSaveObject";
 	 var updateUrl="user/doUpdateObject";
 	 var url=rowData?updateUrl:insertUrl;
-	 console.log(params);
+	 //console.log(params);
 	 $.post(url,params,function(result){
 		 if(result.state==1){
 			 alert(result.message);
@@ -196,7 +204,7 @@
 		 }
 	 });
 	 params.roleIds=roleIds.toString();
-	 return params;
+	 return params ; 
  }
  function doLoadRoles(){
 	 var url="role/doFindRoles"

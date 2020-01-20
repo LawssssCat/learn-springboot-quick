@@ -5,6 +5,13 @@ import com.edut.springboot.tarena.common.vo.PageObject;
 import com.edut.springboot.tarena.pojo.SysLog;
 
 public interface SysLogService {
+	
+	/**
+	 * 保存用户日志
+	 */
+	void saveObject(SysLog entity) ;
+	
+	
     /**
 	 * 通过此方法实现分页查询操作
 	 * @param name 基于条件查询时的参数名
@@ -14,5 +21,5 @@ public interface SysLogService {
 	PageObject<SysLog> findPageObject(String name , Integer pageCurrent) ;
 	
 	
-	public int deleteObject(Long ... ids)   ;
+	int deleteObject(Long ... ids);
 }

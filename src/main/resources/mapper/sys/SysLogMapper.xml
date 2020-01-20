@@ -3,6 +3,22 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.edut.springboot.tarena.dao.SysLogDao">
+
+	<!-- 
+	insertObject
+	insert into sys_logs
+	(username , operation , method , params , time , ip , createdTime )
+	values 
+	-->
+	<insert id="insertObject" >
+		insert into sys_logs 
+		(username , operation , method , params , time , ip , createdTime) 
+		values 
+		(#{username }, #{operation }, #{method }, #{params} , #{time} , #{ip }, now())
+	</insert>
+
+
+
 	<!--
 	 我写的垃圾代码
 	<select id="getRowCount" resultType="java.lang.Integer">
@@ -41,7 +57,6 @@
 	select * 
 		<include refid="queryWhereId" />
 		order by createdTime desc 
-		limit #{startIndex} , #{pageSize}
 	</select>
 	
 	<delete id="deleteObjects_BAK"  >

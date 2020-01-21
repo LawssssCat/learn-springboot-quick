@@ -125,7 +125,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 
-	@Cacheable(key = "#userId" , cacheNames = "userManus")
+	//@Cacheable(key = "#userId" , cacheNames = "userManus")
 	@Override
 	public List<SysUserMenuVo> findUserMenus(Integer userId) {
 		

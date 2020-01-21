@@ -1,23 +1,34 @@
 package com.edut.springboot.tarena.controller;
 
+import java.util.List;
+
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.edut.springboot.tarena.common.vo.SysUserMenuVo;
 import com.edut.springboot.tarena.pojo.SysUser;
+import com.edut.springboot.tarena.service.SysMenuService;
 
 @Controller
 public class PageController {
+	
+	@Autowired
+	private SysMenuService sysMenuService ; 
 
 	@RequestMapping("/doIndexUI")
-	public String doIndexUI(Model model ) {
+	public String doIndexUI(Model model) {
 		
 		SysUser user =  (SysUser) SecurityUtils.getSubject().getPrincipal();
 		model.addAttribute("username", user.getUsername()) ; 
+		
+		List<SysUserMenuVo> list = sysMenuService.findUserMenus(user.getId());
+		//System.out.println(list);
+		model.addAttribute("menus", list) ; 
 		
 		return "/starter";
 	}

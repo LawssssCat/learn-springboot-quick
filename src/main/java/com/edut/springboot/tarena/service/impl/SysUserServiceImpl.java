@@ -233,12 +233,12 @@ public class SysUserServiceImpl implements SysUserService {
 	
 	@RequiredLog(operation = "用户登录")
 	@Override
-	public void doLogin(String username, String password) {
+	public void doLogin(String username, String password , boolean isRememberMe) {
 		//用户状态
 		Subject subject = SecurityUtils.getSubject() ; 
 
 		//凭证
-		AuthenticationToken authenticationToken  = new UsernamePasswordToken(username , password) ;
+		AuthenticationToken authenticationToken  = new UsernamePasswordToken(username , password,isRememberMe) ;
 		
 		//尝试登录
 		subject.login(authenticationToken);

@@ -9,10 +9,14 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.edut.springboot.tarena.common.vo.Node;
+import com.edut.springboot.tarena.common.vo.SysUserMenuVo;
 import com.edut.springboot.tarena.pojo.SysMenu;
 
 @Mapper
 public interface SysMenuDao {
+	
+	List<SysUserMenuVo> findUserMenus(
+			@Param("menuIds") Integer ... menuIds) ;
 	
 	List<String> findPermissions(
 			@Param("menuIds") Integer ... menuIds) ; 

@@ -50,15 +50,17 @@ logging:
 #page
 page: 
   config:
-    pageSize: 3
-    
+    pageSize: 10
+
+#异步线程数
 async-thread-pool:
   corePoolSize: 1
   maxPoolSize: 2
   keepAliveSeconds: 30
   queueCapacity: 1
   
-  
-  
-  
+# webService
+web-service:
+  startServiceHour: 9
+  endServiceHour: 17
   

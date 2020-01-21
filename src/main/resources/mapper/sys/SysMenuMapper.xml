@@ -59,4 +59,31 @@
 		</where>
 	</select>
 	
+	<!-- 用户菜单 -->
+	<select id="findUserMenus" resultMap="sysUserMenuVo">
+		select p.id pid , p.name pname, p.url purl , c.id  , c.name  , c.url 
+		from sys_menus p
+		left join sys_menus c on p.id = c.parentId
+		<where>
+			<foreach collection="menuIds" item="menuId" 
+			open="(" separator=" or " close=")" >
+				c.id=#{menuId}
+			</foreach>
+			and p.parentId is null 
+		</where>
+	</select>
+	
+	<resultMap type="com.edut.springboot.tarena.common.vo.SysUserMenuVo" id="sysUserMenuVo">
+		<id property="id" column="pid"/>
+		<result property="name" column="pname"/>
+		<result property="url" column="purl"/>
+		<collection property="childs" ofType="com.edut.springboot.tarena.common.vo.SysUserMenuVo" >
+			<id property="id" column="id" />
+			<result property="name" column="name"/>
+			<result property="url" column="url"/>
+		</collection>
+	</resultMap>
+	
+	
+	
 </mapper>

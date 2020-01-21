@@ -24,15 +24,15 @@ public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService ; 
 
-	@Autowired
-	private SecurityManager securityManager ;  
+//	@Autowired
+//	private SecurityManager securityManager ;  
 	
 	
 	/**username/password 要与前端一致*/
 	@RequestMapping("/doLogin") 
-	public JsonResult doLogin(String username , String password) {
+	public JsonResult doLogin(String username , String password , boolean isRememberMe) {
 		
-		sysUserService.doLogin(username , password) ; 
+		sysUserService.doLogin(username , password , isRememberMe) ; 
 		
 		return new JsonResult("login ok !") ; 
 	}

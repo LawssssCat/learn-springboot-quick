@@ -251,20 +251,22 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="treeview">
+        <li class="treeview" th:each="menu:${menus}">
         <a href="#"><i class="fa fa-link"></i> 
-        <span>商品管理</span>
+        <span>[[${menu.name}]]</span>
          <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
          </span>
         </a>       
-        <ul class="treeview-menu">
-            <li><a id="load-base-id">基本管理</a></li>
+        <ul class="treeview-menu" >
+            <li><a  th:each="c:${menu.childs}" th:text="${c.name}" th:onclick="javascript:doLoadUrl([[${c.url}]])">~~~</a></li>
+            <!-- id="load-base-id" 基本管理
             <li><a id="load-type-id">类目管理</a></li>
             <li><a id="load-brand-id">品牌管理</a></li>
-            <li><a id="load-attr-id">属性管理</a></li>
+            <li><a id="load-attr-id">属性管理</a></li> -->
         </ul>
         </li> 
+        <!--
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> 
           <span>系统管理</span>
@@ -280,7 +282,8 @@ desired effect
             <li><a id="load-log-id"> 日志管理</a></li>
             <li><a id="load-pwd-id"> 修改密码</a></li>
           </ul>
-        </li>
+        </li> 
+        -->
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -422,19 +425,10 @@ desired effect
 <script src="dist/js/adminlte.min.js"></script>
 <script type="text/javascript">
    //页面加载完成事件
-   $(function(){
-	  doLoadUI("load-log-id" , "log/log_list");
-	  doLoadUI("load-menu-id" , "menu/menu_list");
-	  doLoadUI("load-role-id" , "role/role_list");
-	  doLoadUI("load-user-id" , "role/user_list");
-   })
+
    
-   function doLoadUI(id ,url) {
-   		$("#"+id).click(function() {
-   			//在指定位置异步加载资源(借助jquery中的load函数实现)
-   			//load函数为jquery中的一个ajax函数
-	   		$("#mainContentId").load(url)  ; 
-   		});
+   function doLoadUrl(url) {
+	  $("#mainContentId").load(url)  ; 
    }
    
 </script>

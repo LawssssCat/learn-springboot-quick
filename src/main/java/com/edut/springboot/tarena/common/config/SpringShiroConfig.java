@@ -2,12 +2,19 @@ package com.edut.springboot.tarena.common.config;
 
 import java.util.LinkedHashMap;
 
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.cache.MemoryConstrainedCacheManager;
+import org.apache.shiro.mgt.RememberMeManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.session.mgt.DefaultSessionManager;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,9 +44,18 @@ public class SpringShiroConfig {
 	 * 有抽象，尽量写抽象
 	 */
 	@Bean("sManager")
-	public SecurityManager securityManager(Realm realm) { //这里的 Realm 是我们自定义的  ShiroUserRealm
+	public SecurityManager securityManager(
+			Realm realm , 
+			CacheManager cacheManager , 
+			RememberMeManager rememberMeManager , 
+			SessionManager sessionManager) { //这里的 Realm 是我们自定义的  ShiroUserRealm
 		DefaultWebSecurityManager sManager = new DefaultWebSecurityManager();
 		sManager.setRealm(realm);
+		sManager.setCacheManager(cacheManager);
+		
+		sManager.setRememberMeManager(rememberMeManager);
+		sManager.setSessionManager(sessionManager);
+		
 		return sManager; 
 	}
 	
@@ -76,7 +92,8 @@ public class SpringShiroConfig {
 		map.put("/doLogout", "logout") ; 
 		//除了匿名访问的资源，其他都要认证"authc"
 		
-		map.put("/**", "authc") ;
+		map.put("/**", "user") ;
+		map.put("/", "user") ;
 		
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
 		
@@ -105,6 +122,25 @@ public class SpringShiroConfig {
 		return advisor;  
 	}
 	
+	@Bean
+	public CacheManager shiroCacheManager() {
+		return new MemoryConstrainedCacheManager() ; 
+	}
 	
+	@Bean
+	public RememberMeManager shiroRememberMeManager () {
+		CookieRememberMeManager rememberMeManager = new CookieRememberMeManager(); 
+		rememberMeManager.getCookie().setMaxAge(60*10); //10min
+		return rememberMeManager ; 
+	}
+	
+	@Bean
+	public SessionManager shiroSessionManager() {
+		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager(); 
+		
+		sessionManager.setGlobalSessionTimeout(60*60*1000);
+		
+		return  sessionManager; 
+	}
 	
 }

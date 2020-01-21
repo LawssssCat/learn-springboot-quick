@@ -8,7 +8,9 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.edut.springboot.tarena.common.annotation.ClearCache;
 import com.edut.springboot.tarena.common.annotation.RequiredCache;
@@ -17,8 +19,10 @@ import com.edut.springboot.tarena.common.exception.ServiceException;
 import com.edut.springboot.tarena.common.utils.Assert;import com.edut.springboot.tarena.common.utils.ShiroUtils;
 import com.edut.springboot.tarena.common.vo.JsonResult;
 import com.edut.springboot.tarena.common.vo.Node;
+import com.edut.springboot.tarena.common.vo.SysUserMenuVo;
 import com.edut.springboot.tarena.dao.SysMenuDao;
 import com.edut.springboot.tarena.dao.SysRoleMenuDao;
+import com.edut.springboot.tarena.dao.SysUserRoleDao;
 import com.edut.springboot.tarena.pojo.SysMenu;
 import com.edut.springboot.tarena.service.SysMenuService;
 
@@ -29,13 +33,14 @@ public class SysMenuServiceImpl implements SysMenuService {
 	private SysMenuDao sysMenuDao ;
 	
 	@Autowired
+	private SysUserRoleDao sysUserRoleDao;
+	
+	@Autowired
 	private SysRoleMenuDao sysRoleMenuDao ; 
 	
 	@RequiresPermissions("sys:menu:view")
-	@Cacheable(cacheNames = "menuCache")
+	@Cacheable(cacheNames = "menus")
 	@RequiredLog(operation = "查询")
-	//@Cacheable(value = "menuCache")
-	//@RequiredCache // 自己的cache
 	@Override
 	public JsonResult findObjects() {
 		List<Map<String, Object>> data = sysMenuDao.findObjects();
@@ -45,9 +50,11 @@ public class SysMenuServiceImpl implements SysMenuService {
 	
 	
 	@RequiresPermissions("sys:menu:delete")
-	@CacheEvict(beforeInvocation = false  , 
-				value = "menuCache" , 
-				allEntries = true)
+	@Transactional
+	@Caching(evict = {
+			@CacheEvict(allEntries = true , cacheNames = {"menus" , "ZtreeMenu"}) , 
+			@CacheEvict(key = "#id" , cacheNames = {"userManus"}) 
+	})
 	@RequiredLog(operation = "删除")
 	@Override
 	public int deleteObject(Integer id ) {
@@ -66,7 +73,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 
 	@RequiresPermissions("sys:menu:view")
-	@RequiredCache
+	@Cacheable("ZtreeMenu")
 	@Override
 	public List<Node> findZtreeMenuNodes() {
 		return sysMenuDao.findZtreeMenuNodes() ;
@@ -74,9 +81,11 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 
 	@RequiresPermissions("sys:menu:add")
+	@Transactional
+	@Caching(evict = {
+			@CacheEvict(allEntries = true , cacheNames = {"menus" , "ZtreeMenu"}) ,  //保存时候没有id
+	})
 	@RequiredLog(operation =  "添加")
-	//@CacheEvict(value = "menuCache" ,allEntries = true ,beforeInvocation = false)
-	//@ClearCache
 	@Override
 	public int saveObject(SysMenu entity) {
 		Assert.isArgumentValid(entity==null , "数据不能为空!!!");
@@ -95,6 +104,11 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	@RequiresPermissions("sys:menu:update")
+	@Transactional
+	@Caching(evict = {
+			@CacheEvict(allEntries = true , cacheNames = {"menus" , "ZtreeMenu"}) , 
+			@CacheEvict(key = "#entity.id" , cacheNames = {"userManus"}) 
+	})
 	@RequiredLog(operation = "修改")
 	public int updateObject(SysMenu entity) {
 		Assert.isArgumentValid(entity==null , "数据不能为空!!!");
@@ -108,6 +122,24 @@ public class SysMenuServiceImpl implements SysMenuService {
 			e.getStackTrace() ; 
 			throw new ServiceException("服务器异常....") ; 
 		}
+	}
+
+
+	//@Cacheable(key = "#userId" , cacheNames = "userManus")
+	@Override
+	public List<SysUserMenuVo> findUserMenus(Integer userId) {
+		
+		Assert.isArgumentValid(userId==null||userId<1, "用户异常");
+		//检验 userId
+		
+		Integer[] array = {} ; 
+		List<Integer> roleIds = sysUserRoleDao.findRoleIdsByUserId(userId);
+		List<Integer> menuIds = sysRoleMenuDao.findMenuIdsByRoleIds(roleIds.toArray(array)); 
+		List<SysUserMenuVo> list = sysMenuDao.findUserMenus(menuIds.toArray(array)); 
+		
+		Assert.isServiceValid(list==null||list.size()==0, "服务异常");
+		
+		return list;
 	}
 
 
